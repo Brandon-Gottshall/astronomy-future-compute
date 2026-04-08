@@ -310,7 +310,7 @@ function AstronomyImpactChart() {
           {
             label: "Land",
             data: d.land,
-            backgroundColor: "rgba(15,23,42,0.7)",
+            backgroundColor: "rgba(100,116,139,0.7)",
             borderRadius: 4,
           },
           {
@@ -1393,6 +1393,7 @@ function FloatingQR() {
       target="_blank"
       rel="noreferrer"
       title="Open research atlas"
+      className="no-print"
       style={{
         position: "fixed",
         bottom: "1rem",
@@ -1425,7 +1426,7 @@ function StickyNav({ mode, sections, activeSection }) {
       : COPY.common.openPresentationMode;
   return (
     <nav
-      className="sticky top-0 z-40 border-b border-slate-800"
+      className="sticky top-0 z-40 border-b border-slate-800 no-print"
       style={{
         backdropFilter: "blur(16px)",
         WebkitBackdropFilter: "blur(16px)",
