@@ -71,7 +71,7 @@ referenceTypeLabels:
   rubric: "Assignment materials"
 
 common:
-  openResearchAtlas: "Open research atlas"
+  openResearchAtlas: "Open Research Atlas"
   openPresentationMode: "Open presentation mode"
   linkLabel: "Link"
   localLabel: "Local file"
@@ -85,7 +85,7 @@ dataCopy:
         Cleaner land-based data centers remain the most mature near-term option
         because they address the existing problem where it already exists.
       strongestUpside: "Fastest realistic gains with the strongest evidence base."
-      strongestDownside: "Still tied to grid congestion, siting conflict, and water-accounting complexity."
+      strongestDownside: "Still tied to grid congestion, siting conflict, and water accounting complexity."
       astronomyRisk: "Low / indirect"
     underwater:
       description: >-
@@ -110,7 +110,7 @@ dataCopy:
     - id: lowest-direct-freshwater
       label: "Lowest direct freshwater use"
       winner: underwater
-      why: "Underwater systems can reduce direct site-water use by relying on seawater cooling."
+      why: "Underwater systems can reduce direct site water use by relying on seawater cooling."
     - id: lowest-astronomy-risk
       label: "Lowest astronomy risk"
       winner: land
@@ -153,22 +153,22 @@ dataCopy:
         - "Grid, land, and water bottlenecks may outpace efficiency gains in a rapid AI scale-out scenario."
         - "Carbon accounting claims depend heavily on procurement and reporting boundaries."
       survives:
-        - "Land-based improvement remains the fastest path with the strongest evidence base."
+        - "Land-based improvement remains the fastest and best-evidenced path."
         - "Efficiency gains are real, but current AI growth tests whether they will be sufficient on their own."
         - "Grid constraints increase urgency without undermining the value of terrestrial efficiency work."
     underwater:
       objections:
-        - "Operator-reported PUE and WUE signals are not yet independently validated at large scale."
+        - "Operator-reported PUE and WUE signals have not yet been independently validated at a large scale."
         - "Marine ecology, biofouling, and permitting complexity may prevent broader commercial scaling."
         - "A sealed pod can succeed technically while still failing as a deployable business model."
       survives:
-        - "The cooling and water-use advantages are physically grounded, not just promotional claims."
+        - "The cooling and water-use advantages are grounded in physical evidence, not just promotional claims."
         - "Commercialization risk does not cancel the engineering feasibility signal."
         - "Coastal or edge deployments look more defensible than a universal replacement for land-based hyperscale compute."
     orbital:
       objections:
         - "Abundant solar input and on-orbit processing are genuine advantages for some use cases."
-        - "Not every orbital-compute proposal implies million-satellite deployment at once."
+        - "Not every orbital-compute proposal implies a million-satellite deployment at once."
         - "Some barriers are economic and regulatory rather than purely physical."
       survives:
         - "The strongest current case is for niche space-native compute, not mass relief of terrestrial AI demand."
@@ -178,25 +178,26 @@ dataCopy:
   recommendations:
     - title: "Prioritize land-based efficiency first"
       body: >-
-        Land-based improvements remain the lowest-risk, highest-evidence path.
-        Grid modernization, better cooling, and smarter siting address the baseline problem directly.
+        Land improvements are low risk and have strong evidence of effectiveness, but also
+        consider grid modernization, cooling, and siting.
       icon: "🏭"
     - title: "Treat underwater systems as a limited-use option"
       body: >-
-        Underwater systems show real cooling promise, but marine ecology, maintenance cycles,
-        and permitting complexity limit how broadly they can scale.
+        Underwater cooling systems have significant potential, but ecological, maintenance, and
+        permit-related concerns have so far limited their adoption.
       icon: "🌊"
     - title: "Evaluate orbital proposals through an astronomy lens"
       body: >-
-        Orbital data centers affect sky brightness, radio interference, and orbital congestion.
-        Any large-scale orbital-compute proposal should be evaluated for its effect on the observing environment.
+        Orbital data centers will affect sky brightness, radio frequency interference, and
+        orbital congestion. Any large-scale orbital-compute proposal should have its impact on
+        the observing environment evaluated.
       icon: "🔭"
 
   externalityNotes:
     land:
       grid: "The baseline energy burden remains on land."
-      siteWater: "Cooling choices can keep this lower or push it higher."
-      sourceWater: "Electricity generation can dominate total water use."
+      siteWater: "Cooling choices can keep it lower or raise it."
+      sourceWater: "Electricity generation can account for most of the total water use."
       landFootprint: "Siting and local opposition remain active concerns."
       marineEcology: "Mostly outside the direct footprint."
       seabed: "No direct subsea corridor burden."
@@ -209,7 +210,7 @@ dataCopy:
     underwater:
       grid: "May still rely on terrestrial power unless paired with offshore wind."
       siteWater: "Can reduce direct freshwater use at the facility."
-      sourceWater: "Indirect water depends on power source and accounting boundaries."
+      sourceWater: "Indirect water depends on the power source and accounting boundaries."
       landFootprint: "Reduces some land demand but still needs shore infrastructure."
       marineEcology: "Moves risk into colonization, thermal discharge, and materials questions."
       seabed: "Cables, anchors, and burial corridors matter."
@@ -223,11 +224,11 @@ dataCopy:
       grid: "Claims relief through solar input, but total system cost shifts elsewhere."
       siteWater: "No cooling towers in orbit, but water accounting is not the whole story."
       sourceWater: "Launch and manufacturing burdens complicate the water story."
-      landFootprint: "Ground stations still exist, but some compute is displaced off Earth."
+      landFootprint: "Ground stations still exist, but some computing is displaced off Earth."
       marineEcology: "Avoids direct marine infrastructure impacts."
       seabed: "No subsea burial footprint."
-      sky: "Creates direct optical and near-infrared observing burdens."
-      radio: "Space emitters can interfere beyond intended bands."
+      sky: "Creates burdens on direct optical and near-infrared observing."
+      radio: "Space emitters can interfere with signals beyond their intended bands."
       debris: "Adds to an already crowded orbital environment."
       launch: "Launch cadence and reentry become part of the environmental burden."
       maintenance: "Radiation and replacement cadence make servicing difficult."
@@ -237,13 +238,15 @@ atlas:
   problem:
     title: "Baseline constraints"
     intro: >-
-      Conventional data centers already place significant pressure on electricity, cooling,
-      and water systems. AI growth is one reason underwater and orbital alternatives are now being discussed.
+      Data centers already put a lot of strain on the power grid and require fairly elaborate
+      cooling and water-supply systems. AI growth is one reason underwater and orbital alternatives
+      are now being discussed.
     body: >-
-      Rapid AI growth has pushed data centers into a much larger energy and cooling role.
-      Cooling can account for a large share of facility overhead, and indirect water use through
-      electricity generation can exceed direct on-site water use. The main question is not whether
-      these pressures are real, but how different siting choices shift them.
+      The rapid expansion of the AI industry is creating unprecedented demands on the power and
+      cooling requirements of the dedicated data centers that host the computers. Cooling can
+      account for a large share of facility overhead, and indirect water use through electricity
+      generation can exceed direct on-site water use. The main question is not whether these
+      pressures are real, but how different siting choices shift them.
     chartTitle: "Data-center electricity demand"
     timelineTitle: "Timeline"
     yearLabel: "Year:"
@@ -294,8 +297,10 @@ atlas:
   objections:
     title: "Questions and objections"
     intro: >-
-      Each pathway raises serious questions. The goal is to separate strong objections from
-      conclusions that remain well supported by the evidence.
+      This paper raises several questions about each of the proposed pathways for building data
+      centers on land, under the ocean, and in space. In each of the three scenarios, some
+      questions are more meritorious than others. The questions raised about each scenario will
+      be explored in depth throughout the paper.
     pathwayLabel: "Pathway:"
     pathwayOptions:
       - value: land
@@ -318,8 +323,9 @@ live:
     badge: "presentation mode"
     title: "Astronomy's Future Compute"
     subtitle: >-
-      Modern astronomy increasingly depends on finding rare signals in very large data sets.
-      That makes the location and environmental cost of future compute a real astronomy question.
+      Currently, many branches of astronomy are searching for faint signals embedded in vast
+      amounts of data. That makes the location and environmental cost of future computing a
+      real astronomy question.
     primaryCta: "Begin presentation"
     secondaryCta: "Open research atlas"
     cards:
@@ -354,7 +360,7 @@ live:
     comparisonCardTitle: "What this comparison actually is"
     comparisonCardBody: >-
       This project compares land-based, underwater, and orbital data-center paths. That comparison
-      is more useful than framing the topic as one company versus one country.
+      is more useful than framing the topic as a one-company-versus-one-country comparison.
   responses:
     title: "Three siting paths"
     intro: >-
@@ -406,22 +412,23 @@ live:
   orbital:
     title: "Orbital systems: most relevant to astronomy, least proven at scale"
     intro: >-
-      Orbital computing is the option with the clearest astronomy implications. It is also the
-      option for which the large-scale evidence remains weakest.
+      Of all the forms that space-based computing might take, orbital computing would probably
+      have the most direct implications for the field of astronomy. But the evidence supporting
+      the concept at the large-scale is depressingly thin.
     prosTitle: "What seems plausible now"
     limitsTitle: "Why large-scale Earth use remains weak"
     pros:
-      - "On-orbit processing can make sense when the data already originate in space, such as Earth observation or space-based communications systems."
-      - "China's first 12-satellite Three-Body Computing Constellation shows that orbital compute is no longer purely conceptual."
-      - "Space-based proposals are partly motivated by abundant solar input and the desire to reduce some terrestrial cooling and grid constraints."
+      - "If your data is already in space, on-orbit processing might be the way to go."
+      - "China has launched the first 12 satellites of its Three-Body Computing Constellation."
+      - "Space-based computing proposals have been floated for some time, arguing that space is a better place to do computing than on Earth because of the abundant solar power available there, and that space-based data centers can help relieve some of the cooling and grid strain that today's data centers put on the planet."
     limits:
       - "SpaceX's filing being accepted for comment is not the same thing as approval or deployment credibility."
       - "Vacuum does not make heat disappear; it turns cooling into a radiator-sizing problem."
       - "Radiation, replacement cadence, launch mass, and space-ground bandwidth all make Earth-scale AI training in orbit look speculative."
-      - "For astronomy, orbital expansion creates the most direct observing risks because it changes the observing environment itself."
+      - "In astronomy, orbital expansion poses the greatest direct observational risks because it alters the observing environment itself."
     chartTitle: "Relative implications for astronomy by pathway"
     cardOneTitle: "Observing conditions, not only engineering"
-    cardOneBody: "Orbital systems can change optical, infrared, and radio observing conditions directly."
+    cardOneBody: "Orbital systems can directly change optical, infrared, and radio observing conditions."
     cardTwoTitle: "Best fit for ASTR 1020"
     cardTwoBody: >-
       For this course, the key question is whether any computing benefit justifies a worse
@@ -435,7 +442,7 @@ live:
       - "Dark and stable observing conditions are part of astronomy's working environment."
       - "Land-based efficiency remains the strongest near-term path because it addresses the existing burden without adding direct observing harm."
       - "Underwater systems are worth tracking as a limited-use path, especially where cooling and freshwater are binding constraints."
-      - "Orbital systems are the most important comparison for this course because they create the strongest direct tradeoff between compute ambition and observing conditions."
+      - "Orbital systems are the most important comparison for this course because they create the strongest direct tradeoff between computing ambition and observing conditions."
     bestFitTitle: "Best fit for the classroom presentation"
     bestFitBody: >-
       Lead with astronomy's need for compute, use ecology as the explanation for why new siting
