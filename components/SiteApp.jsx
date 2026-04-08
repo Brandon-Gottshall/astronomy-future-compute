@@ -69,6 +69,23 @@ function useSectionObserver(dispatch, sections) {
   }, [sections, dispatch]);
 }
 
+function useQrDataUrl(url) {
+  const [dataUrl, setDataUrl] = useState(null);
+  useEffect(() => {
+    if (!url) return;
+    (async () => {
+      const QR = (await import("qrcode")).default;
+      const result = await QR.toDataURL(url, {
+        width: 200,
+        margin: 1,
+        color: { dark: "#e2e8f0", light: "#00000000" },
+      });
+      setDataUrl(result);
+    })();
+  }, [url]);
+  return dataUrl;
+}
+
 function useScrollProgress() {
   const [p, setP] = useState(0);
   useEffect(() => {
@@ -809,25 +826,11 @@ function ButWhatAboutSection({ state, dispatch }) {
 
 /* ===== SECTION: RECOMMENDATIONS ===== */
 function RecommendationsSection() {
-  const qrRef = useRef(null);
-  const qrDone = useRef(false);
+  const [atlasUrl, setAtlasUrl] = useState(null);
   useEffect(() => {
-    if (!qrRef.current || qrDone.current) return;
-    qrDone.current = true;
-    (async () => {
-      const QR = (await import("qrcode")).default;
-      const url =
-        typeof window !== "undefined" ? window.location.href : "";
-      const dataUrl = await QR.toDataURL(url, {
-        width: 120,
-        margin: 0,
-        color: { dark: "#e2e8f0", light: "#00000000" },
-      });
-      if (qrRef.current) {
-        qrRef.current.innerHTML = `<img alt="QR code" src="${dataUrl}" width="120" height="120" />`;
-      }
-    })();
+    setAtlasUrl(window.location.origin + window.location.pathname + "?mode=atlas");
   }, []);
+  const qrDataUrl = useQrDataUrl(atlasUrl);
   return (
     <section id="recommendations" className="section-wrap">
       <div className="fade-in">
@@ -846,7 +849,7 @@ function RecommendationsSection() {
         ))}
       </div>
       <div className="fade-in flex flex-col items-center gap-3">
-        <div ref={qrRef}></div>
+        {qrDataUrl && <img alt="QR code" src={qrDataUrl} width="120" height="120" />}
         <p className="text-sm text-slate-500">
           {COPY.atlas.conclusions.scanPrompt}
         </p>
@@ -1376,6 +1379,39 @@ function LiveReferencesSection() {
   );
 }
 
+/* ===== FLOATING QR ===== */
+function FloatingQR() {
+  const [atlasUrl, setAtlasUrl] = useState(null);
+  useEffect(() => {
+    setAtlasUrl(window.location.origin + window.location.pathname + "?mode=atlas");
+  }, []);
+  const qrDataUrl = useQrDataUrl(atlasUrl);
+  if (!qrDataUrl) return null;
+  return (
+    <a
+      href={atlasUrl}
+      target="_blank"
+      rel="noreferrer"
+      title="Open research atlas"
+      style={{
+        position: "fixed",
+        bottom: "1rem",
+        right: "1rem",
+        zIndex: 50,
+        background: "rgba(15,23,42,0.85)",
+        borderRadius: "0.5rem",
+        padding: "0.375rem",
+        backdropFilter: "blur(8px)",
+        border: "1px solid rgba(148,163,184,0.15)",
+        display: "block",
+        lineHeight: 0,
+      }}
+    >
+      <img alt="Scan for research atlas" src={qrDataUrl} width="72" height="72" />
+    </a>
+  );
+}
+
 /* ===== NAVIGATION ===== */
 function ScrollProgressBar({ progress }) {
   return <div className="scroll-progress" style={{ width: progress + "%" }} />;
@@ -1436,6 +1472,7 @@ export function AtlasApp() {
       <ButWhatAboutSection state={state} dispatch={dispatch} />
       <RecommendationsSection />
       <ReferencesSection />
+      <FloatingQR />
     </>
   );
 }
@@ -1457,6 +1494,7 @@ export function LiveApp() {
       <LiveOrbitalSection />
       <LiveConclusionSection />
       <LiveReferencesSection />
+      <FloatingQR />
     </>
   );
 }
