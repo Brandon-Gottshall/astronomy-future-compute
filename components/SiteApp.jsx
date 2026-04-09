@@ -900,13 +900,18 @@ function LiveHero() {
       <div className="hero-overlay"></div>
       <div className="relative z-10 px-6 max-w-6xl mx-auto w-full">
         <div className="text-center max-w-4xl mx-auto">
-          <Badge className="bg-amber-500/15 text-amber-300 border border-amber-500/25 mb-6">
-            {COPY.meta.course} · {COPY.meta.assignment}
-          </Badge>
+          <div className="text-xs md:text-sm font-semibold uppercase tracking-widest text-amber-300 mb-4">
+            {COPY.live.hero.eyebrow}
+          </div>
           <h1 className="text-white mb-4">{COPY.live.hero.title}</h1>
-          <p className="text-xl md:text-2xl text-slate-300 mb-6 leading-relaxed">
+          <p className="text-xl md:text-2xl text-slate-200 mb-5 leading-relaxed">
             {COPY.live.hero.subtitle}
           </p>
+          {COPY.live.hero.dek ? (
+            <p className="text-base md:text-lg text-slate-400 max-w-3xl mx-auto mb-6 leading-relaxed">
+              {COPY.live.hero.dek}
+            </p>
+          ) : null}
           <div className="flex flex-wrap justify-center gap-3 mb-10">
             <a href="#live-need" className="toggle-btn active">
               {COPY.live.hero.primaryCta}
@@ -1266,13 +1271,15 @@ function LiveConclusionSection() {
           {COPY.live.conclusion.intro}
         </p>
       </div>
-      <div className="fade-in grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
-        {LIVE_CONCLUSIONS.map((item, i) => (
-          <Card key={i} className="p-5 h-full">
-            <p className="text-sm text-slate-300 leading-relaxed">{item}</p>
-          </Card>
-        ))}
-      </div>
+      {LIVE_CONCLUSIONS && LIVE_CONCLUSIONS.length > 0 ? (
+        <div className="fade-in grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+          {LIVE_CONCLUSIONS.map((item, i) => (
+            <Card key={i} className="p-5 h-full">
+              <p className="text-sm text-slate-300 leading-relaxed">{item}</p>
+            </Card>
+          ))}
+        </div>
+      ) : null}
       <div className="fade-in grid grid-cols-1 lg:grid-cols-[1.1fr_.9fr] gap-6 items-start">
         <Card className="p-6 bg-amber-500/10 border-amber-500/25">
           <h3 className="text-amber-300 mb-3">
@@ -1380,31 +1387,25 @@ function StudentHeaderBlock() {
   return (
     <section id="student-header" className="section-wrap">
       <div className="fade-in">
-        <Card className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-6">
+        <Card className="p-5">
+          <dl className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm text-slate-300">
             <div>
-              <h2 className="text-white mb-2">{h.title}</h2>
-              <p className="text-slate-300 leading-relaxed">{h.subtitle}</p>
+              <dt className="text-xs uppercase tracking-widest text-slate-500 mb-1">{h.authorsLabel}</dt>
+              <dd className="text-slate-200">{authorDisplay}</dd>
             </div>
-            <dl className="text-sm text-slate-300 space-y-2 md:border-l md:border-slate-800 md:pl-6">
-              <div className="flex gap-2">
-                <dt className="text-slate-500 min-w-[5.5rem]">{h.authorsLabel}</dt>
-                <dd className="text-slate-200">{authorDisplay}</dd>
-              </div>
-              <div className="flex gap-2">
-                <dt className="text-slate-500 min-w-[5.5rem]">{h.classLabel}</dt>
-                <dd className="text-slate-200">{m.course}</dd>
-              </div>
-              <div className="flex gap-2">
-                <dt className="text-slate-500 min-w-[5.5rem]">{h.assignmentLabel}</dt>
-                <dd className="text-slate-200">{m.assignment}</dd>
-              </div>
-              <div className="flex gap-2">
-                <dt className="text-slate-500 min-w-[5.5rem]">{h.dateLabel}</dt>
-                <dd className="text-slate-200">{m.date}</dd>
-              </div>
-            </dl>
-          </div>
+            <div>
+              <dt className="text-xs uppercase tracking-widest text-slate-500 mb-1">{h.classLabel}</dt>
+              <dd className="text-slate-200">{m.course}</dd>
+            </div>
+            <div>
+              <dt className="text-xs uppercase tracking-widest text-slate-500 mb-1">{h.assignmentLabel}</dt>
+              <dd className="text-slate-200">{m.assignment}</dd>
+            </div>
+            <div>
+              <dt className="text-xs uppercase tracking-widest text-slate-500 mb-1">{h.dateLabel}</dt>
+              <dd className="text-slate-200">{m.date}</dd>
+            </div>
+          </dl>
         </Card>
       </div>
     </section>

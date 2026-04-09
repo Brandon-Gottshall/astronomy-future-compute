@@ -79,7 +79,7 @@ common:
   openPresentationMode: "Open main paper"
   linkLabel: "Link"
   localLabel: "Local file"
-  footer: "Prepared for ASTR 1020K Web Paper + Presentation · Spring 2026"
+  footer: "Prepared for ASTR 1020K Web Paper + Presentation"
   presentationMode: "Web Paper + Presentation"
   appendixBannerMain: "This is the research appendix for the ASTR 1020K paper."
   appendixBannerBack: "← Back to main paper"
@@ -326,12 +326,14 @@ atlas:
 
 live:
   hero:
-    badge: "presentation mode"
+    eyebrow: "ASTR 1020K · Stars & Galaxies"
     title: "Astronomy's Future Compute"
-    subtitle: >-
-      Currently, many branches of astronomy are searching for faint signals embedded in vast
-      amounts of data. That makes the location and environmental cost of future computing a
-      real astronomy question.
+    subtitle: "Where should future large-scale compute live, and what would each choice cost astronomy?"
+    dek: >-
+      Astronomy increasingly depends on massive computing infrastructure to find faint signals,
+      process large surveys, and manage expanding archives. This project compares three concurrent
+      siting domains for future compute—land, underwater, and orbit—and asks which burdens each one
+      reduces, which new burdens it creates, and why that matters for astronomy.
     primaryCta: "Read the paper"
     secondaryCta: "Open research appendix"
     cards:
@@ -344,8 +346,9 @@ live:
   need:
     title: "Why astronomy needs more compute"
     intro: >-
-      Modern astronomy is increasingly a search problem: identify rare signals, faint structures,
-      and short-lived events inside very large data sets.
+      Modern astronomy is increasingly a search problem. Large surveys, archive-scale datasets,
+      and multi-wavelength pipelines require scientists to identify rare, faint, or short-lived
+      signals inside enormous volumes of data.
     cards:
       - title: "Needle-in-a-haystack science"
         body: "Wide-field surveys and large archives make astronomy increasingly dependent on filtering, classification, and anomaly detection at scale."
@@ -356,8 +359,10 @@ live:
   context:
     title: "Why the siting question exists"
     intro: >-
-      The siting question only arises because conventional data centers already face real pressure
-      from electricity demand, cooling, and water use.
+      The siting question arises because conventional data centers already face real pressure from
+      electricity demand, cooling, water use, and land constraints. As computing demand grows, the
+      issue is no longer only how to build more compute, but where that compute should live and
+      who bears the environmental cost.
     baselineTitle: "Baseline pressure on conventional data centers"
     astronomyCardTitle: "Why this remains an astronomy topic"
     astronomyCardBody: >-
@@ -365,8 +370,9 @@ live:
       by the way future compute infrastructure is built.
     comparisonCardTitle: "What this comparison actually is"
     comparisonCardBody: >-
-      This project compares land-based, underwater, and orbital data-center paths. That comparison
-      is more useful than framing the topic as a one-company-versus-one-country comparison.
+      This project compares land-based, underwater, and orbital data-center paths as concurrent
+      infrastructure options. That framing is more useful for astronomy than treating the issue
+      as a race between companies or countries.
   responses:
     title: "Three siting paths"
     intro: >-
@@ -375,7 +381,7 @@ live:
     bestCaseLabel: "Potential advantage:"
     mainConstraintLabel: "Main constraint:"
     tableHeader: "Comparison axis"
-    note: "The research appendix carries the fuller scenario and externality analysis."
+    note: "A deeper research appendix expands the evidence, case studies, and full source trail."
     rows:
       - label: "What it mainly protects"
         land: "Fastest reduction in existing grid and cooling waste"
@@ -394,11 +400,12 @@ live:
         underwater: "Mostly indirect"
         orbital: "Direct and central"
   underwater:
-    title: "Underwater systems: promising but limited"
+    title: "Underwater systems: credible engineering, limited deployment"
     intro: >-
       Underwater systems are the most credible alternative after land-based efficiency because they
-      have real deployments and measurable cooling signals. They also move risk into maintenance,
-      marine ecology, and permitting.
+      have real pilot deployments and measurable cooling advantages. Their main appeal is reduced
+      freshwater dependence and improved thermal performance, but those gains are traded for harder
+      maintenance, marine permitting, and ecological uncertainty.
     prosTitle: "What the evidence supports"
     limitsTitle: "What still limits this path"
     pros:
@@ -411,55 +418,59 @@ live:
       - "Sealed lights-out pods conflict with the rapid refresh cycle of modern servers and accelerators."
       - "Biofouling, corrosion, cable burial, and marine permitting move environmental and operational risk into the ocean."
       - "The strongest current case is for niche or coastal-edge use, not for replacing all land-based hyperscale compute."
-    astronomyTitle: "Astronomy reading"
+    astronomyTitle: "Why astronomy should care"
     astronomyBody: >-
-      For astronomy, underwater systems matter mainly as a comparison case: they may reduce some
-      Earth-side pressure without directly affecting the sky or orbital environment.
+      For astronomy, underwater systems matter mainly as a comparison case. They may relieve some
+      Earth-side infrastructure pressure without directly altering the observing environment
+      itself.
   orbital:
-    title: "Orbital systems: most relevant to astronomy, least proven at scale"
+    title: "Orbital systems: most consequential for astronomy, least mature at scale"
     intro: >-
-      Of all the forms that space-based computing might take, orbital computing would probably
-      have the most direct implications for the field of astronomy. But the evidence supporting
-      the concept at scale remains limited.
+      Of the three siting domains, orbital computing is the least mature and the most consequential
+      for astronomy. It is attractive because of abundant solar energy and the possibility of
+      processing space-based data close to where that data is generated. But evidence for
+      large-scale deployment remains limited.
     prosTitle: "What seems plausible now"
     limitsTitle: "Why large-scale Earth use remains weak"
     pros:
-      - "If your data is already in space, on-orbit processing might be the way to go."
+      - "If the data is already in space, on-orbit processing may be the most efficient place to handle it."
       - "China has launched the first 12 satellites of its Three-Body Computing Constellation."
-      - "Space-based computing proposals have been floated for some time, arguing that space is a better place to do computing than on Earth because of the abundant solar power available there, and that space-based data centers can help relieve some of the cooling and grid strain that today's data centers put on the planet."
+      - "Proposals for orbital computing emphasize abundant solar energy and the possibility of relieving some of the cooling and grid strain that terrestrial data centers put on the planet."
     limits:
-      - "SpaceX's filing being accepted for comment is not the same thing as approval or deployment credibility."
-      - "Vacuum does not make heat disappear; it turns cooling into a radiator-sizing problem."
-      - "Radiation, replacement cadence, launch mass, and space-ground bandwidth all make Earth-scale AI training in orbit look speculative."
-      - "In astronomy, orbital expansion poses the greatest direct observational risks because it alters the observing environment itself."
+      - "Vacuum does not eliminate heat; it changes the problem into one of radiator area and thermal rejection. Radiation, launch mass, replacement cadence, and space-to-ground data movement all make Earth-scale AI training in orbit remain speculative."
     chartTitle: "Relative implications for astronomy by pathway"
     cardOneTitle: "Observing conditions, not only engineering"
-    cardOneBody: "Orbital systems can directly change optical, infrared, and radio observing conditions."
-    cardTwoTitle: "Best fit for ASTR 1020"
+    cardOneBody: >-
+      For astronomy, orbital systems are not only an engineering question. They are also an
+      observing-environment question, because orbital infrastructure can directly affect optical,
+      infrared, and radio observations.
+    cardTwoTitle: "Why this matters for ASTR 1020K"
     cardTwoBody: >-
-      For this course, the key question is whether any computing benefit justifies a worse
-      environment for observing faint objects and wide-field surveys.
+      For this course, the key issue is whether any computing benefit would justify worsening the
+      conditions needed to observe faint objects, wide-field surveys, and weak signals.
   conclusion:
     title: "What the evidence suggests for astronomy"
     intro: >-
-      The most useful class conclusion is not that one futuristic option wins. It is that astronomy
-      changes how we judge the tradeoff.
-    bullets:
-      - "Dark and stable observing conditions are part of astronomy's working environment."
-      - "Land-based efficiency remains the strongest near-term path because it addresses the existing burden without adding direct observing harm."
-      - "Underwater systems are worth tracking as a limited-use path, especially where cooling and freshwater are binding constraints."
-      - "Orbital systems are the most important comparison for this course because they create the strongest direct tradeoff between computing ambition and observing conditions."
-    bestFitTitle: "How this paper argues the case"
+      The most useful conclusion is not that one futuristic option simply wins. It is that
+      astronomy changes how we judge the tradeoff. Dark, stable, and predictable observing
+      conditions are part of astronomy's working environment. Land-based efficiency remains the
+      strongest near-term path because it addresses existing infrastructure burdens without
+      directly degrading the sky. Underwater systems are worth tracking where cooling and
+      freshwater constraints are especially strong. Orbital systems are the most important
+      comparison for this course because they create the sharpest direct tradeoff between
+      computing ambition and observing conditions.
+    bullets: []
+    bestFitTitle: "How this presentation is organized"
     bestFitBody: >-
-      The argument begins with astronomy's own reliance on compute, treats environmental pressure
-      as the reason new siting ideas appear, and then compares underwater and orbital systems by
-      how they reshape both Earth-side burdens and the observing environment.
+      The presentation begins with astronomy's growing dependence on compute, then explains why
+      siting has become a real infrastructure question, and finally compares land, underwater,
+      and orbital systems through the lens of burden-shifting and observing impact.
     atlasTitle: "Research appendix"
-    atlasBody: "The appendix preserves the full timeline, scenario analysis, and extended source list for readers who want the underlying evidence trail."
+    atlasBody: "The research appendix includes the fuller timeline, case-study detail, and extended bibliography."
   references:
-    title: "External sources"
-    intro: "A short reading list of the external sources most directly supporting this paper. The research appendix carries the extended bibliography."
-    footer: "The extended bibliography lives in the research appendix."
+    title: "Core sources for the presentation"
+    intro: "These sources support the main presentation. The research appendix preserves the broader evidence base and additional case-study material."
+    footer: "This reference list is intentionally short for live presentation use. The research appendix retains the fuller bibliography."
 
 rubric:
   studentHeader:
@@ -469,33 +480,33 @@ rubric:
     classLabel: "Class"
     assignmentLabel: "Assignment"
     dateLabel: "Term"
-  publicEmptyBanner: "Student-written section — will appear in the final submission."
+  publicEmptyBanner: "Student-authored section to be finalized before submission."
   topicSummary:
     title: "Topic summary"
     tag: "Overview"
     # STUDENT-AUTHORED. Leave body empty until the student writes it. Public
-    # pages hide empty blocks behind a calm placeholder banner; append ?draft=1
-    # to the URL to reveal the author prompt during drafting.
+    # pages show a calm "to be finalized before submission" note; append
+    # ?draft=1 to the URL to reveal the author prompt during drafting.
     body: ""
-    authorPrompt: "Explain that this project compares where future large-scale compute might live — on land, underwater, or in orbit — and asks which burdens each option reduces or shifts."
+    authorPrompt: "Explain, in your own words, that this project compares where future large-scale compute might live — on land, underwater, or in orbit — and asks which burdens each option reduces or shifts."
   astronomyRelevance:
     title: "Why this matters for astronomy"
     tag: "Course relevance"
     body: ""
-    authorPrompt: "Explain how astronomy depends on large compute for surveys, archives, and faint-signal detection, and why orbital compute uniquely matters because it can alter the observing environment itself."
+    authorPrompt: "Explain how astronomy depends on large-scale computing for surveys, archives, and signal-finding, and why orbital compute matters especially because it can alter the observing environment itself."
   futureImpact:
     title: "Future impact"
     tag: "Looking ahead"
     body: ""
-    authorPrompt: "Comment on what you think is most plausible near-term, what should be watched longer-term, and what this could mean beyond this class."
+    authorPrompt: "Explain what seems most plausible near-term, what should be watched longer-term, and what the broader consequences could be beyond this course."
   recommendation:
     title: "Recommendation"
     tag: "Closing argument"
     body: ""
-    authorPrompt: "State which path you would prioritize, which you would monitor, and which you would treat cautiously, and explain why."
+    authorPrompt: "State which path you would prioritize, monitor, or treat cautiously, and why."
   milestones:
     title: "Key dates and milestones"
-    intro: "Evidence-grounded timeline drawn from the research appendix."
+    intro: "These milestones anchor the comparison in documented developments rather than speculation."
     items:
       - year: "2018–2020"
         label: "Microsoft Project Natick Phase 2: 864-server underwater pod off Orkney reports roughly one-eighth the failure rate of a matched land control group. Pod retrieved in 2020; never taken to production."
@@ -509,7 +520,10 @@ rubric:
         label: "Rubin Observatory and SKAO operations intersect with Starlink and Kuiper megaconstellation growth; optical trail contamination and radio sidelobes are documented in AAS / SATCON and A&A reports."
   comparisonMatrix:
     title: "Land vs underwater vs orbital at a glance"
-    intro: "One screen, seven axes. Detail and sources live in the research appendix."
+    intro: >-
+      This comparison is the project's main map. Land, underwater, and orbital systems are not
+      stages of one evolution; they are concurrent siting domains with different tradeoffs for
+      power, cooling, maintenance, bandwidth, environmental impact, and astronomy.
     axisHeader: "Axis"
     columns:
       - "Land"
