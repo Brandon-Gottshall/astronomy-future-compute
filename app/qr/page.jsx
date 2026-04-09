@@ -44,7 +44,7 @@ export default function QRPage() {
         <div style={{ width: 400, height: 400, background: "rgba(148,163,184,0.05)", borderRadius: "1rem" }} />
       )}
       <p style={{ color: "#94a3b8", fontSize: "1.125rem", textAlign: "center" }}>
-        Scan to open the research atlas
+        Scan to open the research appendix
       </p>
       {atlasUrl && (
         <a

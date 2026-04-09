@@ -12,6 +12,9 @@ meta:
     - "Brandon Gottshall"
     - "Tre Madison"
   date: "Spring 2026"
+  assignment: "Web Paper + Presentation"
+  institutionContext: "CORE / ASTR 1020K — Stars & Galaxies"
+  preparedFor: "Prepared for ASTR 1020K Web Paper + Presentation · Spring 2026"
 
 atlasSections:
   - id: hero
@@ -71,12 +74,14 @@ referenceTypeLabels:
   rubric: "Assignment materials"
 
 common:
-  openResearchAtlas: "Open Research Atlas"
-  openPresentationMode: "Open presentation mode"
+  openResearchAtlas: "Open research appendix"
+  openPresentationMode: "Open main paper"
   linkLabel: "Link"
   localLabel: "Local file"
-  footer: "ASTR 1020K — Stars & Galaxies · Spring 2026"
-  presentationMode: "presentation mode"
+  footer: "Prepared for ASTR 1020K Web Paper + Presentation · Spring 2026"
+  presentationMode: "Web Paper + Presentation"
+  appendixBannerMain: "This is the research appendix for the ASTR 1020K paper."
+  appendixBannerBack: "← Back to main paper"
 
 dataCopy:
   pathways:
@@ -454,3 +459,87 @@ live:
     title: "Core sources for the presentation"
     intro: "This shorter list is optimized for the live presentation. Atlas mode retains the broader bibliography."
     footer: "Presentation mode keeps the source list short so the talk stays readable."
+
+rubric:
+  studentHeader:
+    title: "Astronomy's Future Compute"
+    subtitle: "Comparing land-based, underwater, and orbital data-center paths for modern astronomy"
+    authorsLabel: "Authors"
+    classLabel: "Class"
+    assignmentLabel: "Assignment"
+    dateLabel: "Term"
+  topicSummary:
+    title: "Topic summary"
+    corePill: "Rubric: topic summary"
+    # STUDENT-AUTHORED: 3–5 sentences. What is the question? Why pick it?
+    body: "__STUDENT_TOPIC_SUMMARY__"
+    placeholderHint: "Student topic summary goes here. Edit `rubric.topicSummary.body` in content/copy.yaml."
+  astronomyRelevance:
+    title: "Why this matters for astronomy"
+    corePill: "CORE / ASTR 1020K · astronomy relevance"
+    # STUDENT-AUTHORED: 3–5 sentences tying topic to course content.
+    body: "__STUDENT_ASTRONOMY_RELEVANCE__"
+    placeholderHint: "Student astronomy-relevance paragraph goes here. Edit `rubric.astronomyRelevance.body` in content/copy.yaml."
+  futureImpact:
+    title: "Future impact"
+    corePill: "Rubric: future impact"
+    # STUDENT-AUTHORED: 3–5 sentences. What changes in 5–15 years, for whom?
+    body: "__STUDENT_FUTURE_IMPACT__"
+    placeholderHint: "Student future-impact paragraph goes here. Edit `rubric.futureImpact.body` in content/copy.yaml."
+  recommendation:
+    title: "Recommendation"
+    corePill: "Rubric: recommendation"
+    # STUDENT-AUTHORED: 2–4 sentences. Preserve multi-pathway framing.
+    body: "__STUDENT_RECOMMENDATION__"
+    placeholderHint: "Student recommendation goes here. Edit `rubric.recommendation.body` in content/copy.yaml."
+  milestones:
+    title: "Key dates and milestones"
+    intro: "Evidence-grounded timeline drawn from the research appendix."
+    items:
+      - year: "2018–2020"
+        label: "Microsoft Project Natick Phase 2: 864-server underwater pod off Orkney reports roughly one-eighth the failure rate of a matched land control group. Pod retrieved in 2020; never taken to production."
+      - year: "2023"
+        label: "Microsoft publicly confirms that Natick is no longer an active deployment program and remains research only."
+      - year: "2024–2025"
+        label: "IEA and LBNL updated forecasts show data-center electricity demand roughly doubling by 2030, driven largely by AI workloads."
+      - year: "2025"
+        label: "Orbital-compute demonstrator ventures announce plans and early launches; independent technical validation at scale remains thin."
+      - year: "ongoing"
+        label: "Rubin Observatory and SKAO operations intersect with Starlink and Kuiper megaconstellation growth; optical trail contamination and radio sidelobes are documented in AAS / SATCON and A&A reports."
+  comparisonMatrix:
+    title: "Land vs underwater vs orbital at a glance"
+    intro: "One screen, seven axes. Detail and sources live in the research appendix."
+    axisHeader: "Axis"
+    columns:
+      - "Land"
+      - "Underwater"
+      - "Orbital"
+    rows:
+      - axis: "Power source"
+        land: "Grid plus PPAs; bottlenecked by interconnect queues"
+        underwater: "Grid via subsea cable; adjacent offshore wind possible"
+        orbital: "Solar; near-continuous in sun-synchronous orbit"
+      - axis: "Cooling"
+        land: "Air plus evaporative water; large freshwater draw at many sites"
+        underwater: "Seawater heat exchange; no freshwater use"
+        orbital: "Radiative only; hard thermodynamic ceiling"
+      - axis: "Maintenance"
+        land: "Routine, cheap, well understood"
+        underwater: "Sealed pod; no in-situ repair; fail-in-place"
+        orbital: "Effectively none; launch-and-forget"
+      - axis: "Bandwidth to users"
+        land: "Terrestrial fiber; lowest latency"
+        underwater: "Subsea cable landing; near-terrestrial latency"
+        orbital: "Laser or RF downlink; bounded by ground-station passes"
+      - axis: "Primary externality"
+        land: "Freshwater, grid strain, and land use"
+        underwater: "Local marine thermal and ecological impacts; retrieval unknowns"
+        orbital: "Launch emissions, debris, and radio/optical sky impact"
+      - axis: "Astronomy impact"
+        land: "Indirect (site water, RFI near facilities)"
+        underwater: "Low to unknown"
+        orbital: "Direct: optical trails, radio sidelobes, debris risk"
+      - axis: "Evidence maturity"
+        land: "Mature operational record"
+        underwater: "Research only; one retrieved demonstrator"
+        orbital: "Early; speculative at scale"

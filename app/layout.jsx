@@ -1,9 +1,9 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Astronomy’s Future Compute — ASTR 1020K",
+  title: "Astronomy’s Future Compute — ASTR 1020K Web Paper",
   description:
-    "Comparing land-based, underwater, and orbital data-center paths for modern astronomy.",
+    "Student paper and presentation for ASTR 1020K: land, underwater, and orbital data-center paths and their consequences for astronomy.",
 };
 
 export default function RootLayout({ children }) {

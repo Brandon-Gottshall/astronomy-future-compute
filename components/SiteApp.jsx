@@ -373,7 +373,7 @@ function FullViewportHero() {
       <div className="hero-overlay"></div>
       <div className="relative z-10 text-center px-6 max-w-4xl">
         <Badge className="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 mb-6">
-          {COPY.meta.course}
+          Research appendix · evidence and externalities
         </Badge>
         <h1 className="text-white mb-4">{COPY.meta.title}</h1>
         <p className="text-xl md:text-2xl text-slate-300 mb-6 leading-relaxed">
@@ -935,7 +935,7 @@ function LiveHero() {
       <div className="relative z-10 px-6 max-w-6xl mx-auto w-full">
         <div className="text-center max-w-4xl mx-auto">
           <Badge className="bg-amber-500/15 text-amber-300 border border-amber-500/25 mb-6">
-            {COPY.meta.course} · {COPY.common.presentationMode}
+            {COPY.meta.course} · {COPY.meta.assignment}
           </Badge>
           <h1 className="text-white mb-4">{COPY.live.hero.title}</h1>
           <p className="text-xl md:text-2xl text-slate-300 mb-6 leading-relaxed">
@@ -1379,6 +1379,174 @@ function LiveReferencesSection() {
   );
 }
 
+/* ===== RUBRIC-FACING BLOCKS ===== */
+function StudentHeaderBlock() {
+  const h = COPY.rubric.studentHeader;
+  const m = COPY.meta;
+  return (
+    <section id="student-header" className="section-wrap">
+      <div className="fade-in">
+        <Card className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-6">
+            <div>
+              <h2 className="text-white mb-2">{h.title}</h2>
+              <p className="text-slate-300 leading-relaxed">{h.subtitle}</p>
+            </div>
+            <dl className="text-sm text-slate-300 space-y-2 md:border-l md:border-slate-800 md:pl-6">
+              <div className="flex gap-2">
+                <dt className="text-slate-500 min-w-[5.5rem]">{h.authorsLabel}</dt>
+                <dd className="text-slate-200">{m.authors.join(" & ")}</dd>
+              </div>
+              <div className="flex gap-2">
+                <dt className="text-slate-500 min-w-[5.5rem]">{h.classLabel}</dt>
+                <dd className="text-slate-200">{m.course}</dd>
+              </div>
+              <div className="flex gap-2">
+                <dt className="text-slate-500 min-w-[5.5rem]">{h.assignmentLabel}</dt>
+                <dd className="text-slate-200">{m.assignment}</dd>
+              </div>
+              <div className="flex gap-2">
+                <dt className="text-slate-500 min-w-[5.5rem]">{h.dateLabel}</dt>
+                <dd className="text-slate-200">{m.date}</dd>
+              </div>
+            </dl>
+          </div>
+        </Card>
+      </div>
+    </section>
+  );
+}
+
+function RubricProseBlock({ slotId, slotKey }) {
+  const slot = COPY.rubric[slotKey];
+  const isPlaceholder =
+    typeof slot.body === "string" && slot.body.startsWith("__STUDENT_");
+  return (
+    <section id={slotId} className="section-wrap">
+      <div className="fade-in">
+        <div className="mb-3">
+          <Badge className="bg-indigo-500/15 text-indigo-300 border border-indigo-500/25 text-xs">
+            {slot.corePill}
+          </Badge>
+        </div>
+        <h2 className="mb-4">{slot.title}</h2>
+        {isPlaceholder ? (
+          <Card
+            className="p-6"
+            style={{
+              border: "2px dashed rgba(148,163,184,0.45)",
+              background: "rgba(148,163,184,0.05)",
+            }}
+          >
+            <p className="text-sm text-slate-400 italic">
+              {slot.placeholderHint}
+            </p>
+          </Card>
+        ) : (
+          <Card className="p-6">
+            <p className="text-slate-200 leading-relaxed whitespace-pre-line">
+              {slot.body}
+            </p>
+          </Card>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function ComparisonMatrixBlock() {
+  const m = COPY.rubric.comparisonMatrix;
+  return (
+    <section id="comparison-matrix" className="section-wrap">
+      <div className="fade-in text-center mb-6">
+        <h2 className="mb-2">{m.title}</h2>
+        <p className="text-slate-400 max-w-3xl mx-auto">{m.intro}</p>
+      </div>
+      <div className="fade-in">
+        <Card className="p-0 overflow-hidden">
+          <table className="w-full text-sm" style={{ borderCollapse: "collapse" }}>
+            <thead>
+              <tr className="bg-slate-900/60 text-slate-300">
+                <th className="text-left p-4 font-semibold border-b border-slate-800">
+                  {m.axisHeader}
+                </th>
+                {m.columns.map((c) => (
+                  <th
+                    key={c}
+                    className="text-left p-4 font-semibold border-b border-slate-800"
+                  >
+                    {c}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {m.rows.map((row) => (
+                <tr key={row.axis} className="border-b border-slate-800">
+                  <td className="p-4 text-slate-300 font-medium align-top">
+                    {row.axis}
+                  </td>
+                  <td className="p-4 text-slate-400 align-top">{row.land}</td>
+                  <td className="p-4 text-slate-400 align-top">
+                    {row.underwater}
+                  </td>
+                  <td className="p-4 text-slate-400 align-top">{row.orbital}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Card>
+      </div>
+    </section>
+  );
+}
+
+function MilestonesBlock() {
+  const m = COPY.rubric.milestones;
+  return (
+    <section id="milestones" className="section-wrap">
+      <div className="fade-in text-center mb-6">
+        <h2 className="mb-2">{m.title}</h2>
+        <p className="text-slate-400 max-w-3xl mx-auto">{m.intro}</p>
+      </div>
+      <div className="fade-in space-y-3">
+        {m.items.map((item, i) => (
+          <Card key={i} className="p-4 flex items-start gap-4">
+            <Badge className="bg-slate-800 text-slate-300 border border-slate-700 text-xs min-w-[5.5rem] justify-center">
+              {item.year}
+            </Badge>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              {item.label}
+            </p>
+          </Card>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function AppendixBanner() {
+  return (
+    <div
+      className="no-print"
+      style={{
+        background: "rgba(99,102,241,0.1)",
+        borderBottom: "1px solid rgba(99,102,241,0.25)",
+      }}
+    >
+      <div className="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-sm">
+        <span className="text-indigo-200">{COPY.common.appendixBannerMain}</span>
+        <a
+          href={modeHref("live", "live-hero")}
+          className="ref-link text-indigo-300"
+        >
+          {COPY.common.appendixBannerBack}
+        </a>
+      </div>
+    </div>
+  );
+}
+
 /* ===== FLOATING QR ===== */
 function FloatingQR() {
   const [atlasUrl, setAtlasUrl] = useState(null);
@@ -1392,7 +1560,7 @@ function FloatingQR() {
       href={atlasUrl}
       target="_blank"
       rel="noreferrer"
-      title="Open research atlas"
+      title="Open research appendix"
       className="no-print"
       style={{
         position: "fixed",
@@ -1465,6 +1633,7 @@ export function AtlasApp() {
   return (
     <>
       <ScrollProgressBar progress={progress} />
+      <AppendixBanner />
       <FullViewportHero />
       <StickyNav mode="atlas" sections={ATLAS_SECTIONS} activeSection={state.activeSection} />
       <TheProblemSection state={state} dispatch={dispatch} />
@@ -1488,11 +1657,18 @@ export function LiveApp() {
       <ScrollProgressBar progress={progress} />
       <LiveHero />
       <StickyNav mode="live" sections={LIVE_SECTIONS} activeSection={state.activeSection} />
+      <StudentHeaderBlock />
+      <RubricProseBlock slotId="topic-summary" slotKey="topicSummary" />
+      <RubricProseBlock slotId="astronomy-relevance" slotKey="astronomyRelevance" />
+      <ComparisonMatrixBlock />
       <LiveAstronomySection />
       <LiveContextSection />
       <LiveResponsesOverviewSection />
       <LiveUnderwaterSection />
       <LiveOrbitalSection />
+      <MilestonesBlock />
+      <RubricProseBlock slotId="future-impact" slotKey="futureImpact" />
+      <RubricProseBlock slotId="recommendation" slotKey="recommendation" />
       <LiveConclusionSection />
       <LiveReferencesSection />
       <FloatingQR />
