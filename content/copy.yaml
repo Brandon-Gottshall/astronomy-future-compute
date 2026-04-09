@@ -373,6 +373,20 @@ live:
       This project compares land-based, underwater, and orbital data-center paths as concurrent
       infrastructure options. That framing is more useful for astronomy than treating the issue
       as a race between companies or countries.
+  bridge:
+    title: "From observation to siting"
+    intro: "Why a compute-siting question is an astronomy question."
+    steps:
+      - label: "Observation"
+        body: "Wide-field optical, radio, and multi-wavelength surveys look for rare, faint, or short-lived signals."
+      - label: "Data deluge"
+        body: "≈20 TB / night at Rubin. >700 PB / year archived at SKAO. Archives grow faster than human inspection can keep up."
+      - label: "Compute dependence"
+        body: "Filtering, classification, cross-matching, and rapid transient follow-up now live inside large compute pipelines."
+      - label: "Siting pressure"
+        body: "Grid, cooling, water, and land constraints push proposals for alternative data-center siting."
+      - label: "Feedback to the sky"
+        body: "Some of those siting choices — especially orbital infrastructure — can directly alter optical, infrared, and radio observing conditions."
   responses:
     title: "Three siting paths"
     intro: >-

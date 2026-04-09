@@ -1463,6 +1463,65 @@ function RubricProseBlock({ slotId, slotKey }) {
   );
 }
 
+function ObservationalBridge() {
+  const b = COPY.live.bridge;
+  return (
+    <section id="observational-bridge" className="section-wrap">
+      <div className="fade-in text-center mb-6">
+        <h2 className="mb-2">{b.title}</h2>
+        <p className="text-slate-400 max-w-3xl mx-auto">{b.intro}</p>
+      </div>
+      <div className="fade-in">
+        <ol
+          className="grid gap-3"
+          style={{
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            counterReset: "bridge-step",
+            listStyle: "none",
+            padding: 0,
+            margin: 0,
+          }}
+        >
+          {b.steps.map((step, i) => (
+            <li
+              key={step.label}
+              className="card p-4 relative"
+              style={{
+                counterIncrement: "bridge-step",
+                borderLeft: "3px solid rgba(99,102,241,0.55)",
+              }}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <span
+                  className="text-xs font-bold text-indigo-300"
+                  style={{
+                    width: "1.5rem",
+                    height: "1.5rem",
+                    borderRadius: "9999px",
+                    background: "rgba(99,102,241,0.18)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    border: "1px solid rgba(99,102,241,0.45)",
+                  }}
+                >
+                  {i + 1}
+                </span>
+                <span className="text-sm font-semibold text-slate-200">
+                  {step.label}
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                {step.body}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
 function ComparisonMatrixBlock() {
   const m = COPY.rubric.comparisonMatrix;
   return (
@@ -1669,9 +1728,10 @@ export function LiveApp() {
       <StudentHeaderBlock />
       <RubricProseBlock slotId="topic-summary" slotKey="topicSummary" />
       <RubricProseBlock slotId="astronomy-relevance" slotKey="astronomyRelevance" />
-      <ComparisonMatrixBlock />
       <LiveAstronomySection />
       <LiveContextSection />
+      <ObservationalBridge />
+      <ComparisonMatrixBlock />
       <LiveResponsesOverviewSection />
       <LiveUnderwaterSection />
       <LiveOrbitalSection />
