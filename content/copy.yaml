@@ -12,6 +12,7 @@ meta:
     - "Brandon Gottshall"
     - "Tre Madison"
   date: "Spring 2026"
+  studentName: ""
   assignment: "Web Paper + Presentation"
   institutionContext: "CORE / ASTR 1020K — Stars & Galaxies"
   preparedFor: "Prepared for ASTR 1020K Web Paper + Presentation · Spring 2026"
@@ -331,8 +332,8 @@ live:
       Currently, many branches of astronomy are searching for faint signals embedded in vast
       amounts of data. That makes the location and environmental cost of future computing a
       real astronomy question.
-    primaryCta: "Begin presentation"
-    secondaryCta: "Open research atlas"
+    primaryCta: "Read the paper"
+    secondaryCta: "Open research appendix"
     cards:
       - title: "Large sky surveys"
         body: "Modern sky surveys produce huge data streams that must be searched for rare or faint signals."
@@ -374,7 +375,7 @@ live:
     bestCaseLabel: "Potential advantage:"
     mainConstraintLabel: "Main constraint:"
     tableHeader: "Comparison axis"
-    note: "Atlas mode keeps the fuller scenario and externality tools."
+    note: "The research appendix carries the fuller scenario and externality analysis."
     rows:
       - label: "What it mainly protects"
         land: "Fastest reduction in existing grid and cooling waste"
@@ -419,7 +420,7 @@ live:
     intro: >-
       Of all the forms that space-based computing might take, orbital computing would probably
       have the most direct implications for the field of astronomy. But the evidence supporting
-      the concept at the large-scale is depressingly thin.
+      the concept at scale remains limited.
     prosTitle: "What seems plausible now"
     limitsTitle: "Why large-scale Earth use remains weak"
     pros:
@@ -448,17 +449,17 @@ live:
       - "Land-based efficiency remains the strongest near-term path because it addresses the existing burden without adding direct observing harm."
       - "Underwater systems are worth tracking as a limited-use path, especially where cooling and freshwater are binding constraints."
       - "Orbital systems are the most important comparison for this course because they create the strongest direct tradeoff between computing ambition and observing conditions."
-    bestFitTitle: "Best fit for the classroom presentation"
+    bestFitTitle: "How this paper argues the case"
     bestFitBody: >-
-      Lead with astronomy's need for compute, use ecology as the explanation for why new siting
-      ideas are being proposed, then compare underwater and orbital systems based on how they affect
-      both Earth-side burdens and the observing environment.
-    atlasTitle: "Need the deeper research layer?"
-    atlasBody: "Atlas mode keeps the full timeline, scenario tools, and broader source stack."
+      The argument begins with astronomy's own reliance on compute, treats environmental pressure
+      as the reason new siting ideas appear, and then compares underwater and orbital systems by
+      how they reshape both Earth-side burdens and the observing environment.
+    atlasTitle: "Research appendix"
+    atlasBody: "The appendix preserves the full timeline, scenario analysis, and extended source list for readers who want the underlying evidence trail."
   references:
-    title: "Core sources for the presentation"
-    intro: "This shorter list is optimized for the live presentation. Atlas mode retains the broader bibliography."
-    footer: "Presentation mode keeps the source list short so the talk stays readable."
+    title: "External sources"
+    intro: "A short reading list of the external sources most directly supporting this paper. The research appendix carries the extended bibliography."
+    footer: "The extended bibliography lives in the research appendix."
 
 rubric:
   studentHeader:
@@ -468,30 +469,30 @@ rubric:
     classLabel: "Class"
     assignmentLabel: "Assignment"
     dateLabel: "Term"
+  publicEmptyBanner: "Student-written section — will appear in the final submission."
   topicSummary:
     title: "Topic summary"
-    corePill: "Rubric: topic summary"
-    # STUDENT-AUTHORED: 3–5 sentences. What is the question? Why pick it?
-    body: "__STUDENT_TOPIC_SUMMARY__"
-    placeholderHint: "Student topic summary goes here. Edit `rubric.topicSummary.body` in content/copy.yaml."
+    tag: "Overview"
+    # STUDENT-AUTHORED. Leave body empty until the student writes it. Public
+    # pages hide empty blocks behind a calm placeholder banner; append ?draft=1
+    # to the URL to reveal the author prompt during drafting.
+    body: ""
+    authorPrompt: "Explain that this project compares where future large-scale compute might live — on land, underwater, or in orbit — and asks which burdens each option reduces or shifts."
   astronomyRelevance:
     title: "Why this matters for astronomy"
-    corePill: "CORE / ASTR 1020K · astronomy relevance"
-    # STUDENT-AUTHORED: 3–5 sentences tying topic to course content.
-    body: "__STUDENT_ASTRONOMY_RELEVANCE__"
-    placeholderHint: "Student astronomy-relevance paragraph goes here. Edit `rubric.astronomyRelevance.body` in content/copy.yaml."
+    tag: "Course relevance"
+    body: ""
+    authorPrompt: "Explain how astronomy depends on large compute for surveys, archives, and faint-signal detection, and why orbital compute uniquely matters because it can alter the observing environment itself."
   futureImpact:
     title: "Future impact"
-    corePill: "Rubric: future impact"
-    # STUDENT-AUTHORED: 3–5 sentences. What changes in 5–15 years, for whom?
-    body: "__STUDENT_FUTURE_IMPACT__"
-    placeholderHint: "Student future-impact paragraph goes here. Edit `rubric.futureImpact.body` in content/copy.yaml."
+    tag: "Looking ahead"
+    body: ""
+    authorPrompt: "Comment on what you think is most plausible near-term, what should be watched longer-term, and what this could mean beyond this class."
   recommendation:
     title: "Recommendation"
-    corePill: "Rubric: recommendation"
-    # STUDENT-AUTHORED: 2–4 sentences. Preserve multi-pathway framing.
-    body: "__STUDENT_RECOMMENDATION__"
-    placeholderHint: "Student recommendation goes here. Edit `rubric.recommendation.body` in content/copy.yaml."
+    tag: "Closing argument"
+    body: ""
+    authorPrompt: "State which path you would prioritize, which you would monitor, and which you would treat cautiously, and explain why."
   milestones:
     title: "Key dates and milestones"
     intro: "Evidence-grounded timeline drawn from the research appendix."

@@ -175,54 +175,20 @@ function PathwayPill({ pathway }) {
 
 /* ===== ANIMATED COUNTER ===== */
 function AnimatedCounter({ value, label, sub }) {
-  const ref = useRef(null);
-  const [displayed, setDisplayed] = useState("0");
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    if (!ref.current) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.3 }
-    );
-    obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
-  useEffect(() => {
-    if (!visible) return;
-    const numMatch = value.match(/[\d,.]+/);
-    if (!numMatch) {
-      setDisplayed(value);
-      return;
-    }
-    const target = parseFloat(numMatch[0].replace(/,/g, ""));
-    const prefix = value.slice(0, value.indexOf(numMatch[0]));
-    const suffix = value.slice(value.indexOf(numMatch[0]) + numMatch[0].length);
-    const startTime = performance.now();
-    function tick(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / 1500, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const current = Math.round(eased * target);
-      setDisplayed(prefix + current.toLocaleString() + suffix);
-      if (progress < 1) requestAnimationFrame(tick);
-      else setDisplayed(value);
-    }
-    requestAnimationFrame(tick);
-  }, [visible, value]);
+  // Kept the name for API compatibility. Rendering is now plain and static —
+  // no 0-prefixed intermediate frames, no fragile text-extraction artifacts,
+  // and accessible to screen readers on first paint.
   return (
-    <div ref={ref} className="card rounded-3xl p-6 text-center">
-      <div className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-        {sub}
+    <div className="card rounded-2xl p-6 text-center">
+      <div className="text-3xl md:text-4xl font-bold tracking-tight text-white">
+        {value}
       </div>
-      <div className="mt-2 text-4xl font-bold tracking-tight text-white">
-        {displayed}
-      </div>
-      <div className="mt-1 text-sm text-slate-400">{label}</div>
+      <div className="mt-2 text-sm text-slate-300 leading-snug">{label}</div>
+      {sub ? (
+        <div className="mt-1 text-xs text-slate-500 uppercase tracking-wider">
+          {sub}
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -1336,9 +1302,15 @@ function LiveConclusionSection() {
 }
 
 function LiveReferencesSection() {
+  // Foreground only external URL-bearing sources in the public reference
+  // list. Uploaded rubric packets, internal memos, and local-only files are
+  // preserved in the Research Appendix bibliography instead.
+  const EXTERNAL_ONLY_TYPES = new Set(["official", "academic", "journalism", "industry"]);
   const refs = LIVE_REFERENCE_IDS.map((id) =>
     DATA.sources.find((s) => s.id === id)
-  ).filter(Boolean);
+  )
+    .filter(Boolean)
+    .filter((s) => s.url && EXTERNAL_ONLY_TYPES.has(s.type));
   return (
     <section id="live-references" className="section-wrap">
       <div className="fade-in text-center mb-10">
@@ -1380,9 +1352,31 @@ function LiveReferencesSection() {
 }
 
 /* ===== RUBRIC-FACING BLOCKS ===== */
+
+// Draft mode reveals author prompts for the student-written sections. Append
+// ?draft=1 (or ?draft=true) to the URL while drafting. Public visitors see a
+// calm "to appear in final submission" banner instead of developer hints.
+function useDraftMode() {
+  const [draft, setDraft] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const v = (params.get("draft") || "").toLowerCase();
+    setDraft(v === "1" || v === "true");
+  }, []);
+  return draft;
+}
+
 function StudentHeaderBlock() {
   const h = COPY.rubric.studentHeader;
   const m = COPY.meta;
+  const draft = useDraftMode();
+  const studentName = (m.studentName || "").trim();
+  const authorsFromMeta = Array.isArray(m.authors) ? m.authors.join(" & ") : "";
+  const authorDisplay = studentName
+    ? studentName
+    : authorsFromMeta ||
+      (draft ? "Student name — add before submission" : "—");
   return (
     <section id="student-header" className="section-wrap">
       <div className="fade-in">
@@ -1395,7 +1389,7 @@ function StudentHeaderBlock() {
             <dl className="text-sm text-slate-300 space-y-2 md:border-l md:border-slate-800 md:pl-6">
               <div className="flex gap-2">
                 <dt className="text-slate-500 min-w-[5.5rem]">{h.authorsLabel}</dt>
-                <dd className="text-slate-200">{m.authors.join(" & ")}</dd>
+                <dd className="text-slate-200">{authorDisplay}</dd>
               </div>
               <div className="flex gap-2">
                 <dt className="text-slate-500 min-w-[5.5rem]">{h.classLabel}</dt>
@@ -1419,33 +1413,47 @@ function StudentHeaderBlock() {
 
 function RubricProseBlock({ slotId, slotKey }) {
   const slot = COPY.rubric[slotKey];
-  const isPlaceholder =
-    typeof slot.body === "string" && slot.body.startsWith("__STUDENT_");
+  const draft = useDraftMode();
+  const body = typeof slot.body === "string" ? slot.body.trim() : "";
+  const hasBody =
+    body.length > 0 &&
+    !body.startsWith("__STUDENT_"); // legacy sentinel guard
   return (
     <section id={slotId} className="section-wrap">
       <div className="fade-in">
-        <div className="mb-3">
-          <Badge className="bg-indigo-500/15 text-indigo-300 border border-indigo-500/25 text-xs">
-            {slot.corePill}
-          </Badge>
-        </div>
+        {slot.tag ? (
+          <div className="mb-3">
+            <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+              {slot.tag}
+            </span>
+          </div>
+        ) : null}
         <h2 className="mb-4">{slot.title}</h2>
-        {isPlaceholder ? (
-          <Card
-            className="p-6"
-            style={{
-              border: "2px dashed rgba(148,163,184,0.45)",
-              background: "rgba(148,163,184,0.05)",
-            }}
-          >
-            <p className="text-sm text-slate-400 italic">
-              {slot.placeholderHint}
-            </p>
-          </Card>
-        ) : (
+        {hasBody ? (
           <Card className="p-6">
             <p className="text-slate-200 leading-relaxed whitespace-pre-line">
               {slot.body}
+            </p>
+          </Card>
+        ) : draft ? (
+          <Card
+            className="p-6"
+            style={{
+              border: "2px dashed rgba(99,102,241,0.45)",
+              background: "rgba(99,102,241,0.05)",
+            }}
+          >
+            <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300 mb-2">
+              Author prompt · draft mode
+            </div>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              {slot.authorPrompt}
+            </p>
+          </Card>
+        ) : (
+          <Card className="p-5">
+            <p className="text-sm text-slate-400 italic">
+              {COPY.rubric.publicEmptyBanner}
             </p>
           </Card>
         )}
