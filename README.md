@@ -20,3 +20,16 @@ npm run dev
 ```
 
 Then open <http://localhost:3000> (live mode) or <http://localhost:3000/?mode=atlas>.
+
+## Presentation mode
+
+Copy `.env.example` to `.env.local` and fill in your Pusher app key, cluster,
+id, and secret. Then:
+
+1. Open `/present` on your laptop — it opens on the pair screen with both
+   speaker QRs visible and the session PIN displayed.
+2. Each speaker scans their own QR → lands on `/remote?…` paired.
+3. Tap "Begin presentation" on either remote when ready. The stage flips to
+   slide 1 and audience follow-along goes live.
+4. Corner QR on the stage is the audience follow-along — anyone can scan to
+   follow along on their own phone.

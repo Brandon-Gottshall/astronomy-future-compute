@@ -4,6 +4,7 @@ out
 .DS_Store
 *.log
 .env*
+!.env.example
 .vercel
 .playwright-cli
 lib/copy.js
