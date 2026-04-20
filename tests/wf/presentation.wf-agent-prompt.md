@@ -25,13 +25,13 @@ Role runs:
    - Verify the setup state, pair-token reveal, PIN visibility, and live-stage transition.
 2. Presenter agent
    - Start from a speaker QR URL revealed by the stage agent.
-   - Pair the remote using the visible pair token and PIN.
+   - Pair the remote using the unlocked QR plus the visible session PIN.
    - Begin the presentation and navigate forward/backward.
 3. Audience agent
    - Start from the visible follow link.
    - Verify the waiting room, live slide sync, detach, and resume sync.
 4. Recovery agent
-   - Try a wrong PIN, expired or invalid pair token, refresh, and a dropped/re-paired controller.
+   - Try a wrong PIN, expired or invalid unlocked QR, refresh, and a dropped/re-paired controller.
 
 Output format:
 - Checklist item

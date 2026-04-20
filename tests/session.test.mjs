@@ -26,14 +26,22 @@ test("generatePin yields a 4-digit numeric string", () => {
   }
 });
 
-test("parseSessionParams extracts s / as from URLSearchParams", () => {
-  const params = new URLSearchParams("s=abc123&as=brandon");
-  assert.deepEqual(parseSessionParams(params), { s: "abc123", as: "brandon" });
+test("parseSessionParams extracts s / as / pt from URLSearchParams", () => {
+  const params = new URLSearchParams("s=abc123&as=brandon&pt=ABCDEF-123456-ABCDEFGHJK");
+  assert.deepEqual(parseSessionParams(params), {
+    s: "abc123",
+    as: "brandon",
+    pt: "ABCDEF-123456-ABCDEFGHJK",
+  });
 });
 
 test("parseSessionParams rejects bogus 'as'", () => {
   const params = new URLSearchParams("s=abc&as=eve");
-  assert.equal(parseSessionParams(params, ["brandon", "tre"]).as, null);
+  assert.deepEqual(parseSessionParams(params, ["brandon", "tre"]), {
+    s: "abc",
+    as: null,
+    pt: null,
+  });
 });
 
 test("isValidPin only accepts four digits", () => {

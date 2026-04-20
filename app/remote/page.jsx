@@ -30,6 +30,7 @@ export default function RemotePage({ searchParams }) {
       speaker={speaker}
       speakers={speakers}
       sessionId={params.s}
+      pairTokenFromUrl={params.pt}
     />
   );
 }

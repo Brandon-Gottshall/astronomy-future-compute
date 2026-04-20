@@ -2,7 +2,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSession } from "../lib/useSession.js";
 import {
-  formatPairToken,
   getRemoteStorageKey,
   isValidPin,
   sanitizePairToken,
@@ -10,31 +9,32 @@ import {
 } from "../lib/session.js";
 
 const PAIR_ERROR_MESSAGES = {
-  "pair-token-expired": "That pair token expired. Reveal a new token on the stage and try again.",
-  "pair-token-invalid": "That pair token is invalid for this speaker link.",
+  "pair-token-expired": "That QR expired. Ask the stage to refresh it, then scan again.",
+  "pair-token-invalid": "This QR is no longer valid for this speaker. Ask the stage to refresh it.",
   "bad-pin": "That PIN is incorrect.",
   "unknown-speaker": "This speaker link is not recognized.",
   "presentation-secret-missing": "Presentation secrets are not configured on this deployment.",
   "network-error": "Network error while pairing this remote.",
+  "missing-pair-token": "This QR has not been unlocked yet. Ask the stage to reveal or refresh it, then scan again.",
 };
 
 const TRANSPORT_ERROR_MESSAGES = {
-  "expired-token": "This remote session expired. Enter a fresh pair token and PIN.",
+  "expired-token": "This remote session expired. Scan a fresh unlocked QR and enter the PIN again.",
   "invalid-token": "This remote session is invalid. Pair again from the stage.",
   "scope-mismatch": "This remote session belongs to another deployment host.",
   "pusher-not-configured": "Pusher is not configured. This remote cannot control the stage.",
   "network-error": "Network error while sending the presentation command.",
 };
 
-export default function RemoteView({ slides, speaker, speakers, sessionId }) {
+export default function RemoteView({ slides, speaker, speakers, sessionId, pairTokenFromUrl }) {
   const storageKey = speaker ? getRemoteStorageKey(sessionId, speaker.id) : null;
   const [presenterToken, setPresenterToken] = useState(null);
-  const [pairToken, setPairToken] = useState("");
   const [pin, setPin] = useState("");
   const [pairing, setPairing] = useState(false);
   const [pairError, setPairError] = useState(null);
   const [transportError, setTransportError] = useState(null);
   const [otherExpanded, setOtherExpanded] = useState(speaker?.role === "lead");
+  const unlockedPairToken = sanitizePairToken(pairTokenFromUrl);
 
   const clearPresenterToken = useCallback(() => {
     if (storageKey && typeof window !== "undefined") {
@@ -116,6 +116,12 @@ export default function RemoteView({ slides, speaker, speakers, sessionId }) {
     setPairError(null);
     setTransportError(null);
 
+    if (!unlockedPairToken) {
+      setPairing(false);
+      setPairError(PAIR_ERROR_MESSAGES["missing-pair-token"]);
+      return;
+    }
+
     if (!isValidPin(pin)) {
       setPairing(false);
       setPairError(PAIR_ERROR_MESSAGES["bad-pin"]);
@@ -128,7 +134,7 @@ export default function RemoteView({ slides, speaker, speakers, sessionId }) {
       body: JSON.stringify({
         sessionId,
         speakerId: speaker.id,
-        pairToken: sanitizePairToken(pairToken),
+        pairToken: unlockedPairToken,
         pin,
       }),
     });
@@ -144,7 +150,6 @@ export default function RemoteView({ slides, speaker, speakers, sessionId }) {
     if (storageKey && typeof window !== "undefined") {
       sessionStorage.setItem(storageKey, data.presenterToken);
     }
-    setPairToken("");
   };
 
   if (!presenterToken) {
@@ -161,31 +166,22 @@ export default function RemoteView({ slides, speaker, speakers, sessionId }) {
             role="form"
           >
             <div className="space-y-2">
-              <h1 className="text-2xl font-semibold">Pair this phone</h1>
+              <h1 className="text-2xl font-semibold">Unlock this remote</h1>
               <p className="opacity-80">
-                Scan the speaker QR, then enter the short-lived pair token shown on the stage and
-                the session PIN.
+                The speaker QR carries a short-lived pairing token. Enter the session PIN from the
+                stage to unlock this remote.
               </p>
             </div>
-            <label className="block space-y-2">
-              <span className="text-sm opacity-80">Pair token</span>
-              <input
-                value={pairToken}
-                onChange={(event) => setPairToken(formatPairToken(event.target.value))}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    event.preventDefault();
-                    void pairRemote();
-                  }
-                }}
-                data-testid="pair-token-input"
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 font-mono tracking-wide outline-none focus:border-indigo-400"
-                placeholder="XXXXXX-XXXXXX-XXXXXXXXXX"
-                autoCapitalize="characters"
-                autoCorrect="off"
-                spellCheck="false"
-              />
-            </label>
+            {unlockedPairToken ? (
+              <div className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-4 py-3 text-sm opacity-80">
+                QR token detected. Enter the stage PIN to continue.
+              </div>
+            ) : (
+              <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+                This QR does not have an active pair token. Ask the stage to refresh it, then
+                scan again.
+              </div>
+            )}
             <label className="block space-y-2">
               <span className="text-sm opacity-80">Session PIN</span>
               <input
@@ -207,14 +203,14 @@ export default function RemoteView({ slides, speaker, speakers, sessionId }) {
             <button
               type="button"
               onClick={() => void pairRemote()}
-              disabled={pairing}
+              disabled={pairing || !unlockedPairToken}
               data-testid="pair-remote-button"
               className="w-full rounded-xl bg-indigo-600 py-4 text-lg font-semibold disabled:opacity-60"
             >
-              {pairing ? "Pairing…" : "Pair remote"}
+              {pairing ? "Unlocking…" : "Unlock remote"}
             </button>
             <p className="text-xs opacity-60">
-              Need a new token? Ask the stage operator to press “Reveal pair token” again.
+              Need a fresh QR? Ask the stage operator to press “Reveal pair token” again.
             </p>
           </div>
         </div>

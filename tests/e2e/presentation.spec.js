@@ -23,13 +23,11 @@ test.describe("presentation mode regression", () => {
     const pin = await stage.getByTestId("session-pin-value").textContent();
     expect(pin).toBeTruthy();
 
-    const remoteUrl = await stage.getByTestId("speaker-url-brandon").textContent();
-    expect(remoteUrl).toContain("/remote?");
-
     await stage.getByTestId("reveal-pair-token-brandon").click();
     await expect(stage.getByTestId("pair-token-brandon")).toBeVisible();
-    const pairToken = await stage.getByTestId("pair-token-value-brandon").textContent();
-    expect(pairToken).toBeTruthy();
+    const remoteUrl = await stage.getByTestId("speaker-url-brandon").textContent();
+    expect(remoteUrl).toContain("/remote?");
+    expect(remoteUrl).toContain("pt=");
 
     const followHref = await stage.locator('a[title="Scan to follow along"]').getAttribute("href");
     expect(followHref).toContain("/follow?");
@@ -37,8 +35,8 @@ test.describe("presentation mode regression", () => {
     const remote = await browser.newPage();
     await remote.goto(remoteUrl);
     await expect(remote.getByTestId("remote-pairing")).toBeVisible();
+    await expect(remote.getByText("QR token detected. Enter the stage PIN to continue.")).toBeVisible();
 
-    await remote.getByTestId("pair-token-input").fill(pairToken);
     await remote.getByTestId("session-pin-input").fill("1111");
     await remote.getByTestId("pair-remote-button").click();
     await expect(remote.getByText("That PIN is incorrect.")).toBeVisible();
@@ -90,29 +88,40 @@ test.describe("presentation mode regression", () => {
     const pin = await stage.getByTestId("session-pin-value").textContent();
     expect(pin).toBeTruthy();
 
-    const remoteUrl = await stage.getByTestId("speaker-url-tre").textContent();
     await stage.getByTestId("reveal-pair-token-tre").click();
     await expect(stage.getByTestId("pair-token-tre")).toBeVisible();
-    const pairToken = await stage.getByTestId("pair-token-value-tre").textContent();
+    const remoteUrl = await stage.getByTestId("speaker-url-tre").textContent();
+    expect(remoteUrl).toContain("pt=");
+    const remoteUrlObject = new URL(remoteUrl);
+    const pairToken = remoteUrlObject.searchParams.get("pt");
     expect(pairToken).toBeTruthy();
 
     const remote = await browser.newPage();
-    await remote.goto(remoteUrl);
+    const expiredUrl = new URL(remoteUrl);
+    expiredUrl.searchParams.set(
+      "pt",
+      `000000-${pairToken.split("-")[1]}-${pairToken.split("-")[2]}`
+    );
+    await remote.goto(expiredUrl.toString());
     await expect(remote.getByTestId("remote-pairing")).toBeVisible();
 
-    const expiredToken = `000000-${pairToken.split("-")[1]}-${pairToken.split("-")[2]}`;
-    await remote.getByTestId("pair-token-input").fill(expiredToken);
     await remote.getByTestId("session-pin-input").fill(pin);
     await remote.getByTestId("pair-remote-button").click();
     await expect(
-      remote.getByText("That pair token expired. Reveal a new token on the stage and try again.")
+      remote.getByText("That QR expired. Ask the stage to refresh it, then scan again.")
     ).toBeVisible();
 
-    const invalidToken = `${pairToken.slice(0, 7)}AAAAAA${pairToken.slice(13)}`;
-    await remote.getByTestId("pair-token-input").fill(invalidToken);
+    const invalidUrl = new URL(remoteUrl);
+    invalidUrl.searchParams.set(
+      "pt",
+      `${pairToken.slice(0, 7)}AAAAAA${pairToken.slice(13)}`
+    );
+    await remote.goto(invalidUrl.toString());
+    await expect(remote.getByTestId("remote-pairing")).toBeVisible();
+    await remote.getByTestId("session-pin-input").fill(pin);
     await remote.getByTestId("pair-remote-button").click();
     await expect(
-      remote.getByText("That pair token is invalid for this speaker link.")
+      remote.getByText("This QR is no longer valid for this speaker. Ask the stage to refresh it.")
     ).toBeVisible();
   });
 });

@@ -1,21 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
 
-function Qr({ speakerId, url, label, paired, pairState, onRevealPairToken }) {
+function Qr({ speakerId, tokenUrl, label, paired, pairState, onRevealPairToken }) {
   const [dataUrl, setDataUrl] = useState(null);
-  useEffect(() => {
-    if (!url) return;
-    let cancelled = false;
-    (async () => {
-      const QR = (await import("qrcode")).default;
-      const png = await QR.toDataURL(url, { margin: 1, width: 320 });
-      if (!cancelled) setDataUrl(png);
-    })();
-    return () => { cancelled = true; };
-  }, [url]);
   const expiresAt = pairState?.expiresAt ? new Date(pairState.expiresAt).getTime() : 0;
   const secondsLeft = expiresAt ? Math.max(0, Math.ceil((expiresAt - Date.now()) / 1000)) : 0;
   const hasActivePairToken = Boolean(pairState?.token) && secondsLeft > 0;
+  const activeUrl = hasActivePairToken ? tokenUrl : "";
+
+  useEffect(() => {
+    if (!activeUrl) {
+      setDataUrl(null);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      const QR = (await import("qrcode")).default;
+      const png = await QR.toDataURL(activeUrl, { margin: 1, width: 320 });
+      if (!cancelled) setDataUrl(png);
+    })();
+    return () => { cancelled = true; };
+  }, [activeUrl]);
+
   return (
     <div
       className="text-center rounded-2xl border border-slate-800 bg-slate-900/60 p-5"
@@ -38,13 +44,15 @@ function Qr({ speakerId, url, label, paired, pairState, onRevealPairToken }) {
           className="mx-auto rounded bg-white p-2"
         />
         ) : (
-        <div className="h-[280px] w-[280px] mx-auto bg-slate-800 rounded" />
+        <div className="h-[280px] w-[280px] mx-auto rounded border border-dashed border-slate-700 bg-slate-950/70 flex items-center justify-center px-6 text-sm opacity-70">
+          Reveal a pair token to activate this QR.
+        </div>
       )}
       <div
         className="mt-2 text-xs opacity-60 break-all max-w-[280px] mx-auto"
         data-testid={`speaker-url-${speakerId}`}
       >
-        {url}
+        {activeUrl || "Reveal a pair token, then scan this QR."}
       </div>
       <div className="mt-4 space-y-3 text-left">
         <button
@@ -66,15 +74,10 @@ function Qr({ speakerId, url, label, paired, pairState, onRevealPairToken }) {
             className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 p-3"
             data-testid={`pair-token-${speakerId}`}
           >
-            <div className="text-xs uppercase tracking-wide opacity-70">Pair token</div>
-            <div
-              className="mt-1 font-mono text-lg tracking-wide"
-              data-testid={`pair-token-value-${speakerId}`}
-            >
-              {pairState.token}
-            </div>
+            <div className="text-xs uppercase tracking-wide opacity-70">QR unlocked</div>
             <div className="mt-2 text-xs opacity-70">
-              Enter this token and the session PIN on the phone. Expires in {secondsLeft}s.
+              The short-lived token is embedded in this QR. The phone only needs the session PIN.
+              Expires in {secondsLeft}s.
             </div>
           </div>
         ) : null}
@@ -137,9 +140,14 @@ export default function PairPanel({
     const last = pairedRemotes?.get?.(as);
     return typeof last === "number" && Date.now() - last < 30_000;
   };
-  const urlFor = (speakerId) => {
+  const urlFor = (speakerId, pairToken = null) => {
     const path = speakerPaths?.[speakerId];
-    return path ? `${origin}${path}` : "";
+    if (!path) return "";
+    const url = new URL(path, origin);
+    if (pairToken) {
+      url.searchParams.set("pt", pairToken);
+    }
+    return url.toString();
   };
   return (
     <div
@@ -154,8 +162,8 @@ export default function PairPanel({
           <div className="text-sm uppercase tracking-wide opacity-60 mb-2">Pair to begin</div>
           <h1 className="text-3xl font-semibold mb-2">Scan your speaker's QR</h1>
           <p className="opacity-70">
-            Scan the public remote QR, then reveal a pair token for that speaker and enter it
-            with the session PIN on the phone.
+            Reveal a short-lived pair token, have the speaker scan the unlocked QR, then enter
+            the session PIN on the phone.
           </p>
         </div>
       ) : null}
@@ -164,7 +172,7 @@ export default function PairPanel({
           <Qr
             key={s.id}
             speakerId={s.id}
-            url={urlFor(s.id)}
+            tokenUrl={urlFor(s.id, pairStates[s.id]?.token)}
             label={s.name}
             paired={isPaired(s.id)}
             pairState={pairStates[s.id]}

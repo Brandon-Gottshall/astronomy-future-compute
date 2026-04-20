@@ -28,11 +28,11 @@ id, secret, and `PRESENTATION_TOKEN_SECRET`. Then:
 
 1. Open `/present` on your laptop — it opens on the pair screen with both
    speaker QRs visible and the session PIN displayed.
-2. Each speaker scans their own QR → lands on `/remote?…&as=<speaker>`.
-3. On the stage, click `Reveal pair token` for that speaker and tell them the
-   short-lived token plus the session PIN.
-4. On the phone, enter the pair token and PIN. The remote unlocks its `Begin presentation`
-   button.
+2. On the stage, click `Reveal pair token` for a speaker. That unlocks a
+   short-lived speaker QR whose URL now carries the signed pair token.
+3. Each speaker scans their freshly unlocked QR → lands on `/remote?…&as=<speaker>&pt=…`.
+4. On the phone, enter only the session PIN. The remote redeems the QR-carried
+   token and unlocks its `Begin presentation` button.
 5. Tap `Begin presentation` on either remote when ready. The stage flips to
    slide 1 and audience follow-along goes live.
 6. Corner QR on the stage is the audience follow-along — anyone can scan to
