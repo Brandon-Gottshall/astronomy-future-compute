@@ -17,6 +17,14 @@ meta:
   institutionContext: "CORE / ASTR 1020K — Stars & Galaxies"
   preparedFor: "Prepared for ASTR 1020K Web Paper + Presentation · Spring 2026"
 
+speakers:
+  - id: brandon
+    name: "Brandon Gottshall"
+    role: lead
+  - id: tre
+    name: "Tre Madison"
+    role: co
+
 atlasSections:
   - id: hero
     title: "Astronomy's Future Compute"
@@ -596,3 +604,5 @@ rubric:
         land: "Mature operational record"
         underwater: "Research and limited commercial pilots"
         orbital: "Early; demonstrators launched, speculative at scale"
+
+slides: []  # populated in Task A2
