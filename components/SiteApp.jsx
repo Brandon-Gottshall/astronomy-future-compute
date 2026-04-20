@@ -1743,3 +1743,14 @@ export function LiveApp() {
     </>
   );
 }
+
+/* ===== SLIDE VISUAL REGISTRY =====
+ * Named handles used from content/copy.yaml slides.<n>.visual
+ */
+export const SLIDE_VISUALS = {
+  energyGrowth: EnergyGrowthChart,
+  astronomyImpact: AstronomyImpactChart,
+  comparisonMatrix: ComparisonMatrixBlock,
+};
+
+export { FloatingQR };
