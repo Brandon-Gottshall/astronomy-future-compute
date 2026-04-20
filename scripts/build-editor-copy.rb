@@ -381,5 +381,29 @@ emit_bundle(out, "rubric.comparisonMatrix") do |lines|
   end
 end
 
+emit_heading(out, 2, "Speakers")
+emit_bundle(out, "speakers") do |lines|
+  dig!(data, "speakers").each_with_index do |speaker, index|
+    emit(lines, "Speaker #{index + 1} Id: #{speaker['id']}")
+    emit(lines, "Speaker #{index + 1} Name: #{speaker['name']}")
+    emit(lines, "Speaker #{index + 1} Role: #{speaker['role']}")
+  end
+end
+
+emit_heading(out, 2, "Slides")
+dig!(data, "slides").each_with_index do |slide, index|
+  emit_bundle(out, "slides.#{index}") do |lines|
+    emit_label(lines, "Id", slide["id"])
+    emit_label(lines, "Section", slide["section"])
+    emit_label(lines, "Speaker", slide["speaker"])
+    emit_label(lines, "Visual", slide["visual"] || "none")
+    emit_label(lines, "Title", slide["title"])
+    emit_paragraph(lines, "Body", slide["body"])
+    (slide["notes"] || {}).each do |speaker_id, text|
+      emit_paragraph(lines, "Notes (#{speaker_id})", text.to_s)
+    end
+  end
+end
+
 File.write(TARGET, out.join("\n"))
 puts "Wrote #{TARGET}"
