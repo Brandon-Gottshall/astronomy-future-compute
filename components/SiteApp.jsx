@@ -1629,7 +1629,7 @@ function FloatingQR() {
       target="_blank"
       rel="noreferrer"
       title="Open research appendix"
-      className="no-print"
+      className="no-print hidden md:block"
       style={{
         position: "fixed",
         bottom: "1rem",
@@ -1640,7 +1640,6 @@ function FloatingQR() {
         padding: "0.375rem",
         backdropFilter: "blur(8px)",
         border: "1px solid rgba(148,163,184,0.15)",
-        display: "block",
         lineHeight: 0,
       }}
     >
