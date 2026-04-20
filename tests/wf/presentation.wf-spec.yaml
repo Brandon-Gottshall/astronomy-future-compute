@@ -1,0 +1,37 @@
+wf_spec_version: 1
+product: "Astronomy future-compute presentation mode"
+entry_url: "http://localhost:3100/present"
+persona: "capable but uninformed class presenter or audience member"
+agent_constraints:
+  - "No repo context"
+  - "No hidden routes"
+  - "No implementation hints"
+success_rule:
+  - "All critical tasks must be completed through the visible UI."
+  - "The agent must understand when the presentation is paired, live, detached, resumed, or blocked."
+tasks:
+  - id: stage_entry
+    priority: critical
+    instruction: "Open the stage and determine how presenters are supposed to pair their phones."
+    success: "The agent can explain the visible pairing flow from the stage UI alone."
+  - id: presenter_pair_and_begin
+    priority: critical
+    instruction: "Start from the visible speaker QR URL, pair the phone using the visible pairing controls, and begin the presentation."
+    success: "The presenter reaches the remote controls view and the stage enters the live slide state."
+  - id: audience_follow
+    priority: critical
+    instruction: "Start from the visible follow link and stay synced with the live presentation."
+    success: "The audience view shows the waiting room during setup, then the live slide once the presentation begins."
+  - id: recovery
+    priority: high
+    instruction: "Make a plausible mistake during pairing or live control and recover using visible product cues."
+    success: "The product exposes an understandable recovery path without hidden knowledge."
+  - id: persistence
+    priority: high
+    instruction: "Refresh a paired remote or live follow page and observe whether the important state is restored or clearly lost."
+    success: "State restore or loss is clear and does not mislead the user."
+report_requirements:
+  - "Path taken"
+  - "Visible confusion points"
+  - "Pass/fail/partial per task"
+  - "Severity-tagged findings"

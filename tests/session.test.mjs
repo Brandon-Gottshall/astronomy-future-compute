@@ -1,13 +1,22 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  generateSessionId, generatePin, parseSessionParams, isAuthorizedControl,
-  PHASE_SETUP, PHASE_LIVE,
+  formatPairToken,
+  generateSessionId,
+  generatePin,
+  getRemoteStorageKey,
+  isValidPin,
+  PAIR_TOKEN_RAW_LENGTH,
+  parseSessionParams,
+  PHASE_LIVE,
+  PHASE_SETUP,
+  PRESENTATION_STORAGE_KEY,
+  sanitizePairToken,
 } from "../lib/session.js";
 
 test("generateSessionId yields a url-safe 8-char string", () => {
   const id = generateSessionId();
-  assert.match(id, /^[A-Za-z0-9_-]{8}$/);
+  assert.match(id, /^[ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789]{8}$/);
 });
 
 test("generatePin yields a 4-digit numeric string", () => {
@@ -17,23 +26,38 @@ test("generatePin yields a 4-digit numeric string", () => {
   }
 });
 
-test("parseSessionParams extracts s / p / as from URLSearchParams", () => {
-  const params = new URLSearchParams("s=abc123&p=4217&as=brandon");
-  assert.deepEqual(parseSessionParams(params), { s: "abc123", p: "4217", as: "brandon" });
+test("parseSessionParams extracts s / as from URLSearchParams", () => {
+  const params = new URLSearchParams("s=abc123&as=brandon");
+  assert.deepEqual(parseSessionParams(params), { s: "abc123", as: "brandon" });
 });
 
 test("parseSessionParams rejects bogus 'as'", () => {
-  const params = new URLSearchParams("s=abc&p=1111&as=eve");
+  const params = new URLSearchParams("s=abc&as=eve");
   assert.equal(parseSessionParams(params, ["brandon", "tre"]).as, null);
 });
 
-test("isAuthorizedControl requires matching pin", () => {
-  assert.equal(isAuthorizedControl({ pin: "4217" }, { expected: "4217" }), true);
-  assert.equal(isAuthorizedControl({ pin: "1234" }, { expected: "4217" }), false);
-  assert.equal(isAuthorizedControl({}, { expected: "4217" }), false);
+test("isValidPin only accepts four digits", () => {
+  assert.equal(isValidPin("4217"), true);
+  assert.equal(isValidPin("999"), false);
+  assert.equal(isValidPin("abcd"), false);
 });
 
 test("phase constants are exported", () => {
   assert.equal(PHASE_SETUP, "setup");
   assert.equal(PHASE_LIVE, "live");
+});
+
+test("pair token helpers sanitize and format input", () => {
+  const raw = "abc123def456ghi789jk10";
+  assert.equal(sanitizePairToken(raw), raw.toUpperCase());
+  assert.equal(formatPairToken(raw), "ABC123-DEF456-GHI789JK10");
+  assert.equal(sanitizePairToken("abc-123 def"), "ABC123DEF");
+  assert.equal(PAIR_TOKEN_RAW_LENGTH, 22);
+});
+
+test("remote storage key is namespaced", () => {
+  assert.equal(
+    getRemoteStorageKey("sess1234", "brandon"),
+    `${PRESENTATION_STORAGE_KEY}:remote:sess1234:brandon`
+  );
 });

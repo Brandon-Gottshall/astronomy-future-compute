@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+  regression:
+    runs-on: ubuntu-latest
+    needs: verify
+    if: ${{ secrets.NEXT_PUBLIC_PUSHER_KEY != '' && secrets.NEXT_PUBLIC_PUSHER_CLUSTER != '' && secrets.PUSHER_APP_ID != '' && secrets.PUSHER_KEY != '' && secrets.PUSHER_SECRET != '' && secrets.PRESENTATION_TOKEN_SECRET != '' }}
+    env:
+      NEXT_PUBLIC_PUSHER_KEY: ${{ secrets.NEXT_PUBLIC_PUSHER_KEY }}
+      NEXT_PUBLIC_PUSHER_CLUSTER: ${{ secrets.NEXT_PUBLIC_PUSHER_CLUSTER }}
+      PUSHER_APP_ID: ${{ secrets.PUSHER_APP_ID }}
+      PUSHER_KEY: ${{ secrets.PUSHER_KEY }}
+      PUSHER_SECRET: ${{ secrets.PUSHER_SECRET }}
+      PRESENTATION_TOKEN_SECRET: ${{ secrets.PRESENTATION_TOKEN_SECRET }}
+      CI: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:regression

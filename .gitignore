@@ -9,3 +9,5 @@ out
 .playwright-cli
 lib/copy.js
 content/copy.editor.md
+playwright-report
+test-results

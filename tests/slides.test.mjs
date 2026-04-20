@@ -45,10 +45,18 @@ test("jumpTo clamps to [0, total-1]", () => {
 
 test("syncFromStage sets phase + index and exits browsing", () => {
   const s = { total: 5, index: 0, phase: "setup", browsing: true };
-  const r = slideReducer(s, { type: "syncFromStage", phase: "live", index: 3 });
+  const r = slideReducer(s, { type: "syncFromStage", phase: "live", index: 3, force: true });
   assert.equal(r.phase, "live");
   assert.equal(r.index, 3);
   assert.equal(r.browsing, false);
+});
+
+test("syncFromStage preserves local browse position without force", () => {
+  const s = { total: 5, index: 1, phase: "live", browsing: true };
+  const r = slideReducer(s, { type: "syncFromStage", phase: "live", index: 4 });
+  assert.equal(r.phase, "live");
+  assert.equal(r.index, 1);
+  assert.equal(r.browsing, true);
 });
 
 test("detachForBrowse sets browsing=true without moving index", () => {

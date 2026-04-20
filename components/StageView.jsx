@@ -6,12 +6,25 @@ import PairPanel from "./PairPanel";
 import { FloatingQR } from "./SiteApp";
 import { PHASE_LIVE, PHASE_SETUP } from "../lib/session.js";
 
-export default function StageView({ slides, speakers, sessionId, pin }) {
+const TRANSPORT_MESSAGES = {
+  "pusher-not-configured": "Pusher is not configured. Stage state will not sync to other devices.",
+  "expired-token": "The stage session expired. Reload /present to create a new session.",
+  "invalid-token": "The stage session is invalid. Reload /present to continue.",
+  "scope-mismatch": "This stage session was created for another deployment host.",
+  "network-error": "Network error while syncing the presentation state.",
+};
+
+export default function StageView({ slides, speakers, session }) {
+  const [transportError, setTransportError] = useState(null);
   const { state, dispatch, pairedRemotes } = useSession({
-    sessionId,
+    sessionId: session.sessionId,
     role: "stage",
-    pin,
+    stageToken: session.stageToken,
     total: slides.length,
+    onTransportError: (error) =>
+      setTransportError(
+        TRANSPORT_MESSAGES[error.code] || "Presentation sync failed. Other devices may be out of date."
+      ),
   });
   const [chromeVisible, setChromeVisible] = useState(true);
   const [blanked, setBlanked] = useState(false);
@@ -52,11 +65,11 @@ export default function StageView({ slides, speakers, sessionId, pin }) {
   }, [keydown]);
 
   const origin = typeof window !== "undefined" ? window.location.origin : "";
-  const followUrl = `${origin}/follow?s=${sessionId}`;
+  const followUrl = session.followPath ? `${origin}${session.followPath}` : "";
 
   if (blanked) {
     return (
-      <main className="stage-root">
+      <main className="stage-root" data-testid="stage-blanked">
         <div className="w-screen h-screen bg-black" />
       </main>
     );
@@ -64,12 +77,16 @@ export default function StageView({ slides, speakers, sessionId, pin }) {
 
   if (state.phase === PHASE_SETUP) {
     return (
-      <main className="stage-root">
+      <main className="stage-root" data-testid="stage-setup">
+        {transportError ? (
+          <div className="stage-alert">{transportError}</div>
+        ) : null}
         <PairPanel
           origin={origin}
-          sessionId={sessionId}
-          pin={pin}
           speakers={speakers}
+          speakerPaths={session.speakerPaths}
+          stageToken={session.stageToken}
+          pin={session.pin}
           pairedRemotes={pairedRemotes}
           slideCount={slides.length}
         />
@@ -80,15 +97,20 @@ export default function StageView({ slides, speakers, sessionId, pin }) {
 
   const slide = slides[state.index];
   return (
-    <main className="stage-root">
+    <main className="stage-root" data-testid="stage-live">
+      {transportError ? (
+        <div className="stage-alert">{transportError}</div>
+      ) : null}
       <div className="stage-slide">
         <SlideRenderer slide={slide} variant="stage" />
       </div>
       <div className={`stage-chrome ${chromeVisible ? "visible" : "hidden"}`}>
-        <span className="badge">
+        <span className="badge" data-testid="stage-counter">
           {state.index + 1} / {slides.length}
         </span>
-        <button onClick={() => setRepairOpen(true)}>Pair</button>
+        <button onClick={() => setRepairOpen(true)} data-testid="stage-open-repair">
+          Pair
+        </button>
       </div>
       <FloatingQR url={followUrl} label="Scan to follow along" />
       {repairOpen ? (
@@ -107,9 +129,10 @@ export default function StageView({ slides, speakers, sessionId, pin }) {
             </div>
             <PairPanel
               origin={origin}
-              sessionId={sessionId}
-              pin={pin}
               speakers={speakers}
+              speakerPaths={session.speakerPaths}
+              stageToken={session.stageToken}
+              pin={session.pin}
               pairedRemotes={pairedRemotes}
               compact
             />

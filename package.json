@@ -9,7 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --test 'tests/**/*.test.mjs'"
+    "test": "node --test 'tests/**/*.test.mjs'",
+    "test:regression": "playwright test"
   },
   "dependencies": {
     "chart.js": "4.4.3",
@@ -22,6 +23,7 @@
     "react-dom": "18.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "autoprefixer": "^10.5.0",
     "postcss": "^8.5.10",
     "tailwindcss": "^3.4.17"
