@@ -1199,8 +1199,8 @@ function LiveOrbitalSection() {
       </div>
       <div className="fade-in grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <AnimatedCounter
-          value="Up to 1,000,000 sats"
-          label="SpaceX filing scale"
+          value="Up to 88,000 sats"
+          label="Starcloud filing scale"
           sub="accepted for filing, not approved"
         />
         <AnimatedCounter
