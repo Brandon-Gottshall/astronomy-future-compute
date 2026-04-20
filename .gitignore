@@ -5,4 +5,6 @@ out
 *.log
 .env*
 .vercel
+.playwright-cli
 lib/copy.js
+content/copy.editor.md
