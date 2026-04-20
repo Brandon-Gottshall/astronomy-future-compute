@@ -95,8 +95,8 @@ dataCopy:
       astronomyRisk: "Low / indirect"
     underwater:
       description: >-
-        Underwater systems have real pilots and commercial experiments, but they
-        trade some land pressure for marine maintenance, ecology, and permitting challenges.
+        Underwater systems have real pilots and commercial deployments, but they
+        trade some land-based pressure for marine maintenance, ecological challenges, and permitting hurdles.
       strongestUpside: "Cooling relief, low site-water use, and credible engineering pilots."
       strongestDownside: "Maintenance, retrieval, marine ecology, and refresh-cycle mismatch."
       astronomyRisk: "Low / mostly indirect"
@@ -105,7 +105,7 @@ dataCopy:
         Orbital data centers are the least mature option and the one with the most
         direct consequences for astronomy and orbital sustainability.
       strongestUpside: "Potential value for space-native compute and on-orbit processing."
-      strongestDownside: "Heat rejection, radiation, launch cadence, data movement, and direct astronomy impacts."
+      strongestDownside: "Heat rejection, radiation, launch cadence, data movement, and direct impact on astronomy."
       astronomyRisk: "High / direct"
 
   scenarios:
@@ -164,7 +164,7 @@ dataCopy:
         - "Grid constraints increase urgency without undermining the value of terrestrial efficiency work."
     underwater:
       objections:
-        - "Operator-reported PUE and WUE signals have not yet been independently validated at a large scale."
+        - "Operator-reported PUE and WUE signals have not yet been independently validated at hyperscale."
         - "Marine ecology, biofouling, and permitting complexity may prevent broader commercial scaling."
         - "A sealed pod can succeed technically while still failing as a deployable business model."
       survives:
@@ -190,7 +190,7 @@ dataCopy:
     - title: "Treat underwater systems as a limited-use option"
       body: >-
         Underwater cooling systems have significant potential, but ecological, maintenance, and
-        permit-related concerns have so far limited their adoption.
+        permit-related concerns have so far limited their adoption at hyperscale.
       icon: "🌊"
     - title: "Evaluate orbital proposals through an astronomy lens"
       body: >-
@@ -244,15 +244,17 @@ atlas:
   problem:
     title: "Baseline constraints"
     intro: >-
-      Data centers already put a lot of strain on the power grid and require fairly elaborate
+      Data centers already put significant strain on the power grid and require elaborate
       cooling and water-supply systems. AI growth is one reason underwater and orbital alternatives
       are now being discussed.
     body: >-
-      The rapid expansion of the AI industry is creating unprecedented demands on the power and
-      cooling requirements of the dedicated data centers that host the computers. Cooling can
+      The rapid expansion of the AI industry is driving unprecedented demand on the power and
+      cooling systems of the data centers that host training and inference workloads. Cooling can
       account for a large share of facility overhead, and indirect water use through electricity
-      generation can exceed direct on-site water use. The main question is not whether these
-      pressures are real, but how different siting choices shift them.
+      generation can exceed direct on-site water use. The IEA projects that global data-center
+      electricity demand will more than double between 2024 and 2030, from about 415 TWh to
+      roughly 945 TWh. The main question is not whether these pressures are real, but how
+      different siting choices shift them.
     chartTitle: "Data-center electricity demand"
     timelineTitle: "Timeline"
     yearLabel: "Year:"
@@ -293,7 +295,7 @@ atlas:
     opticalTitle: "Optical and infrared observations"
     opticalBody: "Satellite trails can contaminate wide-field images and interfere with faint-object work."
     radioTitle: "Radio astronomy"
-    radioBody: "Space-based infrastructure can introduce radio interference, including unintended emissions."
+    radioBody: "Space-based infrastructure can introduce radio interference, including unintended emissions documented at LOFAR in the 150.05–153 MHz band that the ITU protects for radio astronomy."
     debrisTitle: "Orbital congestion and debris"
     debrisBody: "A more crowded orbital environment increases collision risk and complicates long-term scientific use of space."
     chartTitle: "Relative implications for astronomy"
@@ -348,14 +350,16 @@ live:
     intro: >-
       Modern astronomy is increasingly a search problem. Large surveys, archive-scale datasets,
       and multi-wavelength pipelines require scientists to identify rare, faint, or short-lived
-      signals inside enormous volumes of data.
+      signals inside enormous volumes of data. Time-domain events — supernovae, kilonovae,
+      tidal disruptions, near-Earth objects — must be detected and triaged within minutes of
+      first light, before they fade beyond follow-up.
     cards:
       - title: "Needle-in-a-haystack science"
-        body: "Wide-field surveys and large archives make astronomy increasingly dependent on filtering, classification, and anomaly detection at scale."
+        body: "Wide-field surveys and large archives make astronomy increasingly dependent on filtering, classification, and anomaly detection at scale. Difference imaging across tens of millions of sources per night is now routine, not exceptional."
       - title: "Rubin"
-        body: "Rubin expects about 20 TB of data per night, which makes rapid data processing and triage essential for time-domain astronomy."
+        body: "The Vera C. Rubin Observatory expects about 20 TB of raw data per night, which makes rapid data processing and triage essential for time-domain astronomy."
       - title: "SKAO"
-        body: "SKAO expects more than 700 PB of archived data per year, which shows how tightly modern astronomy is coupled to major compute infrastructure."
+        body: "The Square Kilometre Array Observatory expects to archive more than 700 PB of data per year after on-site real-time processing, demonstrating how tightly modern astronomy is coupled to major compute infrastructure."
   context:
     title: "Why the siting question exists"
     intro: >-
@@ -380,7 +384,7 @@ live:
       - label: "Observation"
         body: "Wide-field optical, radio, and multi-wavelength surveys look for rare, faint, or short-lived signals."
       - label: "Data deluge"
-        body: "≈20 TB / night at Rubin. >700 PB / year archived at SKAO. Archives grow faster than human inspection can keep up."
+        body: "≈20 TB / night raw at Rubin. >700 PB / year archived at SKAO. Archives grow faster than human inspection can keep up."
       - label: "Compute dependence"
         body: "Filtering, classification, cross-matching, and rapid transient follow-up now live inside large compute pipelines."
       - label: "Siting pressure"
@@ -407,8 +411,8 @@ live:
         orbital: "Sky brightness, radio environment, debris, and launch burden"
       - label: "Evidence maturity"
         land: "High"
-        underwater: "Medium"
-        orbital: "Low to medium"
+        underwater: "Medium — pilot deployments operational in China, Microsoft research retired"
+        orbital: "Low to medium — demonstrators launched, no scaled operational record"
       - label: "Astronomy consequence"
         land: "Mostly indirect"
         underwater: "Mostly indirect"
@@ -418,20 +422,19 @@ live:
     intro: >-
       Underwater systems are the most credible alternative after land-based efficiency because they
       have real pilot deployments and measurable cooling advantages. Their main appeal is reduced
-      freshwater dependence and improved thermal performance, but those gains are traded for harder
-      maintenance, marine permitting, and ecological uncertainty.
+      freshwater dependence and improved thermal performance, but those gains come at the cost of
+      more intensive maintenance, marine permitting, and ecological uncertainty.
     prosTitle: "What the evidence supports"
     limitsTitle: "What still limits this path"
     pros:
-      - "Natick Phase 1 reported PUE 1.07 and WUE 0 at prototype scale."
-      - "Natick Phase 2 later reported a server failure rate one-eighth that of a land-based control group."
-      - "Chinese Hainan and Lingang projects suggest underwater cooling has moved beyond a single Microsoft experiment."
+      - "Natick Phase 1 reported power usage efficiency (PUE) of 1.07 and water usage efficiency (WUE) of 0 at the prototype scale."
+      - "Natick Phase 2 (2018–2020) reported a server failure rate one-eighth that of a matched land-based control group, using 864 servers in a sealed capsule off the Orkney Islands."
+      - "Chinese commercial deployments in Hainan (Lingshui, November 2023) and Shanghai (Lingang, 2025) suggest underwater cooling has moved beyond a single Microsoft experiment."
       - "For astronomy, underwater systems matter mainly because they may reduce some Earth-side pressure without directly affecting the observing environment."
     limits:
-      - "Microsoft confirmed Natick is no longer an active deployment program, which weakens the case for mainstream scaling."
-      - "Sealed lights-out pods conflict with the rapid refresh cycle of modern servers and accelerators."
-      - "Biofouling, corrosion, cable burial, and marine permitting move environmental and operational risk into the ocean."
-      - "The strongest current case is for niche or coastal-edge use, not for replacing all land-based hyperscale compute."
+      - "Sealed lights-out pods cannot accommodate NVIDIA's roughly 2-year architecture cadence for frontier AI training clusters, even though hyperscaler server depreciation schedules of 5–6 years are closer to Natick's 5-year design life. Microsoft's June 2024 confirmation that it is no longer building subsea data centers is itself evidence — the operator with the strongest pilot data walked away from mainstream scaling."
+      - "Biofouling, corrosion, cable burial, and marine permitting move environmental and operational risk into the ocean rather than eliminating it."
+      - "The strongest defensible case is niche or coastal-edge use, not replacement of land-based hyperscale compute."
     astronomyTitle: "Why astronomy should care"
     astronomyBody: >-
       For astronomy, underwater systems matter mainly as a comparison case. They may relieve some
@@ -448,20 +451,27 @@ live:
     limitsTitle: "Why large-scale Earth use remains weak"
     pros:
       - "If the data is already in space, on-orbit processing may be the most efficient place to handle it."
-      - "China has launched the first 12 satellites of its Three-Body Computing Constellation."
-      - "Proposals for orbital computing emphasize abundant solar energy and the possibility of relieving some of the cooling and grid strain that terrestrial data centers put on the planet."
+      - "China launched the first 12 satellites of its Three-Body Computing Constellation on 14 May 2025, operated by ADA Space and Zhejiang Lab."
+      - "Starcloud-1, carrying an NVIDIA H100 GPU, reached orbit on 2 November 2025 aboard SpaceX's Falcon 9 Bandwagon-4 mission — the first data-center-class GPU in space."
+      - "Proposals for orbital computing emphasize abundant solar energy and the potential to reduce some of the cooling and grid strain that terrestrial data centers impose on the planet."
     limits:
-      - "Vacuum does not eliminate heat; it changes the problem into one of radiator area and thermal rejection. Radiation, launch mass, replacement cadence, and space-to-ground data movement all make Earth-scale AI training in orbit remain speculative."
+      - "A vacuum does not eliminate heat; it shifts the problem to the radiator, and radiative cooling scales with surface area, not demand."
+      - "Gigawatt-class proposals imply kilometers-per-side solar and radiator structures — more than an order of magnitude beyond anything humans have assembled in space."
+      - "Radiation degrades silicon on a timescale shorter than a ground-side GPU refresh cycle, and there is no established operational model for in-orbit servicing at data-center scale."
+      - "Launch cadence, replacement mass, and space-to-ground bandwidth remain unresolved. Earth-scale AI training in orbit is speculative, not emerging."
     chartTitle: "Relative implications for astronomy by pathway"
     cardOneTitle: "Observing conditions, not only engineering"
     cardOneBody: >-
       For astronomy, orbital systems are not only an engineering question. They are also an
       observing-environment question, because orbital infrastructure can directly affect optical,
-      infrared, and radio observations.
+      infrared, and radio observations. A December 2025 Nature study (Borlaff, Marcum, and
+      Howell) forecasts that if the currently proposed ~560,000 satellites are deployed, more
+      than 96% of exposures from upcoming wide-field LEO surveys — SPHEREx, ARRAKIHS, and
+      Xuntian — will contain at least one Sun-illuminated satellite trail.
     cardTwoTitle: "Why this matters for ASTR 1020K"
     cardTwoBody: >-
       For this course, the key issue is whether any computing benefit would justify worsening the
-      conditions needed to observe faint objects, wide-field surveys, and weak signals.
+      conditions required to observe faint objects, conduct wide-field surveys, and detect weak signals.
   conclusion:
     title: "What the evidence suggests for astronomy"
     intro: >-
@@ -471,7 +481,7 @@ live:
       strongest near-term path because it addresses existing infrastructure burdens without
       directly degrading the sky. Underwater systems are worth tracking where cooling and
       freshwater constraints are especially strong. Orbital systems are the most important
-      comparison for this course because they create the sharpest direct tradeoff between
+      comparison for this course because they offer the sharpest trade-off between
       computing ambition and observing conditions.
     bullets: []
     bestFitTitle: "How this presentation is organized"
@@ -502,31 +512,31 @@ rubric:
     # pages show a calm "to be finalized before submission" note; append
     # ?draft=1 to the URL to reveal the author prompt during drafting.
     body: |
-      Modern observational astronomy is one reason compute siting has become a real scientific infrastructure question. Wide-field surveys, time-domain alerting, archival reanalysis, and multi-wavelength cross-matching have turned observation into a data-intensive pipeline, and the science does not exist until the compute has run. That makes astronomy one of the clearest cases where compute is not an accessory to observation but part of it — which forces a question astronomy does not usually ask: where should all of this compute physically live, and whose environment absorbs the consequences of putting it there?
+      Modern observational astronomy is one reason compute siting has become a real scientific infrastructure question. Wide-field surveys, time-domain alerting, archival reanalysis, and multi-wavelength cross-matching have turned observation into a data-intensive pipeline, and the science does not exist until the compute has run. That makes astronomy one of the clearest cases where compute is not an accessory to observation but part of it, which forces a question astronomy does not usually ask: where should all of this compute physically live, and whose environment absorbs the consequences of putting it there?
 
-      The reflexive answer has been to build more land-based data centers, and that is where growth is actually happening. Global data-center electricity demand is on track to roughly double between 2024 and 2030, colliding with grid capacity, freshwater cooling limits, and local siting politics. Three regimes are now being pursued in parallel rather than in sequence — land, underwater, and orbit — as concurrent burden-shifting strategies for power, heat, water, maintenance, and environmental externality. Recent milestones make the comparison concrete: Microsoft's Project Natick was deployed in 2018, retrieved in 2020, and confirmed discontinued in 2024; China's Three-Body Computing Constellation launched its first twelve satellites in May 2025; and Starcloud placed the first data-center-class GPU in orbit in November 2025 before filing an FCC proposal in February 2026 for a constellation of up to 88,000 orbital-compute satellites. These are the transition from whitepaper to hardware, and they are what makes the siting question concrete rather than theoretical.
+      The reflexive answer has been to build more land-based data centers, and that is where growth is actually happening. The IEA projects that global data-center electricity demand will more than double between 2024 and 2030, from about 415 TWh to roughly 945 TWh, colliding with grid capacity, freshwater cooling limits, and local siting politics. Three regimes are now being pursued in parallel rather than in sequence — land, underwater, and orbit — as concurrent burden-shifting strategies for power, heat, water, maintenance, and environmental externality. Recent milestones make the comparison concrete: Microsoft's Project Natick was deployed in 2018, retrieved in 2020, and publicly confirmed as no longer an active deployment program in June 2024; China's Three-Body Computing Constellation launched its first twelve satellites on 14 May 2025; Starcloud placed the first data-center-class GPU (an NVIDIA H100) in orbit on 2 November 2025; and Starcloud's FCC application (File No. SAT-LOA-20260202-00073), accepted for filing on 13 March 2026, proposes a constellation of up to 88,000 orbital-compute satellites. These are the transition from whitepaper to hardware, and they are what make the siting question concrete rather than theoretical.
     authorPrompt: "Explain, in your own words, that this project compares where future large-scale compute might live — on land, underwater, or in orbit — and asks which burdens each option reduces or shifts."
   astronomyRelevance:
     title: "Why this matters for astronomy"
     tag: "Course relevance"
     body: |
-      Observational astronomy is now one of the most compute-dependent sciences in practice, not in principle. Wide-field surveys generate terabytes per night and petabyte-scale archives over their lifetimes. Time-domain alerting requires real-time difference imaging so that short-lived events — supernovae, kilonovae, tidal disruptions, near-Earth objects — can trigger follow-up before they fade. Archival search re-interrogates decades of observations for faint or unusual signals invisible in the original reduction. Multi-wavelength cross-matching joins optical, infrared, radio, X-ray, and gravitational-wave catalogs so a single source can be studied across the spectrum. Radio astronomy produces some of the largest raw data volumes in any science; instruments in the SKA class are designed around the compute infrastructure that can ingest them, not the other way around. In each case, the observation itself is incomplete until the compute has run. Once that is true, compute siting stops being an engineering story happening offstage and becomes a question astronomy has a direct stake in.
+      Observational astronomy is now one of the most compute-dependent sciences in practice, not in principle. The pattern is not new — SDSS (more than 650 TB cumulative across DR1–DR18) and DES (~2.5 TB per night over 5,000 square degrees) established survey astronomy as a compute-first science over the last two decades. Wide-field surveys generate terabytes per night and petabyte-scale archives over their lifetimes. Time-domain alerting requires real-time difference imaging so that short-lived events — supernovae, kilonovae, tidal disruptions, near-Earth objects — can trigger follow-up before they fade. Archival search re-interrogates decades of observations for faint or unusual signals invisible in the original reduction. Multi-wavelength cross-matching joins optical, infrared, radio, X-ray, and gravitational-wave catalogs so a single source can be studied across the spectrum. Radio astronomy produces some of the largest raw data volumes in any science; instruments in the SKA class are designed around the compute infrastructure that can ingest them, not the other way around. In each case, the observation itself is incomplete until the compute has run. Once that is true, compute siting stops being an engineering story happening offstage and becomes a question astronomy has a direct stake in.
 
-      This fits ASTR 1020K because the course is ultimately about how we know what we know about the universe, and that chain now runs through the data pipeline as much as it runs through the telescope. It matters especially for this comparison because one of the three siting regimes — orbital — is the only one whose externality is deposited directly into the observing environment astronomy depends on. The International Astronomical Union established the Centre for the Protection of the Dark and Quiet Sky in 2022 for exactly this reason. A 2025 Nature study forecasts that if currently proposed constellations fly, more than 96% of exposures from future low-Earth-orbit space telescopes could carry satellite trails, and LOFAR has already detected unintended electromagnetic emission from Starlink satellites bleeding into the 150.05–153 MHz band the ITU protects for radio astronomy. These are not hypothetical costs. They are the costs the siting decision lands on.
-    authorPrompt: "Explain how astronomy depends on large-scale computing for surveys, archives, and signal-finding, and why orbital compute matters especially because it can alter the observing environment itself."
+      This fits ASTR 1020K because the course is ultimately about how we know what we know about the universe, and that chain now runs through the data pipeline as much as it runs through the telescope. It matters especially for this comparison because one of the three siting regimes — orbital — is the only one whose externality is deposited directly into the observing environment astronomy depends on. The International Astronomical Union launched the Centre for the Protection of the Dark and Quiet Sky from Satellite Constellation Interference (IAU CPS) in April 2022 for exactly this reason. A December 2025 Nature study by Borlaff, Marcum, and Howell forecasts that if all ~560,000 currently proposed satellites fly, more than 96% of exposures from upcoming wide-field LEO surveys (SPHEREx, ARRAKIHS, Xuntian) will contain at least one Sun-illuminated satellite trail. LOFAR has already detected unintended electromagnetic emissions from Starlink satellites between 110 and 188 MHz, including within the 150.05–153 MHz band that the ITU protects for radio astronomy (Di Vruno et al. 2023). These are not hypothetical costs. They are the costs the siting decision lands on.
+    authorPrompt: "Explain how astronomy depends on large-scale computing for surveys, archives, and signal-finding, and why orbital compute matters, especially because it can alter the observing environment itself."
   futureImpact:
     title: "Future impact"
     tag: "Looking ahead"
     body: |
-      Once observation is what drives compute demand, the next question is forced rather than optional: which of the three regimes actually fits the burdens it claims to move? The three will coexist, but not on equal terms, and the differences come down to maturity, reversibility, and who absorbs the externality. Land-based systems will stay dominant in the near term because they have the strongest evidence base, the clearest efficiency path — liquid cooling, heat reuse, siting near low-carbon generation — and the most developed regulatory surface. The constraint is not that the technology fails; it is that grid capacity, water, and siting politics do not scale linearly with demand. Underwater is best read as a specialized option rather than a general replacement. Natick proved the engineering case for reliability and freshwater-free cooling, but sealed capsules cannot absorb modern GPU refresh cycles, and Microsoft's decision to stop building subsea systems is itself part of the evidence. The regime may survive in narrow coastal, water-constrained geographies as a niche shape rather than a universal one.
+      Once observation is what drives compute demand, the next question is forced rather than optional: which of the three regimes actually fits the burdens it claims to move? The three will coexist, but not on equal terms, and the differences come down to maturity, reversibility, and who absorbs the externality. Land-based systems will stay dominant in the near term because they have the strongest evidence base, the clearest efficiency path — liquid cooling, heat reuse, siting near low-carbon generation — and the most developed regulatory surface. The constraint is not that the technology fails; it is that grid capacity, water, and siting politics do not scale linearly with demand. Underwater is best read as a specialized option rather than a general replacement. Natick proved the engineering case for reliability and freshwater-free cooling, but sealed capsules cannot accommodate the 2-year architecture cadence of frontier AI training clusters (even though standard hyperscaler server depreciation of 5–6 years aligns with Natick's 5-year design), and Microsoft's June 2024 decision to stop building subsea systems is itself evidence. The regime may survive in narrow coastal, water-constrained geographies — as demonstrated by active Chinese pilots in Hainan and Lingang — as a niche shape rather than a universal one.
 
-      Orbital compute is the most uncertain regime and, for astronomy specifically, the most consequential. The appeal is real: near-continuous solar input, radiative cooling to the deep-space sink, and no direct freshwater or terrestrial-siting cost. The problem is that the proposed scales — gigawatt-class facilities with kilometers-per-side solar and radiator structures — are more than an order of magnitude beyond anything humans have ever assembled in space, and there is no established operational model for heat rejection, repair, GPU refresh, or debris management at that scale. And the externality lands exactly where astronomy is least able to absorb it. More satellites in low Earth orbit means more optical trails across survey exposures, more unintended radio emission into protected bands, and tighter constraints on the observing windows and frequencies that ground- and space-based astronomy rely on.
+      Orbital compute is the most uncertain regime and, for astronomy specifically, the most consequential. The appeal is real: near-continuous solar input, radiative cooling to the deep-space sink, and no direct freshwater or terrestrial siting costs. Serious feasibility work exists — the Thales Alenia Space ASCEND study (results released 27 June 2024) argues that 1 GW of orbital capacity is deployable before 2050, conditional on a launcher roughly 10× less emissive over its lifecycle than current vehicles. The problem is that the proposed scales — gigawatt-class facilities with kilometers-per-side solar and radiator structures — are more than an order of magnitude beyond anything humans have ever assembled in space, and there is no established operational model for heat rejection, repair, GPU refresh, or debris management at that scale. And the externality lands exactly where astronomy is least able to absorb it. More satellites in low Earth orbit means more optical trails across survey exposures, more unintended radio emission into protected bands, and tighter constraints on the observing windows and frequencies that ground- and space-based astronomy rely on.
     authorPrompt: "Explain what seems most plausible near-term, what should be watched longer-term, and what the broader consequences could be beyond this course."
   recommendation:
     title: "Recommendation"
     tag: "Closing argument"
     body: |
-      The strongest near-term path is to make land-based compute cleaner and more efficient where it already exists, to treat underwater deployments as a limited coastal option rather than a general solution, and to approach large-scale orbital compute with closer scrutiny than enthusiasm. This is not a bias against ambitious infrastructure. It is a response to a mismatch between maturity and consequence. Land has the strongest evidence and the most immediate payoff. Underwater has genuine engineering credibility but unresolved upgrade, retrieval, and ecological exposure, and Microsoft's own exit is an informative data point. Orbital has the lowest maturity and simultaneously the most direct impact on astronomy, because its externality is emitted straight into the observing environment rather than offloaded somewhere else on Earth.
+      The strongest near-term path is to make land-based compute cleaner and more efficient where it already exists, to treat underwater deployments as a limited coastal option rather than a general solution, and to approach large-scale orbital compute with closer scrutiny than enthusiasm. This is not a bias against ambitious infrastructure. It is a response to a mismatch between maturity and consequence. Land has the strongest evidence and the most immediate payoff. Underwater has genuine engineering credibility but unresolved upgrade, retrieval, and environmental exposure issues, and Microsoft's own exit is an informative data point. Orbital has the lowest maturity and, simultaneously, the most direct impact on astronomy, because its externality is emitted directly into the observing environment rather than offloaded elsewhere on Earth.
 
       The standard this project applies is that future compute should be judged not just by how much capacity it promises, but by which burdens it shifts, how well those new burdens are understood, and whether the scientific or environmental costs fall on people and fields that did not choose the tradeoff. By that standard, the cleanest near-term move is to improve land-based infrastructure where it already sits. Underwater is worth watching in the narrow geographies where its advantages are real and bounded. Orbital deserves the closest scrutiny, not because it is obviously impossible, but because it raises the hardest question astronomy has to answer in the next decade: how much pressure on the sky and the radio spectrum are we willing to accept in exchange for more computation?
     authorPrompt: "State which path you would prioritize, monitor, or treat cautiously, and why."
@@ -535,20 +545,22 @@ rubric:
     intro: "These milestones anchor the comparison in documented developments rather than speculation."
     items:
       - year: "2018–2020"
-        label: "Microsoft Project Natick Phase 2: 864-server underwater pod off Orkney reports roughly one-eighth the failure rate of a matched land control group. Pod retrieved in 2020; never taken to production."
-      - year: "2023"
-        label: "Microsoft publicly confirms that Natick is no longer an active deployment program and remains research only."
+        label: "Microsoft Project Natick Phase 2: 864-server sealed capsule off the Orkney Islands reports a failure rate one-eighth that of a matched land-based control group. Retrieved 2020; never taken to production."
+      - year: "June 2024"
+        label: "Microsoft publicly confirms via DatacenterDynamics that it is no longer building subsea data centers; Natick continues only as a research platform."
       - year: "2024–2025"
-        label: "IEA and LBNL updated forecasts show data-center electricity demand roughly doubling by 2030, driven largely by AI workloads."
-      - year: "2025"
-        label: "Orbital-compute demonstrator ventures announce plans and early launches; independent technical validation at scale remains thin."
+        label: "IEA Energy and AI (April 2025) and LBNL 2024 U.S. Data Center Energy Usage Report (December 2024) forecast that data-center electricity demand will more than double by 2030, driven largely by AI workloads."
+      - year: "May–November 2025"
+        label: "China's Three-Body Computing Constellation launches its first 12 satellites on 14 May 2025; Starcloud-1 reaches orbit on 2 November 2025 carrying an NVIDIA H100 — the first data-center-class GPU in space."
+      - year: "13 March 2026"
+        label: "FCC accepts Starcloud's application (File No. SAT-LOA-20260202-00073) for up to 88,000 orbital-compute satellites. Earlier on 4 February 2026, the FCC accepted SpaceX's separate application for up to 1 million orbital data-center satellites."
       - year: "ongoing"
-        label: "Rubin Observatory and SKAO operations intersect with Starlink and Kuiper megaconstellation growth; optical trail contamination and radio sidelobes are documented in AAS / SATCON and A&A reports."
+        label: "Rubin Observatory and SKAO operations intersect with Starlink and Kuiper megaconstellation growth; optical trail contamination and unintended radio emissions are documented in peer-reviewed A&A papers (Di Vruno et al. 2023; Borlaff et al. 2025)."
   comparisonMatrix:
     title: "Land vs underwater vs orbital at a glance"
     intro: >-
       This comparison is the project's main map. Land, underwater, and orbital systems are not
-      stages of one evolution; they are concurrent siting domains with different tradeoffs for
+      stages of a single evolution; they are concurrent domains with different trade-offs for
       power, cooling, maintenance, bandwidth, environmental impact, and astronomy.
     axisHeader: "Axis"
     columns:
@@ -563,11 +575,11 @@ rubric:
       - axis: "Cooling"
         land: "Air plus evaporative water; large freshwater draw at many sites"
         underwater: "Seawater heat exchange; no freshwater use"
-        orbital: "Radiative only; hard thermodynamic ceiling"
+        orbital: "Radiative only; cooling capacity scales with radiator area, not demand"
       - axis: "Maintenance"
         land: "Routine, cheap, well understood"
         underwater: "Sealed pod; no in-situ repair; fail-in-place"
-        orbital: "Effectively none; launch-and-forget"
+        orbital: "Effectively none; radiation degrades silicon faster than ground-side refresh"
       - axis: "Bandwidth to users"
         land: "Terrestrial fiber; lowest latency"
         underwater: "Subsea cable landing; near-terrestrial latency"
@@ -582,5 +594,5 @@ rubric:
         orbital: "Direct: optical trails, radio sidelobes, debris risk"
       - axis: "Evidence maturity"
         land: "Mature operational record"
-        underwater: "Research only; one retrieved demonstrator"
-        orbital: "Early; speculative at scale"
+        underwater: "Pilot deployments in China; Microsoft research retired 2024"
+        orbital: "Early; demonstrators launched, speculative at scale"
