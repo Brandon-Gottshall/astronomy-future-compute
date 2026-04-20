@@ -1616,19 +1616,21 @@ function AppendixBanner() {
 }
 
 /* ===== FLOATING QR ===== */
-function FloatingQR() {
-  const [atlasUrl, setAtlasUrl] = useState(null);
+function FloatingQR({ url: overrideUrl, label = "Open research appendix" } = {}) {
+  const [fallbackUrl, setFallbackUrl] = useState(null);
   useEffect(() => {
-    setAtlasUrl(window.location.origin + window.location.pathname + "?mode=atlas");
-  }, []);
-  const qrDataUrl = useQrDataUrl(atlasUrl);
+    if (overrideUrl) return;
+    setFallbackUrl(window.location.origin + window.location.pathname + "?mode=atlas");
+  }, [overrideUrl]);
+  const url = overrideUrl || fallbackUrl;
+  const qrDataUrl = useQrDataUrl(url);
   if (!qrDataUrl) return null;
   return (
     <a
-      href={atlasUrl}
+      href={url}
       target="_blank"
       rel="noreferrer"
-      title="Open research appendix"
+      title={label}
       className="no-print hidden md:block"
       style={{
         position: "fixed",
@@ -1643,7 +1645,7 @@ function FloatingQR() {
         lineHeight: 0,
       }}
     >
-      <img alt="Scan for research atlas" src={qrDataUrl} width="72" height="72" />
+      <img alt={label} src={qrDataUrl} width="72" height="72" />
     </a>
   );
 }
