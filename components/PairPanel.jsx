@@ -149,6 +149,21 @@ export default function PairPanel({
     }
     return url.toString();
   };
+
+  const pinPanel = (
+    <div className="mb-6 w-full max-w-xl rounded-2xl border border-indigo-500/30 bg-indigo-500/10 px-5 py-4 text-center">
+      <div className="text-xs uppercase tracking-[0.2em] opacity-70">
+        Session PIN
+      </div>
+      <div className="mt-2 font-mono text-4xl font-semibold tracking-[0.4em]" data-testid="session-pin-value">
+        {pin}
+      </div>
+      {typeof slideCount === "number" ? (
+        <div className="mt-2 text-sm opacity-70">{slideCount} slides ready</div>
+      ) : null}
+    </div>
+  );
+
   return (
     <div
       className={
@@ -167,6 +182,7 @@ export default function PairPanel({
           </p>
         </div>
       ) : null}
+      {pinPanel}
       <div className={`grid ${speakers.length > 1 ? "grid-cols-2" : "grid-cols-1"} gap-10`}>
         {speakers.map((s) => (
           <Qr
@@ -180,14 +196,6 @@ export default function PairPanel({
           />
         ))}
       </div>
-      {!compact ? (
-        <div className="mt-10 text-center text-sm opacity-60">
-          Session PIN: <span className="font-mono" data-testid="session-pin-value">{pin}</span>
-          {typeof slideCount === "number" ? (
-            <span className="ml-4">{slideCount} slides</span>
-          ) : null}
-        </div>
-      ) : null}
     </div>
   );
 }

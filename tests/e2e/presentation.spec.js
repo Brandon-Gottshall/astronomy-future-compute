@@ -76,6 +76,7 @@ test.describe("presentation mode regression", () => {
 
     await stage.keyboard.press("KeyR");
     await expect(stage.getByText("Re-pair a remote")).toBeVisible();
+    await expect(stage.getByTestId("session-pin-value")).toHaveText(pin);
     await stage.keyboard.press("Escape");
     await expect(stage.getByTestId("stage-live")).toBeVisible();
   });
