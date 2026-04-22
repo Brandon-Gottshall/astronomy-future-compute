@@ -621,7 +621,6 @@ slides:
            * Don't read the slide aloud
            * Frame: astronomy is now one of the most compute-dependent sciences
            * Frame: where compute physically lives is a real scientific infrastructure question
-        * Pivot to next slide (advance with right arrow)
       tre: ""
 
   - id: need
@@ -655,7 +654,6 @@ slides:
               * >700 PB / year archived after on-site real-time processing
               * In radio astronomy, the telescope is designed around the data pipeline — not the other way around
            * Let the flip land for a beat
-        * Pivot to next slide
       tre: |
         * Backup only if asked about specific archive volumes
            * SDSS — >650 TB cumulative (DR1–DR18)
@@ -680,7 +678,6 @@ slides:
               * Cooling
               * Water
               * Local siting politics
-        * Pivot to next slide
       tre: ""
 
   - id: bridge
@@ -704,7 +701,6 @@ slides:
         * Astronomy's dual role makes this an astronomy question, not just engineering
            * We're a major user of large-scale compute
            * We're also a field that can be harmed by where that compute lives
-        * Pivot to next slide
       tre: ""
 
   - id: responses
@@ -729,7 +725,6 @@ slides:
            * Which burdens does each one reduce?
            * Which burdens does it shift, and to whom?
         * Resist previewing conclusions — the rest of the talk earns them
-        * Pivot to next slide
       tre: ""
 
   - id: matrix
@@ -746,7 +741,6 @@ slides:
            * Point at one row — astronomy impact — and move on
         * Handoff to Tre
            * Line: "The next sections go deeper on underwater and orbital — Tre will take us through those."
-        * Pivot to next slide (Tre takes over)
       tre: |
         * Getting ready to take over
            * Brandon ends this slide with the handoff line
@@ -790,7 +784,6 @@ slides:
               * Sealed-pod reliability is real at small scale
            * Hand the stat trio cleanly — PUE 1.07, WUE 0, ⅛ failure rate
            * Save the "why did Microsoft stop?" beat for the next slide
-        * Pivot to next slide
 
   - id: underwater-niche
     section: underwater
@@ -863,7 +856,6 @@ slides:
            * Steel-man the case before taking it apart
               * "May be the most efficient place to handle it" — "may be" is doing real work
               * Don't editorialize yet; the critique is the next slide
-        * Pivot to next slide
 
   - id: orbital-astronomy
     section: orbital
@@ -895,7 +887,7 @@ slides:
            * 96% figure is the sharpest sentence in the talk — pause after it
            * LOFAR has already detected unintended Starlink emissions at 110–188 MHz, including the 150.05–153 MHz band protected by the ITU for radio astronomy (Di Vruno et al. 2023)
            * Say clearly: these are not hypothetical costs
-        * Pivot to next slide (hand back to Brandon)
+        * Hand back to Brandon for the verdict
 
   - id: conclusion
     section: conclusion
