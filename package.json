@@ -2,6 +2,7 @@
   "name": "astronomy-future-compute",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "npm@11.11.0",
   "scripts": {
     "generate-copy": "node scripts/build-copy.mjs",
     "predev": "node scripts/build-copy.mjs",

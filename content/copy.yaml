@@ -609,328 +609,321 @@ slides:
   - id: hero
     section: hero
     title: "Astronomy's Future Compute"
+    dek: "Comparing land-based, underwater, and orbital data-center paths for modern astronomy"
     body: |
-      Comparing land-based, underwater, and orbital data-center paths for modern astronomy.
-
       ASTR 1020K · Brandon Gottshall & Tre Madison · Spring 2026
+    layout: hero
     visual: null
     speaker: brandon
     notes:
       brandon: |
-        Opener — 20 seconds, don't read the slide. Say: "Astronomy is now one of the most
-        compute-dependent sciences, and the question of where that compute physically lives is
-        becoming a real scientific infrastructure question." Hand off with the Next arrow.
+        * Open the talk (~20 seconds)
+           * Don't read the slide aloud
+           * Frame: astronomy is now one of the most compute-dependent sciences
+           * Frame: where compute physically lives is a real scientific infrastructure question
+        * Pivot to next slide (advance with right arrow)
       tre: ""
 
-  - id: need-1
+  - id: need
     section: need
-    title: "Astronomy is now a search problem"
+    title: "Astronomy is now compute"
+    dek: "The observation isn't done until the compute has run."
     body: |
       Modern astronomy is a search problem at data-center scale: large surveys, multi-wavelength
       archives, and time-domain pipelines have to filter faint or short-lived signals out of
       enormous data volumes.
-
-      The observation isn't done until the compute has run.
-    visual: null
+    visual: statPair
+    visualConfig:
+      left:
+        stat: "≈20 TB"
+        unit: "per night (raw)"
+        source: "Vera C. Rubin Observatory"
+      right:
+        stat: ">700 PB"
+        unit: "per year (archived)"
+        source: "SKA Observatory"
+      connector: "and"
     speaker: brandon
     notes:
       brandon: |
-        Land the line "the observation isn't done until the compute has run." Don't enumerate
-        every pipeline — pick one (time-domain alerting) and name a concrete thing
-        it catches (supernovae, NEOs).
+        * Establish that astronomy now runs on compute
+           * Land the key line: "The observation isn't done until the compute has run."
+           * Point at Rubin first
+              * ~20 TB / night makes the abstract real
+              * Time-domain example: supernovae or NEOs caught within minutes of first light
+           * Flip to SKAO
+              * >700 PB / year archived after on-site real-time processing
+              * In radio astronomy, the telescope is designed around the data pipeline — not the other way around
+           * Let the flip land for a beat
+        * Pivot to next slide
       tre: |
-        If asked about specific archive volumes, SDSS is >650 TB cumulative and DES is
-        ~2.5 TB/night. Only drop those numbers if asked.
+        * Backup only if asked about specific archive volumes
+           * SDSS — >650 TB cumulative (DR1–DR18)
+           * DES — ~2.5 TB / night over 5,000 square degrees
 
-  - id: need-2
-    section: need
-    title: "Rubin — 20 TB per night"
-    body: |
-      The Vera C. Rubin Observatory produces roughly 20 TB of raw data every night.
-      Triage, difference imaging, and alerting have to happen fast enough to catch
-      transients before they fade beyond follow-up.
-    visual: null
-    speaker: brandon
-    notes:
-      brandon: |
-        Rubin is the easy concrete handle. "20 TB a night" makes the abstract real.
-        Connect to last slide's "search problem" framing.
-      tre: ""
-
-  - id: need-3
-    section: need
-    title: "SKAO — 700 PB per year"
-    body: |
-      The Square Kilometre Array Observatory expects to archive more than 700 PB per
-      year after on-site real-time processing. Its instruments are designed around the
-      compute that can ingest them — not the other way around.
-    visual: null
-    speaker: brandon
-    notes:
-      brandon: |
-        The flip in the last sentence is the whole point of this slide — in radio astronomy,
-        the telescope is now designed around the data pipeline. Let that line land for a beat.
-      tre: ""
-
-  - id: context-1
+  - id: context
     section: context
     title: "Data-center demand is doubling"
+    dek: "Colliding with grid capacity, cooling limits, and local siting politics."
     body: |
       The IEA projects that global data-center electricity demand will more than double
-      between 2024 and 2030 — from about 415 TWh to roughly 945 TWh — colliding with
-      grid capacity, cooling limits, and local siting politics.
+      between 2024 and 2030 — from about 415 TWh to roughly 945 TWh.
     visual: energyGrowth
     speaker: brandon
     notes:
       brandon: |
-        Point at the chart; don't read the TWh figures out loud. The headline is "more than
-        double" and "colliding with grid, cooling, water, and siting." That sets up the next
-        slide — and everything after.
+        * Show why siting is becoming urgent
+           * Point at the chart; don't read TWh figures out loud
+           * Headline: "more than double" by 2030
+           * Cover what it's colliding with
+              * Grid capacity
+              * Cooling
+              * Water
+              * Local siting politics
+        * Pivot to next slide
       tre: ""
 
-  - id: context-2
-    section: context
-    title: "Why this is an astronomy question"
-    body: |
-      Astronomy is both a major user of large-scale compute and a field that can be
-      harmed by how future compute infrastructure is built. That dual role is what makes
-      siting an astronomy question, not only an engineering one.
-    visual: null
-    speaker: brandon
-    notes:
-      brandon: |
-        Two-sided pitch: we depend on the compute, and we can be affected by where it lives.
-        Don't name orbital yet — that's the punchline in the bridge.
-      tre: ""
-
-  - id: bridge-1
+  - id: bridge
     section: bridge
-    title: "Observation → data deluge"
-    body: |
-      Wide-field optical, radio, and multi-wavelength surveys look for rare, faint,
-      or short-lived signals. Rubin at ≈20 TB per night and SKAO at >700 PB per year
-      mean archives grow faster than human inspection can keep up.
-    visual: null
+    title: "From observation to the sky"
+    dek: "Why a compute-siting question is an astronomy question."
+    layout: stacked
+    visual: bridgeDiagram
     speaker: brandon
     notes:
       brandon: |
-        This is step 1 and 2 of the five-step bridge. Don't rush — each of the next three
-        slides is one step. Pacing matters here.
+        * Walk the 5-step bridge at a measured pace
+           * 1. Observation — wide-field surveys look for rare / faint / short-lived signals
+           * 2. Data deluge — ~20 TB / night at Rubin, >700 PB / year at SKAO
+           * 3. Compute dependence — filtering, classification, transient follow-up live in pipelines
+           * 4. Siting pressure — grid, cooling, water, and land push alternative sites
+           * 5. Feedback to the sky — orbital infrastructure directly alters observing conditions
+        * Land the phrase "feedback to the sky"
+           * This is the whole argument of the talk in one sentence
+           * Hold the last step a beat longer than the others
+        * Astronomy's dual role makes this an astronomy question, not just engineering
+           * We're a major user of large-scale compute
+           * We're also a field that can be harmed by where that compute lives
+        * Pivot to next slide
       tre: ""
 
-  - id: bridge-2
-    section: bridge
-    title: "Compute dependence → siting pressure"
-    body: |
-      Filtering, classification, cross-matching, and real-time transient follow-up now
-      live inside large compute pipelines. Grid, cooling, water, and land constraints
-      then push operators to propose alternative data-center sites.
-    visual: null
-    speaker: brandon
-    notes:
-      brandon: |
-        Middle of the bridge — tie "astronomy runs on pipelines" to "pipelines run in
-        data centers" to "data centers are hitting limits." This is the pivot to
-        "where should that compute live?"
-      tre: ""
-
-  - id: bridge-3
-    section: bridge
-    title: "Siting choices feed back to the sky"
-    body: |
-      Some of those siting choices — especially orbital infrastructure — can directly
-      alter optical, infrared, and radio observing conditions. That is what turns a
-      compute-siting question into an astronomy question.
-    visual: null
-    speaker: brandon
-    notes:
-      brandon: |
-        Land the phrase "feedback to the sky." This is the argument of the whole talk in
-        one sentence. Hold the slide a beat longer than the others.
-      tre: |
-        After Brandon finishes this line I take over for the three-paths slide — watch
-        for the visual cue.
-
-  - id: responses-1
+  - id: responses
     section: responses
-    title: "Three siting paths, compared"
+    title: "Three concurrent siting paths"
+    dek: "Not stages of a single evolution — three concurrent domains with different trade-offs."
     body: |
-      Land, underwater, and orbit are three concurrent siting domains — not stages of
-      a single evolution. The real question isn't which is "best," but which burdens
-      each one reduces and which burdens it shifts.
-    visual: null
+      The real question isn't which is "best," but which burdens each one reduces and which
+      burdens it shifts.
+    layout: stacked
+    visual: pathwaysGrid
     speaker: brandon
     notes:
       brandon: |
-        This slide frames the rest of the talk. Say "concurrent, not sequential." Resist the
-        urge to preview conclusions here.
+        * Frame the three siting options
+           * Say "concurrent, not sequential" — not stages of one evolution
+           * Three domains with different trade-offs
+        * Cover what the grid shows, row by row
+           * Each card: strength, main constraint, astronomy risk
+           * Astronomy-risk pills read left to right: low / low / high (lets the audience see the verdict early)
+        * Frame the real question — not which is "best"
+           * Which burdens does each one reduce?
+           * Which burdens does it shift, and to whom?
+        * Resist previewing conclusions — the rest of the talk earns them
+        * Pivot to next slide
       tre: ""
 
-  - id: responses-2
+  - id: matrix
     section: responses
     title: "Burdens moved, not removed"
-    body: |
-      Each option shifts burdens differently. Land still relies on terrestrial grids,
-      water, and siting. Underwater shifts pressure to marine ecology and maintenance.
-      Orbital shifts it onto sky brightness, radio environment, debris, and launch.
+    dek: "Each option shifts burdens differently — land, underwater, orbital, row by row."
+    layout: stacked
     visual: comparisonMatrix
     speaker: brandon
     notes:
       brandon: |
-        Let the matrix do the work. Point at one row — astronomy impact — and move on.
-        Resist the urge to read every cell out loud.
+        * Let the comparison matrix do the work
+           * Don't read every cell
+           * Point at one row — astronomy impact — and move on
+        * Handoff to Tre
+           * Line: "The next sections go deeper on underwater and orbital — Tre will take us through those."
+        * Pivot to next slide (Tre takes over)
       tre: |
-        Ready for handoff on the next slide.
+        * Getting ready to take over
+           * Brandon ends this slide with the handoff line
+           * I pick up on the next slide (underwater evidence)
 
-  - id: responses-3
-    section: responses
-    title: "Maturity and astronomy risk"
-    body: |
-      Evidence maturity is high for land, medium for underwater (research and limited
-      commercial pilots), and low-to-medium for orbital (demonstrators launched, no
-      scaled operational record). Astronomy risk is indirect for land and underwater,
-      direct and central for orbital.
-    visual: null
-    speaker: brandon
-    notes:
-      brandon: |
-        Close the responses block with the handoff line: "The next sections go deeper on
-        underwater and orbital — Tre will take us through those."
-      tre: |
-        On this slide I'm getting ready to take over. Brandon ends with the handoff.
-
-  - id: underwater-1
+  - id: underwater-evidence
     section: underwater
     title: "Underwater — real pilots, credible engineering"
+    dek: "Natick Phase 2 · 864 servers off the Orkney Islands · 2018–2020"
     body: |
-      Natick Phase 1 reported PUE 1.07 and WUE 0 at prototype scale. Phase 2 — 864
-      servers off the Orkney Islands, 2018–2020 — reported a failure rate one-eighth
-      its land control. Chinese pilots in Hainan and Lingang extend the evidence
-      beyond Microsoft.
-    visual: null
+      Chinese commercial deployments in Hainan (Lingshui, November 2023) and Shanghai
+      (Lingang, 2025) extend the evidence beyond Microsoft.
+    layout: stacked
+    visual: statTrio
+    visualConfig:
+      items:
+        - stat: "1.07"
+          unit: "PUE"
+          source: "Natick Phase 1"
+        - stat: "0"
+          unit: "WUE — no freshwater"
+          source: "Natick Phase 1"
+        - stat: "⅛"
+          unit: "server failure rate vs. land control"
+          source: "Natick Phase 2"
     speaker: tre
     notes:
       brandon: |
-        Backup for Tre: if the audience asks why Natick wasn't scaled, the answer is on
-        the next slide.
+        * Backup for Tre
+           * If the audience asks why Natick wasn't scaled, the answer is on the next slide
       tre: |
-        Hand the facts cleanly. PUE 1.07, WUE 0, 1/8 failure rate. Mention Hainan and
-        Lingang briefly so the "real pilots" claim has substance. Save the "why did Microsoft
-        stop?" beat for the next slide.
+        * Introduce underwater data-center efforts
+           * Cover active deployments
+              * Natick Phase 1 (Scotland, 2015) — prototype, PUE 1.07 / WUE 0
+              * Natick Phase 2 (Orkney Islands, 2018–2020) — 864 servers in a sealed capsule
+              * Hainan / Lingshui (November 2023) — first Chinese commercial subsea deployment
+              * Shanghai / Lingang (2025) — second Chinese deployment at wider scale
+           * Cover what the deployments taught us
+              * Server failure rate 1/8 that of a matched land control
+              * Freshwater use goes to zero with seawater cooling
+              * Sealed-pod reliability is real at small scale
+           * Hand the stat trio cleanly — PUE 1.07, WUE 0, ⅛ failure rate
+           * Save the "why did Microsoft stop?" beat for the next slide
+        * Pivot to next slide
 
-  - id: underwater-2
+  - id: underwater-niche
     section: underwater
     title: "Underwater — why it stays niche"
-    body: |
-      Sealed lights-out pods don't fit frontier AI refresh cadence. Microsoft's June 2024
-      decision to stop building subsea systems is itself evidence. Biofouling, corrosion,
-      cable burial, and marine permitting move risk into the ocean rather than removing it.
-    visual: null
+    dek: "The operator with the strongest pilot data walked away."
+    bullets:
+      - "Sealed lights-out pods don't fit frontier AI's 2-year architecture refresh cadence."
+      - "Biofouling, corrosion, cable burial, and marine permitting move risk into the ocean, rather than removing it."
+      - "Strongest defensible case is niche or coastal-edge use, not replacement of land-based hyperscale compute."
+    visual: statCallout
+    visualConfig:
+      stat: "June 2024"
+      unit: "Microsoft stops building subsea data centers"
+      source: "DatacenterDynamics"
+      accent: "rgba(8,145,178,0.55)"
     speaker: tre
     notes:
       brandon: ""
       tre: |
-        Key line: "Microsoft's June 2024 decision to stop is itself evidence." The operator
-        with the strongest pilot data walked away from mainstream scaling. Say it at a
-        measured pace.
+        * Deliver the "why it stays niche" verdict
+           * Key line — measured pace: "Microsoft's June 2024 decision to stop is itself evidence."
+           * The operator with the strongest pilot data walked away from mainstream scaling
+        * Cover pros and cons of underwater in current state
+           * Pros
+              * Cooling relief from seawater heat exchange
+              * No freshwater use at the site
+              * Documented reliability signal from Natick Phase 2
+           * Cons
+              * Sealed lights-out pods don't fit frontier AI's ~2-year architecture refresh cadence
+              * Biofouling, corrosion, cable burial move operational risk into the ocean
+              * Marine ecology and permitting add deployment friction
+        * Cover the future of underwater deployments
+           * Strongest defensible case is niche / coastal-edge use, not hyperscale replacement
+           * Chinese pilots in Hainan and Lingang suggest the niche survives where water and siting constraints are sharp
+        * Pivot to space
 
-  - id: orbital-1
-    section: orbital
-    title: "Orbital — why it's attractive"
-    body: |
-      Near-continuous solar input, radiative cooling to the deep-space sink, and no
-      freshwater or terrestrial siting costs. If the data is already in space, on-orbit
-      processing may be the most efficient place to handle it.
-    visual: null
-    speaker: tre
-    notes:
-      brandon: ""
-      tre: |
-        Steel-man the orbital case before taking it apart. One sentence on each advantage.
-        Do not concede more than the evidence supports — "may be" is doing real work.
-
-  - id: orbital-2
+  - id: orbital-hardware
     section: orbital
     title: "Orbital — what's actually in orbit"
+    dek: "From whitepaper to hardware — near-continuous solar, radiative cooling, no freshwater."
     body: |
-      China's Three-Body Computing Constellation launched its first 12 satellites on
-      14 May 2025. Starcloud-1 put the first data-center-class GPU (an NVIDIA H100)
-      in orbit on 2 November 2025. The FCC accepted Starcloud's application for up
-      to 88,000 orbital-compute satellites on 13 March 2026.
-    visual: null
+      If the data is already in space, on-orbit processing may be the most efficient place
+      to handle it.
+    layout: stacked
+    visual: timelineStrip
+    visualConfig:
+      events:
+        - date: "14 May 2025"
+          label: "China's Three-Body Computing Constellation launches first 12 satellites"
+        - date: "2 Nov 2025"
+          label: "Starcloud-1 — first data-center-class GPU in orbit (NVIDIA H100)"
+        - date: "13 Mar 2026"
+          label: "FCC accepts Starcloud filing for up to 88,000 orbital-compute satellites"
     speaker: tre
     notes:
       brandon: |
-        If asked about the SpaceX million-satellite filing — that's a separate megaconstellation
-        story, not orbital compute. Don't confuse the two.
+        * Backup for Tre
+           * If asked about SpaceX's million-satellite filing — that's a separate megaconstellation story, not orbital compute
+           * Don't confuse the two
       tre: |
-        Three concrete milestones. Don't editorialize yet — just establish that the thing
-        exists at hardware level. The critique is the next slide.
+        * Introduce orbital data-center efforts
+           * Cover experimental deployments
+              * 14 May 2025 — China's Three-Body Computing Constellation launches first 12 satellites (ADA Space + Zhejiang Lab)
+              * 2 Nov 2025 — Starcloud-1 reaches orbit on Falcon 9 Bandwagon-4 with an NVIDIA H100 (first data-center-class GPU in space)
+              * 13 Mar 2026 — FCC accepts Starcloud filing (File No. SAT-LOA-20260202-00073) for up to 88,000 orbital-compute satellites
+           * Cover what's been learned so far
+              * We're past whitepaper — hardware is flying
+              * Near-continuous solar input in sun-synchronous orbit is real
+              * On-orbit processing makes sense when the data is already in space
+           * Steel-man the case before taking it apart
+              * "May be the most efficient place to handle it" — "may be" is doing real work
+              * Don't editorialize yet; the critique is the next slide
+        * Pivot to next slide
 
-  - id: orbital-3
+  - id: orbital-astronomy
     section: orbital
-    title: "Orbital — why it's consequential for astronomy"
+    title: "of exposures will contain a satellite trail"
+    dek: "If the ~560,000 currently proposed satellites fly · wide-field LEO surveys (SPHEREx, ARRAKIHS, Xuntian)"
     body: |
-      A December 2025 Nature study (Borlaff, Marcum, and Howell) projects that if the
-      ~560,000 currently proposed satellites fly, more than 96% of exposures from
-      upcoming wide-field LEO surveys — SPHEREx, ARRAKIHS, Xuntian — will contain
-      at least one Sun-illuminated satellite trail.
-    visual: astronomyImpact
+      Borlaff, Marcum, and Howell · Nature · December 2025
+    layout: hero
+    visual: heroStat
+    visualConfig:
+      stat: "96%"
+      accent: "rgba(99,102,241,0.55)"
     speaker: tre
     notes:
       brandon: |
-        This is the slide where the whole argument lands. Let Tre have the full beat on
-        "96% of exposures."
+        * Give Tre the full beat
+           * This is the slide where the whole argument lands
+           * Let the "96% of exposures" line breathe
       tre: |
-        The 96% figure is the sharpest sentence in the talk. Pause after it. Then:
-        LOFAR has already detected unintended emissions from Starlink in the 150.05–153 MHz
-        band that the ITU protects for radio astronomy. These are not hypothetical costs.
+        * Cover the drawbacks of current and planned orbital deployments
+           * Heat rejection scales with radiator area, not demand
+           * Radiation degrades silicon faster than a ground-side refresh cycle
+           * No established in-orbit servicing model at data-center scale
+           * Space-to-ground bandwidth remains a hard ceiling
+        * Cover future deployment plans and their drawbacks
+           * Thales Alenia Space ASCEND (June 2024) — 1 GW deployable by 2050, conditional on a launcher ~10× less emissive over its lifecycle
+           * Gigawatt-class proposals imply km-per-side solar and radiator structures — more than an order of magnitude beyond anything humans have assembled in space
+        * Land the astronomy cost
+           * 96% figure is the sharpest sentence in the talk — pause after it
+           * LOFAR has already detected unintended Starlink emissions at 110–188 MHz, including the 150.05–153 MHz band protected by the ITU for radio astronomy (Di Vruno et al. 2023)
+           * Say clearly: these are not hypothetical costs
+        * Pivot to next slide (hand back to Brandon)
 
-  - id: conclusion-1
+  - id: conclusion
     section: conclusion
     title: "What the evidence suggests"
+    dek: "Judge future compute by which burdens it shifts, and whose environment absorbs them."
     body: |
-      Prioritize terrestrial efficiency first — it's the lowest-risk, highest-evidence
-      path. Treat underwater as a specialized option, not a general replacement. Apply
-      astronomical impact assessments to any large-scale orbital-compute proposal.
-    visual: null
+      The scientific or environmental costs should not fall on people and fields that didn't
+      choose the tradeoff. Core sources: IEA Energy and AI · LBNL 2024 Data Center Energy Usage ·
+      Microsoft Project Natick · Di Vruno et al. 2023 · Borlaff Nature 2025 · IAU CPS.
+    layout: stacked
+    visual: recommendationsGrid
     speaker: brandon
     notes:
       brandon: |
-        Back to me for the verdict. Three clean recommendations, one sentence each. Do not
-        add qualifiers.
+        * Deliver the three-part verdict
+           * One sentence per recommendation card — no qualifiers
+              * Prioritize land-based efficiency first (lowest risk, strongest evidence)
+              * Treat underwater as a specialized / coastal-edge option, not a general replacement
+              * Apply astronomical impact assessments to any large-scale orbital-compute proposal
+        * Set up Q&A
+           * Closing slide stays up for Q&A
+           * QR opens the full research appendix
       tre: |
-        Ready to close on the next slide.
-
-  - id: conclusion-2
-    section: conclusion
-    title: "How we judge the tradeoff"
-    body: |
-      Future compute should be judged not just by capacity, but by which burdens it
-      shifts, how well those new burdens are understood, and whether the scientific
-      or environmental costs fall on people and fields that didn't choose the tradeoff.
-    visual: null
-    speaker: tre
-    notes:
-      brandon: ""
-      tre: |
-        Close the talk. Slow the pace on "the scientific or environmental costs fall on
-        people and fields that didn't choose the tradeoff." Thank the class. Don't rush to
-        Q&A — let the line sit.
-
-  - id: references
-    section: references
-    title: "Core sources"
-    body: |
-      IEA Energy and AI · LBNL 2024 U.S. Data Center Energy Usage · Microsoft Project
-      Natick · DatacenterDynamics (Natick end) · FCC Public Notice DA 26-113 ·
-      Xinhua (Three-Body Constellation) · SATCON1 · A&A (Di Vruno 2023) ·
-      Borlaff Nature 2025 · IAU CPS · ESA Space Environment 2025.
-    visual: null
-    speaker: brandon
-    notes:
-      brandon: |
-        Closing slide stays up for Q&A. Scan the QR for the full research appendix.
-      tre: |
-        I'll stand next to Brandon for Q&A. Field questions on underwater and orbital;
-        hand anything policy-flavored back to him.
+        * Close the talk
+           * Slow the pace on: "the scientific or environmental costs fall on people and fields that didn't choose the tradeoff"
+           * Thank the class
+           * Don't rush to Q&A — let the line sit
+        * Q&A setup
+           * I stand next to Brandon for Q&A
+           * I field underwater / orbital technical questions
+           * Hand anything policy-flavored back to Brandon

@@ -54,25 +54,25 @@ test.describe("presentation mode regression", () => {
     await expect(stage.getByTestId("stage-live")).toBeVisible();
     await expect(remote.getByTestId("remote-live")).toBeVisible();
     await expect(follow.getByTestId("follow-live")).toBeVisible();
-    await expect(stage.getByTestId("stage-counter")).toHaveText("1 / 20");
-    await expect(remote.getByTestId("remote-counter")).toHaveText("Slide 1 / 20");
-    await expect(follow.getByTestId("follow-counter")).toHaveText("Slide 1 / 20");
+    await expect(stage.getByTestId("stage-counter")).toHaveText("1 / 11");
+    await expect(remote.getByTestId("remote-counter")).toHaveText("Slide 1 / 11");
+    await expect(follow.getByTestId("follow-counter")).toHaveText("Slide 1 / 11");
     await expect(follow.getByText("Your notes")).toHaveCount(0);
 
     await stage.keyboard.press("ArrowRight");
-    await expect(stage.getByTestId("stage-counter")).toHaveText("2 / 20");
-    await expect(remote.getByTestId("remote-counter")).toHaveText("Slide 2 / 20");
-    await expect(follow.getByTestId("follow-counter")).toHaveText("Slide 2 / 20");
+    await expect(stage.getByTestId("stage-counter")).toHaveText("2 / 11");
+    await expect(remote.getByTestId("remote-counter")).toHaveText("Slide 2 / 11");
+    await expect(follow.getByTestId("follow-counter")).toHaveText("Slide 2 / 11");
 
     await remote.getByTestId("remote-next").click();
-    await expect(stage.getByTestId("stage-counter")).toHaveText("3 / 20");
-    await expect(follow.getByTestId("follow-counter")).toHaveText("Slide 3 / 20");
+    await expect(stage.getByTestId("stage-counter")).toHaveText("3 / 11");
+    await expect(follow.getByTestId("follow-counter")).toHaveText("Slide 3 / 11");
 
     await follow.getByTestId("follow-next").click();
     await expect(follow.getByTestId("follow-resume-sync")).toBeVisible();
     await follow.getByTestId("follow-resume-sync").click();
     await expect(follow.getByTestId("follow-resume-sync")).toHaveCount(0);
-    await expect(follow.getByTestId("follow-counter")).toHaveText("Slide 3 / 20");
+    await expect(follow.getByTestId("follow-counter")).toHaveText("Slide 3 / 11");
 
     await stage.keyboard.press("KeyR");
     await expect(stage.getByText("Re-pair a remote")).toBeVisible();
