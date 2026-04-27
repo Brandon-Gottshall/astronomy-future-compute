@@ -2,10 +2,11 @@ import FollowView from "../../components/FollowView";
 import { COPY } from "../../lib/copy.js";
 import { parseSessionParams } from "../../lib/session.js";
 
-export default function FollowPage({ searchParams }) {
+export default async function FollowPage({ searchParams }) {
+  const resolvedSearchParams = await searchParams;
   const params = parseSessionParams(
     new URLSearchParams(
-      Object.entries(searchParams || {}).flatMap(([key, value]) =>
+      Object.entries(resolvedSearchParams || {}).flatMap(([key, value]) =>
         Array.isArray(value) ? value.map((item) => [key, item]) : [[key, value]]
       )
     )
@@ -14,8 +15,8 @@ export default function FollowPage({ searchParams }) {
     return (
       <main className="min-h-screen flex items-center justify-center p-8 text-center">
         <div className="max-w-sm space-y-3">
-          <h1 className="text-2xl font-semibold">No session found</h1>
-          <p className="opacity-80">Scan the follow-along QR on the stage to open the synced view.</p>
+          <h1 className="text-2xl font-semibold">{COPY.follow.missingTitle}</h1>
+          <p className="opacity-80">{COPY.follow.missingBody}</p>
         </div>
       </main>
     );

@@ -1,5 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
+import { COPY } from "../lib/copy.js";
+import { Alert, AlertDescription } from "./ui/alert";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 function Qr({ speakerId, tokenUrl, label, paired, pairState, onRevealPairToken }) {
   const [dataUrl, setDataUrl] = useState(null);
@@ -23,66 +28,78 @@ function Qr({ speakerId, tokenUrl, label, paired, pairState, onRevealPairToken }
   }, [activeUrl]);
 
   return (
-    <div
-      className="text-center rounded-2xl border border-slate-800 bg-slate-900/60 p-5"
+    <Card
+      className="border-slate-800 bg-slate-900/60 text-center text-slate-100"
       data-testid={`speaker-card-${speakerId}`}
     >
-      <div className="mb-2 text-lg font-medium flex items-center justify-center gap-2">
-        <span>{label}</span>
-        {paired ? (
-          <span className="text-xs bg-emerald-500/20 text-emerald-300 rounded-full px-2 py-0.5">
-            paired
-          </span>
-        ) : null}
-      </div>
-      {dataUrl ? (
-        <img
-          alt={`Pair ${label}`}
-          src={dataUrl}
-          width="280"
-          height="280"
-          className="mx-auto rounded bg-white p-2"
-        />
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg font-medium flex items-center justify-center gap-2">
+          <span>{label}</span>
+          {paired ? (
+            <Badge className="text-xs bg-emerald-500/20 text-emerald-300 rounded-full px-2 py-0.5">
+              {COPY.stage.pairedBadge}
+            </Badge>
+          ) : null}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {dataUrl ? (
+          <img
+            alt={`${COPY.stage.pairAltPrefix} ${label}`}
+            src={dataUrl}
+            width="280"
+            height="280"
+            className="mx-auto rounded bg-white p-2"
+          />
         ) : (
-        <div className="h-[280px] w-[280px] mx-auto rounded border border-dashed border-slate-700 bg-slate-950/70 flex items-center justify-center px-6 text-sm opacity-70">
-          Reveal a pair token to activate this QR.
-        </div>
-      )}
-      <div
-        className="mt-2 text-xs opacity-60 break-all max-w-[280px] mx-auto"
-        data-testid={`speaker-url-${speakerId}`}
-      >
-        {activeUrl || "Reveal a pair token, then scan this QR."}
-      </div>
-      <div className="mt-4 space-y-3 text-left">
-        <button
-          type="button"
-          onClick={onRevealPairToken}
-          data-testid={`reveal-pair-token-${speakerId}`}
-          className="w-full rounded-lg border border-slate-700 px-3 py-2 text-sm font-medium hover:border-slate-500"
-        >
-          {hasActivePairToken ? "Refresh pair token" : "Reveal pair token"}
-        </button>
-        {pairState?.loading ? (
-          <div className="text-sm opacity-70">Generating a short-lived pair token…</div>
-        ) : null}
-        {pairState?.error ? (
-          <div className="text-sm text-rose-300">{pairState.error}</div>
-        ) : null}
-        {hasActivePairToken ? (
-          <div
-            className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 p-3"
-            data-testid={`pair-token-${speakerId}`}
-          >
-            <div className="text-xs uppercase tracking-wide opacity-70">QR unlocked</div>
-            <div className="mt-2 text-xs opacity-70">
-              The short-lived token is embedded in this QR. The phone only needs the session PIN.
-              Expires in {secondsLeft}s.
-            </div>
+          <div className="h-[280px] w-[280px] mx-auto rounded border border-dashed border-slate-700 bg-slate-950/70 flex items-center justify-center px-6 text-sm opacity-70">
+            {COPY.stage.inactiveQrPrompt}
           </div>
-        ) : null}
-      </div>
-    </div>
+        )}
+        <div
+          className="mt-2 text-xs opacity-60 break-all max-w-[280px] mx-auto"
+          data-testid={`speaker-url-${speakerId}`}
+        >
+          {activeUrl || COPY.stage.inactiveUrlPrompt}
+        </div>
+        <div className="mt-4 space-y-3 text-left">
+          <Button
+            type="button"
+            onClick={onRevealPairToken}
+            data-testid={`reveal-pair-token-${speakerId}`}
+            className="w-full rounded-lg border border-slate-700 px-3 py-2 text-sm font-medium hover:border-slate-500"
+          >
+            {hasActivePairToken ? COPY.stage.refreshPairTokenButton : COPY.stage.revealPairTokenButton}
+          </Button>
+          {pairState?.loading ? (
+            <div className="text-sm opacity-70" aria-live="polite">{COPY.stage.generatingPairToken}</div>
+          ) : null}
+          {pairState?.error ? (
+            <Alert
+              variant="destructive"
+              className="border-rose-500/40 bg-rose-500/10 text-rose-200"
+              aria-live="polite"
+            >
+              <AlertDescription>{pairState.error}</AlertDescription>
+            </Alert>
+          ) : null}
+          {hasActivePairToken ? (
+            <Alert
+              className="border-indigo-500/30 bg-indigo-500/10 text-slate-100"
+              data-testid={`pair-token-${speakerId}`}
+              role="status"
+              aria-live="polite"
+            >
+              <div className="text-xs uppercase tracking-wide opacity-70">{COPY.stage.qrUnlockedLabel}</div>
+              <AlertDescription className="mt-2 text-xs opacity-70">
+                {COPY.stage.qrUnlockedBody}
+                {" "}{COPY.stage.expiresInPrefix} {secondsLeft}s.
+              </AlertDescription>
+            </Alert>
+          ) : null}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -122,10 +139,10 @@ export default function PairPanel({
     if (!response.ok || !data?.ok) {
       const error =
         data?.error === "expired-token"
-          ? "The stage session expired. Reload /present."
+          ? COPY.errors.pairToken["expired-token"]
           : data?.error === "pusher-not-configured"
-            ? "Pusher is not configured for this deployment."
-            : "Could not reveal a pair token.";
+            ? COPY.errors.pairToken["pusher-not-configured"]
+            : COPY.errors.pairToken.fallback;
       setPairStates((current) => ({
         ...current,
         [speakerId]: { ...current[speakerId], loading: false, error },
@@ -157,33 +174,39 @@ export default function PairPanel({
   };
 
   const pinPanel = (
-    <div className="mb-6 w-full max-w-xl rounded-2xl border border-indigo-500/30 bg-indigo-500/10 px-5 py-4 text-center">
+    <Card className="mb-6 w-full max-w-xl border-indigo-500/30 bg-indigo-500/10 px-5 py-4 text-center text-slate-100">
       <div className="text-xs uppercase tracking-[0.2em] opacity-70">
-        Session PIN
+        {COPY.stage.sessionPinLabel}
       </div>
       <div className="mt-2 font-mono text-4xl font-semibold tracking-[0.4em]" data-testid="session-pin-value">
         {pin}
       </div>
       {typeof slideCount === "number" ? (
-        <div className="mt-2 text-sm opacity-70">{slideCount} slides ready</div>
+        <div className="mt-2 text-sm opacity-70">{slideCount} {COPY.stage.slidesReadySuffix}</div>
       ) : null}
       {onResetSession ? (
         <div className="mt-4 space-y-2">
-          <button
+          <Button
             type="button"
             onClick={onResetSession}
             disabled={resettingSession}
             data-testid="reset-presentation-session"
             className="rounded-lg border border-indigo-300/40 px-3 py-2 text-sm font-medium hover:border-indigo-200 disabled:opacity-60"
           >
-            {resettingSession ? "Resetting session…" : "Reset session & PIN"}
-          </button>
+            {resettingSession ? COPY.stage.resettingSessionButton : COPY.stage.resetSessionButton}
+          </Button>
           {resetSessionError ? (
-            <div className="text-sm text-rose-300">{resetSessionError}</div>
+            <Alert
+              variant="destructive"
+              className="border-rose-500/40 bg-rose-500/10 text-rose-200"
+              aria-live="polite"
+            >
+              <AlertDescription>{resetSessionError}</AlertDescription>
+            </Alert>
           ) : null}
         </div>
       ) : null}
-    </div>
+    </Card>
   );
 
   return (
@@ -196,11 +219,10 @@ export default function PairPanel({
     >
       {!compact ? (
         <div className="text-center mb-8">
-          <div className="text-sm uppercase tracking-wide opacity-60 mb-2">Pair to begin</div>
-          <h1 className="text-3xl font-semibold mb-2">Scan your speaker's QR</h1>
+          <div className="text-sm uppercase tracking-wide opacity-60 mb-2">{COPY.stage.pairIntroLabel}</div>
+          <h1 className="text-3xl font-semibold mb-2">{COPY.stage.pairIntroTitle}</h1>
           <p className="opacity-70">
-            Reveal a short-lived pair token, have the speaker scan the unlocked QR, then enter
-            the session PIN on the phone.
+            {COPY.stage.pairIntroBody}
           </p>
         </div>
       ) : null}

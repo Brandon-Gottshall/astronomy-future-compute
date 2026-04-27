@@ -115,7 +115,7 @@ export default function PresentClient({ initialSession }) {
   const resetSession = async () => {
     if (typeof window !== "undefined") {
       const confirmed = window.confirm(
-        "Create a new presentation session and PIN? Current remotes and follow links will need to pair again."
+        COPY.presentation.setupResetConfirm
       );
       if (!confirmed) return;
     }
@@ -130,7 +130,7 @@ export default function PresentClient({ initialSession }) {
       setSession(data);
       writeStoredSession(data);
     } catch (error) {
-      setResetError(error?.message || "Could not reset the presentation session.");
+      setResetError(error?.message || COPY.presentation.setupResetError);
     } finally {
       setResetting(false);
     }

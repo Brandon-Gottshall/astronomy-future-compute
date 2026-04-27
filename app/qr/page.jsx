@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { COPY } from "../../lib/copy.js";
 
 export default function QRPage() {
   const [qrDataUrl, setQrDataUrl] = useState(null);
@@ -20,36 +21,25 @@ export default function QRPage() {
   }, []);
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#0f172a",
-        gap: "2rem",
-        padding: "2rem",
-      }}
-    >
+    <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-slate-900 p-8">
       {qrDataUrl ? (
         <img
-          alt="QR code linking to research atlas"
+          alt={COPY.site.qr.alt}
           src={qrDataUrl}
           width={400}
           height={400}
-          style={{ imageRendering: "pixelated" }}
+          className="[image-rendering:pixelated]"
         />
       ) : (
-        <div style={{ width: 400, height: 400, background: "rgba(148,163,184,0.05)", borderRadius: "1rem" }} />
+        <div className="size-[400px] rounded-2xl bg-slate-400/5" />
       )}
-      <p style={{ color: "#94a3b8", fontSize: "1.125rem", textAlign: "center" }}>
-        Scan to open the research appendix
+      <p className="text-center text-lg text-slate-400">
+        {COPY.site.qr.prompt}
       </p>
       {atlasUrl && (
         <a
           href={atlasUrl}
-          style={{ color: "#64748b", fontSize: "0.875rem", textDecoration: "none" }}
+          className="text-sm text-slate-500 no-underline"
         >
           {atlasUrl}
         </a>

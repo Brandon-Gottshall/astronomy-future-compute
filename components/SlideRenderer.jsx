@@ -1,5 +1,5 @@
 "use client";
-import { SLIDE_VISUALS } from "./SiteApp";
+import { SLIDE_VISUALS } from "./presentation/slide-visuals";
 
 function resolveLayout(slide, hasVisual) {
   if (slide.layout) return slide.layout;
