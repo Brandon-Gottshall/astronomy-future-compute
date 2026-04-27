@@ -28,6 +28,8 @@ id, secret, and `PRESENTATION_TOKEN_SECRET`. Then:
 
 1. Open `/present` on your laptop — it opens on the pair screen with both
    speaker QRs visible and the session PIN displayed.
+   The stage session is reused from this browser until you click
+   `Reset session & PIN`.
 2. On the stage, click `Reveal pair token` for a speaker. That unlocks a
    short-lived speaker QR whose URL now carries the signed pair token.
 3. Each speaker scans their freshly unlocked QR → lands on `/remote?…&as=<speaker>&pt=…`.

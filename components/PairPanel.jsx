@@ -95,6 +95,9 @@ export default function PairPanel({
   pairedRemotes,
   compact = false,
   slideCount,
+  onResetSession,
+  resettingSession = false,
+  resetSessionError = null,
 }) {
   const [pairStates, setPairStates] = useState({});
   const [, force] = useState(0);
@@ -102,6 +105,9 @@ export default function PairPanel({
     const t = setInterval(() => force((v) => v + 1), 1000);
     return () => clearInterval(t);
   }, []);
+  useEffect(() => {
+    setPairStates({});
+  }, [stageToken]);
   const revealPairToken = async (speakerId) => {
     setPairStates((current) => ({
       ...current,
@@ -160,6 +166,22 @@ export default function PairPanel({
       </div>
       {typeof slideCount === "number" ? (
         <div className="mt-2 text-sm opacity-70">{slideCount} slides ready</div>
+      ) : null}
+      {onResetSession ? (
+        <div className="mt-4 space-y-2">
+          <button
+            type="button"
+            onClick={onResetSession}
+            disabled={resettingSession}
+            data-testid="reset-presentation-session"
+            className="rounded-lg border border-indigo-300/40 px-3 py-2 text-sm font-medium hover:border-indigo-200 disabled:opacity-60"
+          >
+            {resettingSession ? "Resetting session…" : "Reset session & PIN"}
+          </button>
+          {resetSessionError ? (
+            <div className="text-sm text-rose-300">{resetSessionError}</div>
+          ) : null}
+        </div>
       ) : null}
     </div>
   );

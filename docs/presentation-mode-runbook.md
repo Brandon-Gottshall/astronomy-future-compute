@@ -20,6 +20,7 @@ production environments:
    - both speaker QR cards
    - a visible session PIN
    - `Reveal pair token` actions
+   - `Reset session & PIN` for explicitly rotating the session
 4. Scan or open a speaker QR URL.
 5. Reveal a pair token on the stage and enter that token plus the session PIN on the phone.
 6. Tap `Begin presentation`.
@@ -34,6 +35,8 @@ production environments:
 - Expired pair token shows an explicit expiry error.
 - Invalid pair token shows an explicit invalid-token error.
 - Pressing `R` on the stage reopens pairing without dropping the live slide state.
+- Reloading `/present` or opening it in another same-browser tab keeps the same
+  session PIN and speaker URLs until `Reset session & PIN` is confirmed.
 - Refreshing a paired remote restores the presenter token from `sessionStorage`.
 
 ## Regression
