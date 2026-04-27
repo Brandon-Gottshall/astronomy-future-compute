@@ -24,8 +24,31 @@ import {
 function cn(...args) {
   return args.filter(Boolean).join(" ");
 }
+function plainText(value) {
+  return String(value || "").replace(/\s+/g, " ").trim();
+}
+function shortCopy(value, maxChars = 150) {
+  const text = plainText(value);
+  if (text.length <= maxChars) return text;
+  const sentence = text.match(/^.*?[.!?](?:\s|$)/)?.[0]?.trim();
+  if (sentence && sentence.length <= maxChars) return sentence;
+  return text.slice(0, maxChars - 1).trimEnd() + "…";
+}
+function splitParagraphs(value) {
+  return String(value || "")
+    .split(/\n\s*\n/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+function wordCount(value) {
+  const text = plainText(value);
+  return text ? text.split(/\s+/).length : 0;
+}
 function modeHref(mode, anchor) {
-  return "?mode=" + mode + (anchor ? "#" + anchor : "");
+  const hash = anchor ? "#" + anchor : "";
+  if (mode === "atlas") return "/research" + hash;
+  if (mode === "live") return "/" + hash;
+  return "?mode=" + mode + hash;
 }
 
 /* ===== STATE ===== */
@@ -38,6 +61,32 @@ const initialState = {
   counterArenaPath: "underwater",
 };
 const initialLiveState = { activeSection: "live-hero" };
+const RUBRIC_VISUAL_SUMMARIES = {
+  topicSummary: {
+    stat: "3",
+    statLabel: "siting paths",
+    takeaway: "The project compares land, underwater, and orbital compute as burden-shifting choices.",
+    chips: ["Land", "Underwater", "Orbit"],
+  },
+  astronomyRelevance: {
+    stat: "96%",
+    statLabel: "LEO survey exposure risk",
+    takeaway: "Astronomy both depends on compute and can be harmed by where future compute is placed.",
+    chips: ["Rubin", "SKAO", "IAU CPS"],
+  },
+  futureImpact: {
+    stat: "Near-term",
+    statLabel: "land stays dominant",
+    takeaway: "Underwater remains niche; orbital is the least mature and most consequential path.",
+    chips: ["Maturity", "Reversibility", "Externality"],
+  },
+  recommendation: {
+    stat: "1",
+    statLabel: "main standard",
+    takeaway: "Judge compute by which burdens it shifts and whose environment absorbs them.",
+    chips: ["Improve land", "Limit underwater", "Scrutinize orbit"],
+  },
+};
 function reducer(state, action) {
   switch (action.type) {
     case "SET":
@@ -156,6 +205,18 @@ function ToggleRow({ label, value, onChange, options }) {
         </button>
       ))}
     </div>
+  );
+}
+
+function PrintButton({ children = "Print this page", className }) {
+  return (
+    <button
+      type="button"
+      className={cn("action-btn", className)}
+      onClick={() => window.print()}
+    >
+      {children}
+    </button>
   );
 }
 function PathwayPill({ pathway }) {
@@ -348,6 +409,15 @@ function FullViewportHero() {
         <p className="text-base text-slate-400">
           {COPY.meta.authors.join(" & ")} · {COPY.meta.date}
         </p>
+        <div className="mt-8 flex flex-wrap justify-center gap-3 no-print">
+          <PrintButton className="primary">Print research appendix</PrintButton>
+          <a href="/" className="action-btn secondary">
+            Open main paper
+          </a>
+          <a href="/presentation" className="action-btn secondary">
+            Open printable slides
+          </a>
+        </div>
         <div className="mt-12 scroll-indicator text-slate-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -894,6 +964,7 @@ function ReferencesSection() {
 
 /* ===== LIVE PRESENTATION PATH ===== */
 function LiveHero() {
+  const heroDek = shortCopy(COPY.live.hero.dek, 170);
   return (
     <section id="live-hero" className="hero-viewport">
       <div className="hero-bg"></div>
@@ -909,15 +980,19 @@ function LiveHero() {
           </p>
           {COPY.live.hero.dek ? (
             <p className="text-base md:text-lg text-slate-400 max-w-3xl mx-auto mb-6 leading-relaxed">
-              {COPY.live.hero.dek}
+              {heroDek}
             </p>
           ) : null}
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
-            <a href="#live-need" className="toggle-btn active">
-              {COPY.live.hero.primaryCta}
+          <div className="flex flex-wrap justify-center gap-3 mb-10 no-print">
+            <a href="#student-header" className="action-btn primary">
+              Start reading
             </a>
-            <a href={modeHref("atlas", "hero")} className="toggle-btn">
-              {COPY.live.hero.secondaryCta}
+            <PrintButton className="secondary">Print main paper</PrintButton>
+            <a href="/research" className="action-btn secondary">
+              Research appendix
+            </a>
+            <a href="/presentation" className="action-btn secondary">
+              Printable slides
             </a>
           </div>
         </div>
@@ -939,7 +1014,7 @@ function LiveHero() {
                 className={"p-5 border-l-4 " + borderClasses[i]}
               >
                 <h3 className={titleClasses[i] + " mb-2"}>{card.title}</h3>
-                <p className="text-sm text-slate-300">{card.body}</p>
+                <p className="text-sm text-slate-300">{shortCopy(card.body, 130)}</p>
               </Card>
             );
           })}
@@ -955,7 +1030,7 @@ function LiveAstronomySection() {
       <div className="fade-in text-center mb-10">
         <h2 className="mb-2">{COPY.live.need.title}</h2>
         <p className="text-slate-400 max-w-3xl mx-auto">
-          {COPY.live.need.intro}
+          {shortCopy(COPY.live.need.intro, 150)}
         </p>
       </div>
       <div className="fade-in grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
@@ -974,7 +1049,7 @@ function LiveAstronomySection() {
         {COPY.live.need.cards.map((card) => (
           <Card key={card.title} className="p-5 h-full">
             <h3 className="text-white mb-2">{card.title}</h3>
-            <p className="text-sm text-slate-300">{card.body}</p>
+            <p className="text-sm text-slate-300">{shortCopy(card.body, 120)}</p>
           </Card>
         ))}
       </div>
@@ -988,7 +1063,7 @@ function LiveContextSection() {
       <div className="fade-in text-center mb-10">
         <h2 className="mb-2">{COPY.live.context.title}</h2>
         <p className="text-slate-400 max-w-3xl mx-auto">
-          {COPY.live.context.intro}
+          {shortCopy(COPY.live.context.intro, 150)}
         </p>
       </div>
       <div className="fade-in grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
@@ -1024,7 +1099,7 @@ function LiveContextSection() {
               {COPY.live.context.astronomyCardTitle}
             </h3>
             <p className="text-sm text-slate-300">
-              {COPY.live.context.astronomyCardBody}
+              {shortCopy(COPY.live.context.astronomyCardBody, 115)}
             </p>
           </Card>
           <Card className="p-5">
@@ -1032,7 +1107,7 @@ function LiveContextSection() {
               {COPY.live.context.comparisonCardTitle}
             </h3>
             <p className="text-sm text-slate-300">
-              {COPY.live.context.comparisonCardBody}
+              {shortCopy(COPY.live.context.comparisonCardBody, 115)}
             </p>
           </Card>
         </div>
@@ -1047,7 +1122,7 @@ function LiveResponsesOverviewSection() {
       <div className="fade-in text-center mb-10">
         <h2 className="mb-2">{COPY.live.responses.title}</h2>
         <p className="text-slate-400 max-w-3xl mx-auto">
-          {COPY.live.responses.intro}
+          {shortCopy(COPY.live.responses.intro, 135)}
         </p>
       </div>
       <div className="fade-in grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
@@ -1071,7 +1146,7 @@ function LiveResponsesOverviewSection() {
                 </Badge>
               </div>
               <h3 className="text-white mb-2">{p.label}</h3>
-              <p className="text-sm text-slate-400 mb-3">{p.description}</p>
+              <p className="text-sm text-slate-400 mb-3">{shortCopy(p.description, 110)}</p>
               <p className="text-xs text-slate-500">
                 <span className="text-emerald-400 font-medium">
                   {COPY.live.responses.bestCaseLabel}
@@ -1120,8 +1195,14 @@ function LiveBulletList({ items, borderClass }) {
   return (
     <div className="space-y-3">
       {items.map((item, i) => (
-        <Card key={i} className={cn("p-4 border-l-4", borderClass)}>
-          <p className="text-sm text-slate-300">{item}</p>
+        <Card key={i} className={cn("p-4 border-l-4 compact-evidence-card", borderClass)}>
+          <p className="text-sm text-slate-200">{shortCopy(item, 115)}</p>
+          {plainText(item) !== shortCopy(item, 115) ? (
+            <details className="detail-drawer mt-3">
+              <summary>Detail</summary>
+              <p>{item}</p>
+            </details>
+          ) : null}
         </Card>
       ))}
     </div>
@@ -1134,7 +1215,7 @@ function LiveUnderwaterSection() {
       <div className="fade-in text-center mb-10">
         <h2 className="mb-2">{COPY.live.underwater.title}</h2>
         <p className="text-slate-400 max-w-3xl mx-auto">
-          {COPY.live.underwater.intro}
+          {shortCopy(COPY.live.underwater.intro, 145)}
         </p>
       </div>
       <div className="fade-in grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -1180,7 +1261,7 @@ function LiveUnderwaterSection() {
             {COPY.live.underwater.astronomyTitle}
           </h3>
           <p className="text-sm text-slate-300">
-            {COPY.live.underwater.astronomyBody}
+            {shortCopy(COPY.live.underwater.astronomyBody, 130)}
           </p>
         </Card>
       </div>
@@ -1194,7 +1275,7 @@ function LiveOrbitalSection() {
       <div className="fade-in text-center mb-10">
         <h2 className="mb-2">{COPY.live.orbital.title}</h2>
         <p className="text-slate-400 max-w-3xl mx-auto">
-          {COPY.live.orbital.intro}
+          {shortCopy(COPY.live.orbital.intro, 145)}
         </p>
       </div>
       <div className="fade-in grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -1245,15 +1326,19 @@ function LiveOrbitalSection() {
               {COPY.live.orbital.cardOneTitle}
             </h3>
             <p className="text-sm text-slate-300">
-              {COPY.live.orbital.cardOneBody}
+              {shortCopy(COPY.live.orbital.cardOneBody, 155)}
             </p>
+            <details className="detail-drawer mt-3">
+              <summary>Detail</summary>
+              <p>{COPY.live.orbital.cardOneBody}</p>
+            </details>
           </Card>
           <Card className="p-5">
             <h3 className="text-slate-200 mb-2">
               {COPY.live.orbital.cardTwoTitle}
             </h3>
             <p className="text-sm text-slate-300">
-              {COPY.live.orbital.cardTwoBody}
+              {shortCopy(COPY.live.orbital.cardTwoBody, 140)}
             </p>
           </Card>
         </div>
@@ -1268,7 +1353,7 @@ function LiveConclusionSection() {
       <div className="fade-in text-center mb-10">
         <h2 className="mb-2">{COPY.live.conclusion.title}</h2>
         <p className="text-slate-400 max-w-3xl mx-auto">
-          {COPY.live.conclusion.intro}
+          {shortCopy(COPY.live.conclusion.intro, 165)}
         </p>
       </div>
       {LIVE_CONCLUSIONS && LIVE_CONCLUSIONS.length > 0 ? (
@@ -1286,7 +1371,7 @@ function LiveConclusionSection() {
             {COPY.live.conclusion.bestFitTitle}
           </h3>
           <p className="text-slate-300 leading-relaxed">
-            {COPY.live.conclusion.bestFitBody}
+            {shortCopy(COPY.live.conclusion.bestFitBody, 140)}
           </p>
         </Card>
         <Card className="p-6">
@@ -1294,7 +1379,7 @@ function LiveConclusionSection() {
             {COPY.live.conclusion.atlasTitle}
           </h3>
           <p className="text-sm text-slate-400 mb-4">
-            {COPY.live.conclusion.atlasBody}
+            {shortCopy(COPY.live.conclusion.atlasBody, 120)}
           </p>
           <a
             href={modeHref("atlas", "pathways")}
@@ -1416,6 +1501,8 @@ function RubricProseBlock({ slotId, slotKey }) {
   const slot = COPY.rubric[slotKey];
   const draft = useDraftMode();
   const body = typeof slot.body === "string" ? slot.body.trim() : "";
+  const paragraphs = splitParagraphs(body);
+  const summary = RUBRIC_VISUAL_SUMMARIES[slotKey];
   const hasBody =
     body.length > 0 &&
     !body.startsWith("__STUDENT_"); // legacy sentinel guard
@@ -1431,11 +1518,42 @@ function RubricProseBlock({ slotId, slotKey }) {
         ) : null}
         <h2 className="mb-4">{slot.title}</h2>
         {hasBody ? (
-          <Card className="p-6">
-            <p className="text-slate-200 leading-relaxed whitespace-pre-line">
-              {slot.body}
-            </p>
-          </Card>
+          <>
+            <div className="rubric-brief-grid">
+              <Card className="p-6 rubric-stat-card">
+                <div className="rubric-stat">{summary?.stat || "Key"}</div>
+                <div className="rubric-stat-label">{summary?.statLabel || "point"}</div>
+              </Card>
+              <Card className="p-6 rubric-takeaway-card">
+                <div className="text-xs font-semibold uppercase tracking-widest text-cyan-300 mb-2">
+                  Short version
+                </div>
+                <p className="text-slate-200 leading-relaxed">
+                  {summary?.takeaway || shortCopy(body, 180)}
+                </p>
+                {summary?.chips?.length ? (
+                  <div className="rubric-chip-row">
+                    {summary.chips.map((chip) => (
+                      <span key={chip} className="rubric-chip">
+                        {chip}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+              </Card>
+            </div>
+            <details className="detail-drawer rubric-prose-drawer">
+              <summary>Read full written section ({wordCount(body)} words)</summary>
+              {paragraphs.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+            </details>
+            <div className="print-only rubric-print-prose">
+              {paragraphs.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+            </div>
+          </>
         ) : draft ? (
           <Card
             className="p-6"
@@ -1840,11 +1958,14 @@ function BridgeDiagram() {
   const steps = b.steps || [];
   return (
     <div className="card p-5 lg:p-6">
-      <div className="flex items-stretch gap-2 lg:gap-3 overflow-x-auto">
+      <div className="flex flex-col xl:flex-row xl:items-stretch gap-2 xl:gap-3">
         {steps.map((step, i) => (
-          <div key={i} className="flex items-stretch gap-2 lg:gap-3">
+          <div
+            key={i}
+            className="flex flex-col xl:flex-row xl:items-stretch gap-2 xl:gap-3 xl:flex-1 xl:min-w-0"
+          >
             <div
-              className="flex-1 min-w-[160px] max-w-[240px] p-3 lg:p-4 rounded-lg"
+              className="xl:flex-1 xl:min-w-0 p-3 lg:p-4 rounded-lg"
               style={{
                 background: "rgba(99,102,241,0.08)",
                 borderLeft: "3px solid rgba(99,102,241,0.55)",
@@ -1852,7 +1973,7 @@ function BridgeDiagram() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <span
-                  className="inline-flex items-center justify-center text-xs lg:text-sm font-bold text-indigo-300"
+                  className="inline-flex items-center justify-center text-xs lg:text-sm font-bold text-indigo-300 flex-none"
                   style={{
                     width: "1.5rem",
                     height: "1.5rem",
@@ -1873,11 +1994,12 @@ function BridgeDiagram() {
             </div>
             {i < steps.length - 1 ? (
               <div
-                className="flex items-center text-2xl lg:text-3xl"
+                className="flex items-center justify-center text-2xl lg:text-3xl flex-none"
                 style={{ color: "rgba(99,102,241,0.55)" }}
                 aria-hidden="true"
               >
-                →
+                <span className="xl:hidden">↓</span>
+                <span className="hidden xl:inline">→</span>
               </div>
             ) : null}
           </div>
@@ -1909,12 +2031,63 @@ function AppendixBanner() {
   );
 }
 
+function SubmissionPanel({ mode }) {
+  const isResearch = mode === "research";
+  const printLabel = isResearch ? "Print research appendix" : "Print main paper";
+  const currentLabel = isResearch ? "Research appendix" : "Main paper";
+  return (
+    <aside className="submission-panel no-print" aria-label="Instructor quick links">
+      <div>
+        <div className="text-xs uppercase tracking-widest text-cyan-300 font-semibold mb-2">
+          Instructor quick links
+        </div>
+        <h2 className="text-2xl md:text-3xl mb-2">Start here for grading and printing.</h2>
+        <p className="text-slate-300 max-w-3xl">
+          This site has two turn-in views: the readable paper/research site and the printable
+          presentation deck. Presenter controls are separate so they do not get in the instructor's
+          way.
+        </p>
+      </div>
+      <div className="submission-grid">
+        <div className="submission-card">
+          <div className="submission-kicker">You are viewing</div>
+          <h3>{currentLabel}</h3>
+          <p>Use this for normal reading. The print button opens the browser print dialog.</p>
+          <PrintButton className="primary">{printLabel}</PrintButton>
+        </div>
+        <a className="submission-card link-card" href={isResearch ? "/" : "/research"}>
+          <div className="submission-kicker">Other written view</div>
+          <h3>{isResearch ? "Main paper" : "Research appendix"}</h3>
+          <p>{isResearch ? "Go back to the main web paper." : "Open the fuller source and evidence appendix."}</p>
+        </a>
+        <a className="submission-card link-card" href="/presentation">
+          <div className="submission-kicker">Slides</div>
+          <h3>Printable presentation</h3>
+          <p>Open the static slide deck for printing or review. Live presenter tools stay separate.</p>
+        </a>
+      </div>
+    </aside>
+  );
+}
+
+function PrintSubmissionLinks() {
+  return (
+    <aside className="print-only print-submission-links">
+      <h2>Submission links</h2>
+      <p>Main paper: /</p>
+      <p>Research appendix: /research</p>
+      <p>Printable presentation: /presentation</p>
+      <p>Presenter setup for live delivery only: /present</p>
+    </aside>
+  );
+}
+
 /* ===== FLOATING QR ===== */
 function FloatingQR({ url: overrideUrl, label = "Open research appendix" } = {}) {
   const [fallbackUrl, setFallbackUrl] = useState(null);
   useEffect(() => {
     if (overrideUrl) return;
-    setFallbackUrl(window.location.origin + window.location.pathname + "?mode=atlas");
+    setFallbackUrl(window.location.origin + "/research");
   }, [overrideUrl]);
   const url = overrideUrl || fallbackUrl;
   const qrDataUrl = useQrDataUrl(url);
@@ -1977,11 +2150,15 @@ function StickyNav({ mode, sections, activeSection }) {
         <div className="ml-auto pl-3">
           <a
             href={modeHref(targetMode, targetMode === "live" ? "live-hero" : "hero")}
-            className="toggle-btn whitespace-nowrap"
+            className="action-btn small secondary whitespace-nowrap"
           >
             {targetLabel}
           </a>
         </div>
+        <a href="/presentation" className="action-btn small secondary whitespace-nowrap">
+          Slides
+        </a>
+        <PrintButton className="small primary whitespace-nowrap">Print</PrintButton>
       </div>
     </nav>
   );
@@ -1998,6 +2175,8 @@ export function AtlasApp() {
       <ScrollProgressBar progress={progress} />
       <AppendixBanner />
       <FullViewportHero />
+      <SubmissionPanel mode="research" />
+      <PrintSubmissionLinks />
       <StickyNav mode="atlas" sections={ATLAS_SECTIONS} activeSection={state.activeSection} />
       <TheProblemSection state={state} dispatch={dispatch} />
       <ThreePathwaysSection state={state} dispatch={dispatch} />
@@ -2019,6 +2198,8 @@ export function LiveApp() {
     <>
       <ScrollProgressBar progress={progress} />
       <LiveHero />
+      <SubmissionPanel mode="main" />
+      <PrintSubmissionLinks />
       <StickyNav mode="live" sections={LIVE_SECTIONS} activeSection={state.activeSection} />
       <StudentHeaderBlock />
       <RubricProseBlock slotId="topic-summary" slotKey="topicSummary" />
