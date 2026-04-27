@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { PRESENTATION_STORAGE_KEY } from "../../lib/session.js";
 
 const REQUIRED_ENV = [
   "NEXT_PUBLIC_PUSHER_KEY",
@@ -14,6 +15,63 @@ const hasPresentationEnv = REQUIRED_ENV.every((name) => Boolean(process.env[name
 test.describe("presentation mode regression", () => {
   test.describe.configure({ mode: "serial" });
   test.skip(!hasPresentationEnv, "Presentation regression requires Pusher and token env vars.");
+
+  async function revealRemoteSessionId(page, speakerId = "brandon") {
+    await page.getByTestId(`reveal-pair-token-${speakerId}`).click();
+    await expect(page.getByTestId(`pair-token-${speakerId}`)).toBeVisible();
+    const remoteUrl = await page.getByTestId(`speaker-url-${speakerId}`).textContent();
+    expect(remoteUrl).toContain("/remote?");
+    expect(remoteUrl).toContain("pt=");
+    return new URL(remoteUrl).searchParams.get("s");
+  }
+
+  test("stage session and PIN persist until explicitly reset", async ({ browser, baseURL }) => {
+    const context = await browser.newContext();
+    const stage = await context.newPage();
+    await stage.goto(`${baseURL}/present`);
+    await expect(stage.getByTestId("stage-setup")).toBeVisible();
+
+    const initialPin = await stage.getByTestId("session-pin-value").textContent();
+    expect(initialPin).toMatch(/^\d{4}$/);
+    const initialSessionId = await revealRemoteSessionId(stage);
+    expect(initialSessionId).toBeTruthy();
+
+    await stage.reload();
+    await expect(stage.getByTestId("stage-setup")).toBeVisible();
+    await expect(stage.getByTestId("session-pin-value")).toHaveText(initialPin);
+    expect(await revealRemoteSessionId(stage)).toBe(initialSessionId);
+
+    const secondStage = await context.newPage();
+    await secondStage.goto(`${baseURL}/present`);
+    await expect(secondStage.getByTestId("stage-setup")).toBeVisible();
+    await expect(secondStage.getByTestId("session-pin-value")).toHaveText(initialPin);
+    expect(await revealRemoteSessionId(secondStage)).toBe(initialSessionId);
+
+    secondStage.on("dialog", (dialog) => dialog.accept());
+    await secondStage.getByTestId("reset-presentation-session").click();
+    await expect
+      .poll(() =>
+        secondStage.evaluate((key) => {
+          const saved = window.localStorage.getItem(key);
+          return saved ? JSON.parse(saved).sessionId : null;
+        }, PRESENTATION_STORAGE_KEY)
+      )
+      .not.toBe(initialSessionId);
+    await expect(secondStage.getByTestId("session-pin-value")).toHaveText(/^\d{4}$/);
+    const resetPin = await secondStage.getByTestId("session-pin-value").textContent();
+    const resetSessionId = await revealRemoteSessionId(secondStage);
+    expect(resetSessionId).not.toBe(initialSessionId);
+    await expect(stage.getByTestId("session-pin-value")).toHaveText(resetPin);
+    expect(await revealRemoteSessionId(stage)).toBe(resetSessionId);
+
+    const thirdStage = await context.newPage();
+    await thirdStage.goto(`${baseURL}/present`);
+    await expect(thirdStage.getByTestId("stage-setup")).toBeVisible();
+    await expect(thirdStage.getByTestId("session-pin-value")).toHaveText(resetPin);
+    expect(await revealRemoteSessionId(thirdStage)).toBe(resetSessionId);
+
+    await context.close();
+  });
 
   test("stage, remote, and follow stay in sync across pairing and navigation", async ({ browser, baseURL }) => {
     const stage = await browser.newPage();

@@ -14,7 +14,14 @@ const TRANSPORT_MESSAGES = {
   "network-error": "Network error while syncing the presentation state.",
 };
 
-export default function StageView({ slides, speakers, session }) {
+export default function StageView({
+  slides,
+  speakers,
+  session,
+  onResetSession,
+  resettingSession,
+  resetSessionError,
+}) {
   const [transportError, setTransportError] = useState(null);
   const { state, dispatch, pairedRemotes } = useSession({
     sessionId: session.sessionId,
@@ -89,6 +96,9 @@ export default function StageView({ slides, speakers, session }) {
           pin={session.pin}
           pairedRemotes={pairedRemotes}
           slideCount={slides.length}
+          onResetSession={onResetSession}
+          resettingSession={resettingSession}
+          resetSessionError={resetSessionError}
         />
         <FloatingQR url={followUrl} label="Scan to follow along" />
       </main>
@@ -135,6 +145,9 @@ export default function StageView({ slides, speakers, session }) {
               pin={session.pin}
               pairedRemotes={pairedRemotes}
               compact
+              onResetSession={onResetSession}
+              resettingSession={resettingSession}
+              resetSessionError={resetSessionError}
             />
           </div>
         </div>
