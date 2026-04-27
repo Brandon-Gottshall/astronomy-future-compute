@@ -7,24 +7,16 @@ import {
   sanitizePairToken,
   PHASE_SETUP,
 } from "../lib/session.js";
+import { COPY } from "../lib/copy.js";
+import { Alert, AlertDescription } from "./ui/alert";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
-const PAIR_ERROR_MESSAGES = {
-  "pair-token-expired": "That QR expired. Ask the stage to refresh it, then scan again.",
-  "pair-token-invalid": "This QR is no longer valid for this speaker. Ask the stage to refresh it.",
-  "bad-pin": "That PIN is incorrect.",
-  "unknown-speaker": "This speaker link is not recognized.",
-  "presentation-secret-missing": "Presentation secrets are not configured on this deployment.",
-  "network-error": "Network error while pairing this remote.",
-  "missing-pair-token": "This QR has not been unlocked yet. Ask the stage to reveal or refresh it, then scan again.",
-};
-
-const TRANSPORT_ERROR_MESSAGES = {
-  "expired-token": "This remote session expired. Scan a fresh unlocked QR and enter the PIN again.",
-  "invalid-token": "This remote session is invalid. Pair again from the stage.",
-  "scope-mismatch": "This remote session belongs to another deployment host.",
-  "pusher-not-configured": "Pusher is not configured. This remote cannot control the stage.",
-  "network-error": "Network error while sending the presentation command.",
-};
+const PAIR_ERROR_MESSAGES = COPY.errors?.pair || {};
+const TRANSPORT_ERROR_MESSAGES = COPY.errors?.remoteTransport || {};
 
 export default function RemoteView({ slides, speaker, speakers, sessionId, pairTokenFromUrl }) {
   const storageKey = speaker ? getRemoteStorageKey(sessionId, speaker.id) : null;
@@ -60,7 +52,7 @@ export default function RemoteView({ slides, speaker, speakers, sessionId, pairT
     onTransportError: (error) => {
       setTransportError(
         TRANSPORT_ERROR_MESSAGES[error.code] ||
-          "This remote lost control of the stage. Pair it again."
+          TRANSPORT_ERROR_MESSAGES.fallback
       );
       if (["expired-token", "invalid-token", "scope-mismatch"].includes(error.code)) {
         clearPresenterToken();
@@ -104,8 +96,8 @@ export default function RemoteView({ slides, speaker, speakers, sessionId, pairT
     return (
       <main className="min-h-screen flex items-center justify-center p-8 text-center">
         <div className="max-w-sm space-y-3">
-          <h1 className="text-2xl font-semibold">Invalid remote link</h1>
-          <p className="opacity-80">This QR does not match a valid speaker in the presentation.</p>
+          <h1 className="text-2xl font-semibold">{COPY.remote.invalidTitle}</h1>
+          <p className="opacity-80">{COPY.remote.invalidBody}</p>
         </div>
       </main>
     );
@@ -142,7 +134,7 @@ export default function RemoteView({ slides, speaker, speakers, sessionId, pairT
     setPairing(false);
     if (!response.ok || !data?.ok) {
       setPairError(
-        PAIR_ERROR_MESSAGES[data?.error] || "Could not pair this remote with the stage."
+        PAIR_ERROR_MESSAGES[data?.error] || PAIR_ERROR_MESSAGES.fallback
       );
       return;
     }
@@ -156,63 +148,80 @@ export default function RemoteView({ slides, speaker, speakers, sessionId, pairT
     return (
       <main className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
         <header className="p-6 text-center">
-          <div className="text-xs uppercase tracking-wide opacity-60 mb-1">Presenter remote</div>
+          <div className="text-xs uppercase tracking-wide opacity-60 mb-1">{COPY.remote.presenterRemoteLabel}</div>
           <div className="text-2xl font-semibold">{speaker.name}</div>
         </header>
         <div className="flex-1 flex items-center justify-center p-6">
-          <div
-            className="w-full max-w-md space-y-4 rounded-2xl border border-slate-800 bg-slate-900/70 p-6"
+          <Card
+            className="w-full max-w-md border-slate-800 bg-slate-900/70 text-slate-100"
             data-testid="remote-pairing"
             role="form"
           >
-            <div className="space-y-2">
-              <h1 className="text-2xl font-semibold">Unlock this remote</h1>
-              <p className="opacity-80">
-                The speaker QR carries a short-lived pairing token. Enter the session PIN from the
-                stage to unlock this remote.
+            <CardHeader>
+              <CardTitle className="text-2xl">{COPY.remote.unlockTitle}</CardTitle>
+              <CardDescription className="text-slate-300">
+                {COPY.remote.unlockBody}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {unlockedPairToken ? (
+                <Alert
+                  className="border-indigo-500/30 bg-indigo-500/10 text-slate-100"
+                  role="status"
+                  aria-live="polite"
+                >
+                  <AlertDescription>{COPY.remote.tokenDetected}</AlertDescription>
+                </Alert>
+              ) : (
+                <Alert className="border-amber-500/30 bg-amber-500/10 text-amber-100">
+                  <AlertDescription>{COPY.remote.tokenMissing}</AlertDescription>
+                </Alert>
+              )}
+              <div className="space-y-2">
+                <Label htmlFor="session-pin-input" className="text-slate-300">
+                  {COPY.remote.pinLabel}
+                </Label>
+                <Input
+                  id="session-pin-input"
+                  value={pin}
+                  onChange={(event) => setPin(event.target.value.replace(/\D/g, "").slice(0, 4))}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+                      void pairRemote();
+                    }
+                  }}
+                  data-testid="session-pin-input"
+                  className="h-auto w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 font-mono text-base text-slate-100 tracking-[0.35em] placeholder:text-slate-500 outline-none focus:border-indigo-400"
+                  placeholder="1234"
+                  inputMode="numeric"
+                  aria-describedby={pairError ? "remote-pair-error" : undefined}
+                />
+              </div>
+              {pairError ? (
+                <Alert
+                  id="remote-pair-error"
+                  variant="destructive"
+                  className="border-rose-500/40 bg-rose-500/10 text-rose-200"
+                  aria-live="polite"
+                >
+                  <AlertDescription>{pairError}</AlertDescription>
+                </Alert>
+              ) : null}
+              <Button
+                type="button"
+                onClick={() => void pairRemote()}
+                disabled={pairing || !unlockedPairToken}
+                data-testid="pair-remote-button"
+                className="h-auto w-full rounded-xl bg-indigo-600 py-4 text-lg font-semibold disabled:opacity-60"
+              >
+                {pairing ? COPY.remote.unlockingButton : COPY.remote.unlockButton}
+              </Button>
+              <p className="text-xs opacity-60">
+                {COPY.remote.freshQrHelp}
               </p>
-            </div>
-            {unlockedPairToken ? (
-              <div className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-4 py-3 text-sm opacity-80">
-                QR token detected. Enter the stage PIN to continue.
-              </div>
-            ) : (
-              <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
-                This QR does not have an active pair token. Ask the stage to refresh it, then
-                scan again.
-              </div>
-            )}
-            <label className="block space-y-2">
-              <span className="text-sm opacity-80">Session PIN</span>
-              <input
-                value={pin}
-                onChange={(event) => setPin(event.target.value.replace(/\D/g, "").slice(0, 4))}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    event.preventDefault();
-                    void pairRemote();
-                  }
-                }}
-                data-testid="session-pin-input"
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 font-mono tracking-[0.35em] outline-none focus:border-indigo-400"
-                placeholder="1234"
-                inputMode="numeric"
-              />
-            </label>
-            {pairError ? <div className="text-sm text-rose-300">{pairError}</div> : null}
-            <button
-              type="button"
-              onClick={() => void pairRemote()}
-              disabled={pairing || !unlockedPairToken}
-              data-testid="pair-remote-button"
-              className="w-full rounded-xl bg-indigo-600 py-4 text-lg font-semibold disabled:opacity-60"
-            >
-              {pairing ? "Unlocking…" : "Unlock remote"}
-            </button>
-            <p className="text-xs opacity-60">
-              Need a fresh QR? Ask the stage operator to press “Reveal pair token” again.
-            </p>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </main>
     );
@@ -222,29 +231,39 @@ export default function RemoteView({ slides, speaker, speakers, sessionId, pairT
     return (
       <main className="min-h-screen flex flex-col bg-slate-950 text-slate-100" data-testid="remote-setup">
         <header className="p-6 text-center">
-          <div className="text-xs uppercase tracking-wide opacity-60 mb-1">Paired as</div>
+          <div className="text-xs uppercase tracking-wide opacity-60 mb-1">{COPY.remote.pairedAsLabel}</div>
           <div className="text-2xl font-semibold">{speaker.name}</div>
         </header>
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center gap-4">
-          <div className="text-sm opacity-70">{slides.length} slides ready.</div>
+          <div className="text-sm opacity-70">{slides.length} {COPY.remote.slidesReady}</div>
           <div className="text-base opacity-80 max-w-sm">
-            Tap when you and your co-presenter are ready. The stage and the audience follow-along
-            will go live at slide 1.
+            {COPY.remote.setupReadyBody}
           </div>
-          {transportError ? <div className="max-w-sm text-sm text-rose-300">{transportError}</div> : null}
-          <button
+          {transportError ? (
+            <Alert
+              variant="destructive"
+              className="max-w-sm border-rose-500/40 bg-rose-500/10 text-rose-200"
+              aria-live="polite"
+            >
+              <AlertDescription>{transportError}</AlertDescription>
+            </Alert>
+          ) : null}
+          <Button
+            type="button"
             onClick={() => void beginPresentation()}
             data-testid="begin-presentation"
-            className="mt-4 w-full max-w-sm py-6 rounded-xl bg-emerald-600 active:bg-emerald-500 text-xl font-semibold"
+            className="mt-4 h-auto w-full max-w-sm py-6 rounded-xl bg-emerald-600 active:bg-emerald-500 text-xl font-semibold"
           >
-            Begin presentation
-          </button>
-          <button
+            {COPY.remote.beginButton}
+          </Button>
+          <Button
+            type="button"
+            variant="link"
             onClick={clearPresenterToken}
-            className="text-sm opacity-70 underline underline-offset-4"
+            className="text-sm text-slate-300 opacity-70 underline underline-offset-4"
           >
-            Re-pair this remote
-          </button>
+            {COPY.remote.repairButton}
+          </Button>
         </div>
       </main>
     );
@@ -262,72 +281,85 @@ export default function RemoteView({ slides, speaker, speakers, sessionId, pairT
         <div>
           <div className="text-xs uppercase tracking-wide opacity-60">
             <span data-testid="remote-counter">
-            Slide {state.index + 1} / {slides.length}
+            {COPY.remote.slideLabel} {state.index + 1} / {slides.length}
             </span>
           </div>
-          <div className="text-sm font-medium">{slide?.title}</div>
+          <div className="text-base font-semibold">{slide?.title}</div>
         </div>
         {currentSlideSpeaker ? (
-          <span
+          <Badge
             className={`text-xs px-2 py-1 rounded-full ${
               currentSlideSpeaker.id === speaker.id
                 ? "bg-emerald-500/20 text-emerald-300"
                 : "bg-slate-700/40 text-slate-300"
             }`}
           >
-            {currentSlideSpeaker.name} speaking
-          </span>
+            {currentSlideSpeaker.name} {COPY.remote.speakingSuffix}
+          </Badge>
         ) : null}
       </header>
 
       <div className="flex-1 overflow-auto p-4 space-y-4">
-        {transportError ? <div className="text-sm text-rose-300">{transportError}</div> : null}
+        {transportError ? (
+          <Alert
+            variant="destructive"
+            className="border-rose-500/40 bg-rose-500/10 text-rose-200"
+            aria-live="polite"
+          >
+            <AlertDescription>{transportError}</AlertDescription>
+          </Alert>
+        ) : null}
         <section>
-          <div className="text-xs uppercase tracking-wide opacity-60 mb-1">Your notes</div>
-          <div className="text-lg leading-relaxed whitespace-pre-wrap">
-            {myNote || <span className="opacity-40">(Nothing for this slide.)</span>}
+          <div className="text-xs uppercase tracking-wide opacity-60 mb-1">{COPY.remote.yourNotesLabel}</div>
+          <div className="text-xl sm:text-2xl leading-snug whitespace-pre-wrap max-w-prose">
+            {myNote || <span className="text-slate-500 italic">{COPY.remote.emptyCurrentNotes}</span>}
           </div>
         </section>
 
         {otherSpeaker ? (
           <section>
-            <button
+            <Button
+              type="button"
+              variant="ghost"
               onClick={() => setOtherExpanded((value) => !value)}
               className="w-full flex items-center justify-between text-xs uppercase tracking-wide opacity-60 py-2"
+              aria-expanded={otherExpanded}
             >
               <span>{otherSpeaker.name}'s notes</span>
-              <span>{otherExpanded ? "▾" : "▸"}</span>
-            </button>
+              <span aria-hidden="true">{otherExpanded ? "▾" : "▸"}</span>
+            </Button>
             {otherExpanded ? (
               <div className="text-sm leading-relaxed whitespace-pre-wrap opacity-80">
-                {otherNote || <span className="opacity-40">(Empty)</span>}
+                {otherNote || <span className="text-slate-500 italic">{COPY.remote.emptyOtherNotes}</span>}
               </div>
             ) : null}
           </section>
         ) : null}
 
         {next ? (
-          <section className="pt-4 border-t border-slate-800 text-xs opacity-60">
-            Up next: {next.title}
+          <section className="pt-4 border-t border-slate-800 text-sm text-slate-300">
+            {COPY.remote.upNextLabel}: {next.title}
           </section>
         ) : null}
       </div>
 
       <footer className="p-3 border-t border-slate-800 grid grid-cols-2 gap-3 bg-slate-900 sticky bottom-0">
-        <button
+        <Button
+          type="button"
           onClick={() => void sendControl("prev")}
           data-testid="remote-prev"
-          className="py-5 rounded-lg bg-slate-800 active:bg-slate-700 text-lg"
+          className="h-auto py-5 rounded-lg bg-slate-800 active:bg-slate-700 text-lg"
         >
-          ◀︎ Prev
-        </button>
-        <button
+          {COPY.remote.prevButton}
+        </Button>
+        <Button
+          type="button"
           onClick={() => void sendControl("next")}
           data-testid="remote-next"
-          className="py-5 rounded-lg bg-indigo-600 active:bg-indigo-500 text-lg"
+          className="h-auto py-5 rounded-lg bg-indigo-600 active:bg-indigo-500 text-lg"
         >
-          Next ▶︎
-        </button>
+          {COPY.remote.nextButton}
+        </Button>
       </footer>
     </main>
   );

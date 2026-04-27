@@ -1,9 +1,9 @@
 import "./globals.css";
+import { COPY } from "../lib/copy.js";
 
 export const metadata = {
-  title: "Astronomy's Future Compute — ASTR 1020K Web Paper",
-  description:
-    "Student paper and presentation for ASTR 1020K: land, underwater, and orbital data-center paths and their consequences for astronomy.",
+  title: COPY.site.metadata.title,
+  description: COPY.site.metadata.description,
 };
 
 export const viewport = {

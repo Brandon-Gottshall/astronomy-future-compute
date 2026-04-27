@@ -1,6 +1,8 @@
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
-:root{--bg-primary:#0f172a;--bg-card:rgba(255,255,255,0.07);--border-card:rgba(255,255,255,0.12);--text-primary:#f1f5f9;--text-secondary:#94a3b8;--accent-blue:#3b82f6;--accent-cyan:#06b6d4;--accent-indigo:#6366f1;--accent-emerald:#10b981;--accent-amber:#f59e0b;--accent-rose:#f43f5e}
+:root{--bg-primary:#0f172a;--bg-card:rgba(255,255,255,0.07);--border-card:rgba(255,255,255,0.12);--text-primary:#f1f5f9;--text-secondary:#94a3b8;--accent-blue:#3b82f6;--accent-cyan:#06b6d4}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.6;background:var(--bg-primary);color:var(--text-primary)}
@@ -16,6 +18,11 @@ h3{font-size:clamp(1.1rem,2vw,1.4rem);font-weight:600}
 .fade-in.visible{opacity:1;transform:translateY(0)}
 .scroll-indicator{animation:bounce 2s infinite}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .fade-in{opacity:1;transform:none;transition:none}
+  .scroll-indicator{animation:none}
+}
 .bar-transition{transition:width .4s ease}
 .section-wrap{max-width:1120px;margin:0 auto;padding:4rem 1.5rem}
 .nav-pill{padding:.35rem .85rem;border-radius:9999px;font-size:.85rem;font-weight:500;cursor:pointer;transition:background .2s,color .2s;white-space:nowrap;text-decoration:none;color:var(--text-secondary)}
@@ -258,3 +265,8 @@ img.pathway-img{width:100%;height:220px;object-fit:cover;border-radius:.75rem .7
 .stage-chrome .badge{background:rgba(148,163,184,0.15);border:1px solid rgba(148,163,184,0.3);border-radius:999px;padding:0.25rem 0.75rem;font-size:0.875rem}
 .stage-chrome button{background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.5);border-radius:0.375rem;padding:0.25rem 0.75rem;color:var(--text-primary);cursor:pointer}
 .stage-alert{position:fixed;top:1rem;right:1rem;z-index:60;max-width:28rem;padding:0.75rem 1rem;border-radius:0.75rem;border:1px solid rgba(244,63,94,0.35);background:rgba(127,29,29,0.92);color:#ffe4e6;font-size:0.95rem;line-height:1.4}
+
+@layer base {
+  :root,
+  .dark {--background:222.2 84% 4.9%;--foreground:210 40% 98%;--card:222.2 84% 4.9%;--card-foreground:210 40% 98%;--popover:222.2 84% 4.9%;--popover-foreground:210 40% 98%;--primary:188.7 94.5% 42.7%;--primary-foreground:222.2 47.4% 11.2%;--secondary:217.2 32.6% 17.5%;--secondary-foreground:210 40% 98%;--muted:217.2 32.6% 17.5%;--muted-foreground:215 20.2% 65.1%;--accent:217.2 32.6% 17.5%;--accent-foreground:210 40% 98%;--destructive:0 62.8% 30.6%;--destructive-foreground:210 40% 98%;--border:217.2 32.6% 17.5%;--input:217.2 32.6% 17.5%;--ring:188.7 94.5% 42.7%;--chart-1:220 70% 50%;--chart-2:188.7 94.5% 42.7%;--chart-3:243.4 75.4% 58.6%;--chart-4:160 84.1% 39.4%;--chart-5:37.7 92.1% 50.2%;--radius:0.5rem}
+}

@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useSession } from "../lib/useSession.js";
 import SlideRenderer from "./SlideRenderer";
 import { PHASE_SETUP } from "../lib/session.js";
+import { COPY } from "../lib/copy.js";
+import { Button } from "./ui/button";
 
 export default function FollowView({ slides, sessionId }) {
   const [stageIndex, setStageIndex] = useState(0);
@@ -17,12 +19,11 @@ export default function FollowView({ slides, sessionId }) {
     return (
       <main className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center p-8 text-center">
         <div data-testid="follow-waiting" className="contents">
-        <div className="text-sm uppercase tracking-wide opacity-60 mb-2">Follow along</div>
-        <h1 className="text-2xl font-semibold mb-3">Presentation will begin shortly</h1>
-        <p className="opacity-70 max-w-sm">
-          Stay on this page. When the presenters tap begin, the current slide will appear here
-          automatically.
-        </p>
+          <div className="text-sm uppercase tracking-wide opacity-60 mb-2">{COPY.follow.waitingLabel}</div>
+          <h1 className="text-2xl font-semibold mb-3">{COPY.follow.waitingTitle}</h1>
+          <p className="opacity-70 max-w-sm">
+            {COPY.follow.waitingBody}
+          </p>
         </div>
       </main>
     );
@@ -37,41 +38,50 @@ export default function FollowView({ slides, sessionId }) {
         <SlideRenderer slide={slide} variant="follow" />
       </div>
       <div className="flex items-center justify-between gap-2 p-3 border-t border-slate-800 bg-slate-900">
-        <button
+        <Button
+          type="button"
           onClick={() => {
             dispatch({ type: "detachForBrowse" });
             dispatch({ type: "prev" });
           }}
           data-testid="follow-prev"
-          className="py-3 px-4 rounded-lg bg-slate-800 active:bg-slate-700"
+          className="h-auto py-3 px-4 rounded-lg bg-slate-800 active:bg-slate-700"
+          aria-label={COPY.follow.prevLabel || "Previous slide"}
         >
-          ◀︎
-        </button>
+          <span aria-hidden="true">◀︎</span>
+        </Button>
         <div className="text-xs opacity-60" data-testid="follow-counter">
-          Slide {state.index + 1} / {slides.length}
+          {COPY.follow.slideLabel} {state.index + 1} / {slides.length}
         </div>
-        <button
+        <Button
+          type="button"
           onClick={() => {
             dispatch({ type: "detachForBrowse" });
             dispatch({ type: "next" });
           }}
           data-testid="follow-next"
-          className="py-3 px-4 rounded-lg bg-slate-800 active:bg-slate-700"
+          className="h-auto py-3 px-4 rounded-lg bg-slate-800 active:bg-slate-700"
+          aria-label={COPY.follow.nextLabel || "Next slide"}
         >
-          ▶︎
-        </button>
+          <span aria-hidden="true">▶︎</span>
+        </Button>
       </div>
       {state.browsing ? (
-        <button
+        <Button
+          type="button"
           onClick={() =>
             dispatch({ type: "syncFromStage", phase: "live", index: stageIndex, force: true })
           }
           data-testid="follow-resume-sync"
-          className="sticky bottom-0 w-full py-3 bg-emerald-600 text-white text-sm font-medium"
+          className="sticky bottom-0 h-auto w-full py-3 bg-emerald-600 text-white text-sm font-medium"
+          aria-live="polite"
         >
-          Live{ahead > 0 ? ` — ${ahead} slide${ahead === 1 ? "" : "s"} ahead` : ""} — tap to
-          resume sync
-        </button>
+          {COPY.follow.liveLabel}
+          {ahead > 0
+            ? ` — ${ahead} ${ahead === 1 ? COPY.follow.aheadSuffixSingular : COPY.follow.aheadSuffixPlural}`
+            : ""}{" "}
+          — {COPY.follow.resumeSync}
+        </Button>
       ) : null}
     </main>
   );

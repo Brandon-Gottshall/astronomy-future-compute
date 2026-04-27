@@ -60,6 +60,7 @@ test("pair token helpers sanitize and format input", () => {
   assert.equal(sanitizePairToken(raw), raw.toUpperCase());
   assert.equal(formatPairToken(raw), "ABC123-DEF456-GHI789JK10");
   assert.equal(sanitizePairToken("abc-123 def"), "ABC123DEF");
+  assert.equal(sanitizePairToken(null), "");
   assert.equal(PAIR_TOKEN_RAW_LENGTH, 22);
 });
 

@@ -5,14 +5,19 @@ import SlideRenderer from "./SlideRenderer";
 import PairPanel from "./PairPanel";
 import { FloatingQR } from "./SiteApp";
 import { PHASE_LIVE, PHASE_SETUP } from "../lib/session.js";
+import { COPY } from "../lib/copy.js";
+import { Alert, AlertDescription } from "./ui/alert";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 
-const TRANSPORT_MESSAGES = {
-  "pusher-not-configured": "Pusher is not configured. Stage state will not sync to other devices.",
-  "expired-token": "The stage session expired. Reload /present to create a new session.",
-  "invalid-token": "The stage session is invalid. Reload /present to continue.",
-  "scope-mismatch": "This stage session was created for another deployment host.",
-  "network-error": "Network error while syncing the presentation state.",
-};
+const TRANSPORT_MESSAGES = COPY.errors?.stageTransport || {};
 
 export default function StageView({
   slides,
@@ -30,7 +35,7 @@ export default function StageView({
     total: slides.length,
     onTransportError: (error) =>
       setTransportError(
-        TRANSPORT_MESSAGES[error.code] || "Presentation sync failed. Other devices may be out of date."
+        TRANSPORT_MESSAGES[error.code] || TRANSPORT_MESSAGES.fallback
       ),
   });
   const [chromeVisible, setChromeVisible] = useState(true);
@@ -86,7 +91,13 @@ export default function StageView({
     return (
       <main className="stage-root" data-testid="stage-setup">
         {transportError ? (
-          <div className="stage-alert">{transportError}</div>
+          <Alert
+            variant="destructive"
+            className="stage-alert border-rose-500/40 bg-rose-500/10 text-rose-200"
+            aria-live="polite"
+          >
+            <AlertDescription>{transportError}</AlertDescription>
+          </Alert>
         ) : null}
         <PairPanel
           origin={origin}
@@ -100,7 +111,7 @@ export default function StageView({
           resettingSession={resettingSession}
           resetSessionError={resetSessionError}
         />
-        <FloatingQR url={followUrl} label="Scan to follow along" />
+        <FloatingQR url={followUrl} label={COPY.stage.followQrLabel} />
       </main>
     );
   }
@@ -109,49 +120,48 @@ export default function StageView({
   return (
     <main className="stage-root" data-testid="stage-live">
       {transportError ? (
-        <div className="stage-alert">{transportError}</div>
+        <Alert
+          variant="destructive"
+          className="stage-alert border-rose-500/40 bg-rose-500/10 text-rose-200"
+          aria-live="polite"
+        >
+          <AlertDescription>{transportError}</AlertDescription>
+        </Alert>
       ) : null}
       <div className="stage-slide">
         <SlideRenderer slide={slide} variant="stage" />
       </div>
       <div className={`stage-chrome ${chromeVisible ? "visible" : "hidden"}`}>
-        <span className="badge" data-testid="stage-counter">
+        <Badge className="badge" data-testid="stage-counter">
           {state.index + 1} / {slides.length}
-        </span>
-        <button onClick={() => setRepairOpen(true)} data-testid="stage-open-repair">
-          Pair
-        </button>
+        </Badge>
+        <Button type="button" onClick={() => setRepairOpen(true)} data-testid="stage-open-repair">
+          {COPY.stage.pairButton}
+        </Button>
       </div>
-      <FloatingQR url={followUrl} label="Scan to follow along" />
-      {repairOpen ? (
-        <div
-          role="dialog"
-          onClick={() => setRepairOpen(false)}
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-6"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="bg-slate-900 border border-slate-700 rounded-xl p-6 max-w-2xl w-full"
-          >
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Re-pair a remote</h2>
-              <button onClick={() => setRepairOpen(false)}>✕</button>
-            </div>
-            <PairPanel
-              origin={origin}
-              speakers={speakers}
-              speakerPaths={session.speakerPaths}
-              stageToken={session.stageToken}
-              pin={session.pin}
-              pairedRemotes={pairedRemotes}
-              compact
-              onResetSession={onResetSession}
-              resettingSession={resettingSession}
-              resetSessionError={resetSessionError}
-            />
-          </div>
-        </div>
-      ) : null}
+      <FloatingQR url={followUrl} label={COPY.stage.followQrLabel} />
+      <Dialog open={repairOpen} onOpenChange={setRepairOpen} modal>
+        <DialogContent className="max-w-2xl border-slate-700 bg-slate-900 text-slate-100">
+          <DialogHeader>
+            <DialogTitle>{COPY.stage.repairTitle}</DialogTitle>
+            <DialogDescription className="text-slate-300">
+              {COPY.stage.pairIntroBody}
+            </DialogDescription>
+          </DialogHeader>
+          <PairPanel
+            origin={origin}
+            speakers={speakers}
+            speakerPaths={session.speakerPaths}
+            stageToken={session.stageToken}
+            pin={session.pin}
+            pairedRemotes={pairedRemotes}
+            compact
+            onResetSession={onResetSession}
+            resettingSession={resettingSession}
+            resetSessionError={resetSessionError}
+          />
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }
