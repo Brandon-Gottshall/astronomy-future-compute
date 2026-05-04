@@ -64,7 +64,7 @@ slides: []  # populated in Task A2
 
 Run:
 ```bash
-cd ~/Development/astronomy-future-compute && npm run generate-copy
+cd ~/Development/Case-Studies/astronomy-future-compute && npm run generate-copy
 grep -n '"speakers"\|"slides"' lib/copy.js | head
 ```
 
@@ -255,7 +255,7 @@ EOF
 **Step 1: Add the client**
 
 ```bash
-cd ~/Development/astronomy-future-compute && npm install pusher-js@8.4
+cd ~/Development/Case-Studies/astronomy-future-compute && npm install pusher-js@8.4
 ```
 
 Server SDK is not needed — we skip Pusher's `/api/auth` flow entirely because we use public channels + PIN-in-message validation.
@@ -1508,7 +1508,7 @@ Create `/Users/brandon/.claude/projects/-Users-brandon/memory/project_astronomy_
 ```markdown
 ---
 name: Astronomy future-compute presentation mode
-description: Three-role Pusher-backed slide presentation with per-speaker notes and resumable audience follow-along; lives in ~/Development/astronomy-future-compute
+description: Three-role Pusher-backed slide presentation with per-speaker notes and resumable audience follow-along; lives in ~/Development/Case-Studies/astronomy-future-compute
 type: project
 ---
 
@@ -1521,7 +1521,7 @@ Three browser roles share a Pusher session: Stage at /present (laptop), Remote a
 
 Then append to `MEMORY.md`:
 ```
-- [Astronomy presentation mode](project_astronomy_presentation_mode.md) — Stage / Remote / Follow roles, Pusher-backed, lives in ~/Development/astronomy-future-compute
+- [Astronomy presentation mode](project_astronomy_presentation_mode.md) — Stage / Remote / Follow roles, Pusher-backed, lives in ~/Development/Case-Studies/astronomy-future-compute
 ```
 
 **Step 2: Commit (in the astronomy repo; memory files are outside git)**
@@ -1533,7 +1533,7 @@ No commit — memory files are in `~/.claude/projects/-Users-brandon/memory/` wh
 ## Verification summary (to run after Phase F)
 
 ```bash
-cd ~/Development/astronomy-future-compute
+cd ~/Development/Case-Studies/astronomy-future-compute
 
 # 1. Pure-logic tests
 node --test tests

@@ -1,4 +1,14 @@
-# Astronomy's Future Compute — Next.js port
+# Astronomy's Future Compute
+
+Case-study repo for a school astronomy presentation that deliberately replaces a conventional slide deck with a web app. This repo is being organized as a self-describing case study first, with future portfolio value second.
+
+Start here:
+
+- `README.md`: repo purpose, runtime, and test entry points
+- `CASE_STUDY.md`: problem, constraints, approach, outcome, and lessons
+- `PROVENANCE.md`: historical origin, course context, collaborators, and later framing
+
+Implementation shape:
 
 Port of the single-file Preact/htm presentation site (`ASTRO Presentation Site.html`)
 to Next.js (App Router). Abstractions are preserved for easy copy edits:
