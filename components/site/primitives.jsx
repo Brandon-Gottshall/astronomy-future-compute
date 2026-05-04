@@ -1,9 +1,8 @@
 "use client";
 
-import { DATA, PATHWAY_META } from "../../lib/data";
+import { COPY, DATA, PATHWAY_META } from "../../lib/data";
 import { cn } from "./utils";
 import { Badge as UiBadge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card as UiCard } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
@@ -54,15 +53,16 @@ export function ToggleRow({ label, value, onChange, options }) {
   );
 }
 
-export function PrintButton({ children = "Print this page", className }) {
+export function SavePdfLink({ children, className }) {
+  const label = children || COPY.common.savePdf;
   return (
-    <Button
-      type="button"
+    <a
+      href={"/" + COPY.common.pdfFilename}
+      download={COPY.common.pdfFilename}
       className={cn("action-btn", className)}
-      onClick={() => window.print()}
     >
-      {children}
-    </Button>
+      {label}
+    </a>
   );
 }
 export function PathwayPill({ pathway }) {

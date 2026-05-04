@@ -4,11 +4,11 @@ import { COPY } from "../../lib/copy.js";
 
 export default function QRPage() {
   const [qrDataUrl, setQrDataUrl] = useState(null);
-  const [atlasUrl, setAtlasUrl] = useState("");
+  const [siteUrl, setSiteUrl] = useState("");
 
   useEffect(() => {
-    const url = window.location.origin + "/?mode=atlas";
-    setAtlasUrl(url);
+    const url = window.location.origin + "/";
+    setSiteUrl(url);
     (async () => {
       const QR = (await import("qrcode")).default;
       const dataUrl = await QR.toDataURL(url, {
@@ -36,12 +36,12 @@ export default function QRPage() {
       <p className="text-center text-lg text-slate-400">
         {COPY.site.qr.prompt}
       </p>
-      {atlasUrl && (
+      {siteUrl && (
         <a
-          href={atlasUrl}
+          href={siteUrl}
           className="text-sm text-slate-500 no-underline"
         >
-          {atlasUrl}
+          {siteUrl}
         </a>
       )}
     </div>

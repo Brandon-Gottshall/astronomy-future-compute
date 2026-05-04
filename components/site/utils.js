@@ -21,9 +21,3 @@ export function wordCount(value) {
   const text = plainText(value);
   return text ? text.split(/\s+/).length : 0;
 }
-export function modeHref(mode, anchor) {
-  const hash = anchor ? "#" + anchor : "";
-  if (mode === "atlas") return "/research" + hash;
-  if (mode === "live") return "/" + hash;
-  return "?mode=" + mode + hash;
-}

@@ -1,9 +1,9 @@
 "use client";
 
-import { DATA, COPY, LIVE_REFERENCE_IDS, LIVE_RESPONSE_ROWS, LIVE_UNDERWATER_PROS, LIVE_UNDERWATER_LIMITS, LIVE_ORBITAL_PROS, LIVE_ORBITAL_LIMITS, LIVE_CONCLUSIONS } from "../../lib/data";
-import { cn, plainText, shortCopy, splitParagraphs, wordCount, modeHref } from "./utils";
+import { DATA, COPY, LIVE_RESPONSE_ROWS, LIVE_UNDERWATER_PROS, LIVE_UNDERWATER_LIMITS, LIVE_ORBITAL_PROS, LIVE_ORBITAL_LIMITS, LIVE_CONCLUSIONS } from "../../lib/data";
+import { cn, plainText, shortCopy, splitParagraphs, wordCount } from "./utils";
 import { useDraftMode } from "./hooks";
-import { Card, Badge, PrintButton, PathwayPill, AnimatedCounter } from "./primitives";
+import { Card, Badge, SavePdfLink, PathwayPill, AnimatedCounter } from "./primitives";
 import { EnergyGrowthChart, AstronomyImpactChart } from "./charts";
 import { RUBRIC_VISUAL_SUMMARIES } from "./state";
 import { Button } from "@/components/ui/button";
@@ -37,15 +37,11 @@ export function LiveHero() {
             </p>
           ) : null}
           <div className="flex flex-wrap justify-center gap-3 mb-10 no-print">
-            <Button asChild className="action-btn primary">
-              <a href="#student-header">Start reading</a>
-            </Button>
-            <PrintButton className="secondary">Print main paper</PrintButton>
+            <SavePdfLink className="primary">
+              {COPY.common.savePdf}
+            </SavePdfLink>
             <Button asChild className="action-btn secondary">
-              <a href="/research">Research appendix</a>
-            </Button>
-            <Button asChild className="action-btn secondary">
-              <a href="/presentation">Printable slides</a>
+              <a href="#student-header">{COPY.common.startReading}</a>
             </Button>
           </div>
         </div>
@@ -425,79 +421,6 @@ export function LiveConclusionSection() {
           ))}
         </div>
       ) : null}
-      <div className="fade-in grid grid-cols-1 lg:grid-cols-[1.1fr_.9fr] gap-6 items-start">
-        <Card className="p-6 bg-amber-500/10 border-amber-500/25">
-          <h3 className="text-amber-300 mb-3">
-            {COPY.live.conclusion.bestFitTitle}
-          </h3>
-          <p className="text-slate-300 leading-relaxed">
-            {shortCopy(COPY.live.conclusion.bestFitBody, 140)}
-          </p>
-        </Card>
-        <Card className="p-6">
-          <h3 className="text-slate-200 mb-3">
-            {COPY.live.conclusion.atlasTitle}
-          </h3>
-          <p className="text-sm text-slate-400 mb-4">
-            {shortCopy(COPY.live.conclusion.atlasBody, 120)}
-          </p>
-          <Button asChild className="toggle-btn active">
-            <a href={modeHref("atlas", "pathways")}>
-              {COPY.common.openResearchAtlas}
-            </a>
-          </Button>
-        </Card>
-      </div>
-    </section>
-  );
-}
-
-export function LiveReferencesSection() {
-  // Foreground only external URL-bearing sources in the public reference
-  // list. Uploaded rubric packets, internal memos, and local-only files are
-  // preserved in the Research Appendix bibliography instead.
-  const EXTERNAL_ONLY_TYPES = new Set(["official", "academic", "journalism", "industry"]);
-  const refs = LIVE_REFERENCE_IDS.map((id) =>
-    DATA.sources.find((s) => s.id === id)
-  )
-    .filter(Boolean)
-    .filter((s) => s.url && EXTERNAL_ONLY_TYPES.has(s.type));
-  return (
-    <section id="live-references" className="section-wrap">
-      <div className="fade-in text-center mb-10">
-        <h2 className="mb-2">{COPY.live.references.title}</h2>
-        <p className="text-slate-400 max-w-3xl mx-auto">
-          {COPY.live.references.intro}
-        </p>
-      </div>
-      <div className="fade-in space-y-3 mb-8">
-        {refs.map((s) => (
-          <Card key={s.id} className="p-4 flex items-start gap-3">
-            <span className="text-xs text-slate-600 min-w-[3rem]">{s.year}</span>
-            <div className="flex-1">
-              <div className="text-sm text-slate-200">{s.label}</div>
-              <div className="text-xs text-slate-500 mt-1">{s.type}</div>
-            </div>
-            {s.url ? (
-              <a
-                href={s.url}
-                target="_blank"
-                rel="noreferrer"
-                className="ref-link text-xs"
-              >
-                {COPY.common.linkLabel}
-              </a>
-            ) : (
-              <span className="text-xs text-slate-600">
-                {COPY.common.localLabel}
-              </span>
-            )}
-          </Card>
-        ))}
-      </div>
-      <p className="fade-in text-center text-sm text-slate-500">
-        {COPY.live.references.footer}
-      </p>
     </section>
   );
 }

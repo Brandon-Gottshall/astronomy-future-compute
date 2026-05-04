@@ -1,57 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { DATA, COPY, PATHWAY_META, EFFECT_META } from "../../lib/data";
-import { useQrDataUrl } from "./hooks";
-import { Card, Badge, ToggleRow, PrintButton, PathwayPill, AnimatedCounter } from "./primitives";
+import { Card, Badge, ToggleRow, PathwayPill, AnimatedCounter } from "./primitives";
 import { EnergyGrowthChart, AstronomyImpactChart } from "./charts";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-
-export function FullViewportHero() {
-  return (
-    <section id="hero" className="hero-viewport">
-      <div className="hero-bg"></div>
-      <div className="hero-overlay"></div>
-      <div className="relative z-10 text-center px-6 max-w-4xl">
-        <Badge className="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 mb-6">
-          Research appendix · evidence and externalities
-        </Badge>
-        <h1 className="text-white mb-4">{COPY.meta.title}</h1>
-        <p className="text-xl md:text-2xl text-slate-300 mb-6 leading-relaxed">
-          {COPY.meta.subtitle}
-        </p>
-        <p className="text-base text-slate-400">
-          {COPY.meta.authors.join(" & ")} · {COPY.meta.date}
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3 no-print">
-          <PrintButton className="primary">Print research appendix</PrintButton>
-          <Button asChild className="action-btn secondary">
-            <a href="/">Open main paper</a>
-          </Button>
-          <Button asChild className="action-btn secondary">
-            <a href="/presentation">Open printable slides</a>
-          </Button>
-        </div>
-        <div className="mt-12 scroll-indicator text-slate-500">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="mx-auto"
-            width="32"
-            height="32"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 5v14M5 12l7 7 7-7" />
-          </svg>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* ===== SECTION: THE PROBLEM ===== */
 export function TheProblemSection({ state, dispatch }) {
@@ -466,11 +419,6 @@ export function ButWhatAboutSection({ state, dispatch }) {
 
 /* ===== SECTION: RECOMMENDATIONS ===== */
 export function RecommendationsSection() {
-  const [atlasUrl, setAtlasUrl] = useState(null);
-  useEffect(() => {
-    setAtlasUrl(window.location.origin + window.location.pathname + "?mode=atlas");
-  }, []);
-  const qrDataUrl = useQrDataUrl(atlasUrl);
   return (
     <section id="recommendations" className="section-wrap">
       <div className="fade-in">
@@ -487,12 +435,6 @@ export function RecommendationsSection() {
             <p className="text-sm text-slate-400 leading-relaxed">{r.body}</p>
           </Card>
         ))}
-      </div>
-      <div className="fade-in flex flex-col items-center gap-3">
-        {qrDataUrl && <img alt="QR code" src={qrDataUrl} width="120" height="120" />}
-        <p className="text-sm text-slate-500">
-          {COPY.atlas.conclusions.scanPrompt}
-        </p>
       </div>
     </section>
   );
